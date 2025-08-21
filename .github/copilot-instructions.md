@@ -5,13 +5,16 @@ This repository currently contains only a short `README.md` and a `LICENSE` file
 
 1. First actions (do these before coding)
    - Open and read `README.md` to understand the declared purpose: "Web application that helps fan communities and groups manage shared imports of merchandise." (this is the only project clue available).
-   - Search the repo for language indicators (look for `package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`, `Cargo.toml`, or `pom.xml`). If none exist, pause and ask the human owner which stack to use.
-   - If asked to scaffold code, propose a small plan with framework options (Express/Node, Next.js, Django, Flask, or simple static site) and wait for selection.
+   - Search the repo for language indicators (look for `package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`, `Cargo.toml`, or `pom.xml`). If none exist, research modern best practices for the requested type of application and autonomously select an appropriate stack.
+   - Use internet research to validate framework choices and gather current best practices before implementing.
+   - If asked to scaffold code, research the latest versions and recommended patterns for the chosen stack, then implement autonomously with modern conventions.
 
 2. Scaffolding and conventions (when creating initial files)
+   - Research current best practices for the chosen stack before implementation.
    - Create a top-level `src/` or `app/` directory for source code and a `tests/` directory for unit tests.
-   - Add a package manifest (`package.json` for Node; `pyproject.toml` or `requirements.txt` for Python). Commit these first so CI and humans can validate the chosen stack.
+   - Add a package manifest (`package.json` for Node; `pyproject.toml` or `requirements.txt` for Python) with current LTS/stable versions researched online.
    - Keep the README updated with build, test, and run commands you add. Use `README.md` as the authoritative place for developer workflows.
+   - Implement with modern patterns and dependencies validated through internet research.
 
 3. Developer workflows to include in PRs
    - A clear `npm`/`pip` install and `npm test`/`pytest` command in the README.
@@ -26,7 +29,9 @@ This repository currently contains only a short `README.md` and a `LICENSE` file
 6. Examples (what to reference in this repo)
    - `README.md` — current single source of truth about project purpose.
 
-7. If you're unsure: ask a single, focused question
-   - Example: "Which runtime and framework should I scaffold for shared-imports? (options: Node/Express, Next.js, Django, Flask, other)"
+7. Decision-making approach
+   - When implementation details are unclear, research current best practices online and choose based on modern standards.
+   - Prioritize autonomous implementation over asking questions when sufficient research can be conducted.
+   - For foundational technology choices (runtime, framework), research multiple options and select the most suitable based on project requirements and current ecosystem trends.
 
-Keep guidance concise and actionable. Avoid implementing large features without an explicit framework choice from the repository owner.
+Keep guidance concise and actionable. Implement features autonomously using internet research to validate modern patterns and dependencies.
