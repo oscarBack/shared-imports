@@ -54,6 +54,9 @@ importers:
       '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
+      '@repo/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
@@ -181,6 +184,27 @@ importers:
       typescript-eslint:
         specifier: ^8.40.0
         version: 8.40.0(eslint@9.33.0)(typescript@5.9.2)
+
+  packages/types:
+    devDependencies:
+      '@repo/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
+      '@types/eslint':
+        specifier: ^9.6.1
+        version: 9.6.1
+      '@types/node':
+        specifier: ^22.10.7
+        version: 22.15.3
+      eslint:
+        specifier: ^9.18.0
+        version: 9.33.0
+      typescript:
+        specifier: ^5.7.3
+        version: 5.9.2
 
   packages/typescript-config: {}
 

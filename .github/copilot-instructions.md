@@ -1,37 +1,59 @@
 <!-- Purpose: concise, actionable guidance for AI coding agents working in this repo -->
 # GitHub Copilot instructions for shared-imports
 
-This repository currently contains only a short `README.md` and a `LICENSE` file. There is no detected source tree (no `package.json`, `pyproject.toml`, `src/`, or `app/` directories). Use the steps below to get immediately productive and avoid making incorrect assumptions.
+<!-- Updated 2025-08-27: Full monorepo architecture with NestJS API + Next.js web app -->
 
-1. First actions (do these before coding)
-   - Open and read `README.md` to understand the declared purpose: "Web application that helps fan communities and groups manage shared imports of merchandise." (this is the only project clue available).
-   - Search the repo for language indicators (look for `package.json`, `requirements.txt`, `pyproject.toml`, `go.mod`, `Cargo.toml`, or `pom.xml`). If none exist, research modern best practices for the requested type of application and autonomously select an appropriate stack.
-   - Use internet research to validate framework choices and gather current best practices before implementing.
-   - If asked to scaffold code, research the latest versions and recommended patterns for the chosen stack, then implement autonomously with modern conventions.
+This is a **Turborepo monorepo** for a merchandise shared imports platform targeting fan communities. Tech stack: TypeScript, NestJS (API), Next.js (web), pnpm, planned AWS/Cloudflare deployment.
 
-2. Scaffolding and conventions (when creating initial files)
-   - Research current best practices for the chosen stack before implementation.
-   - Create a top-level `src/` or `app/` directory for source code and a `tests/` directory for unit tests.
-   - Add a package manifest (`package.json` for Node; `pyproject.toml` or `requirements.txt` for Python) with current LTS/stable versions researched online.
-   - Keep the README updated with build, test, and run commands you add. Use `README.md` as the authoritative place for developer workflows.
-   - Implement with modern patterns and dependencies validated through internet research.
+## Architecture Overview
 
-3. Developer workflows to include in PRs
-   - A clear `npm`/`pip` install and `npm test`/`pytest` command in the README.
-   - Small, focused commits with tests for any new behavior.
+**Monorepo structure** (pnpm workspaces + Turborepo):
+- `apps/api/` — NestJS REST API (minimal scaffolding, needs implementation)
+- `apps/web/` — Next.js 15 web app with App Router (currently empty shell)
+- `packages/eslint-config/` — Shared ESLint configs (@repo/eslint-config)
+- `packages/typescript-config/` — Shared TypeScript configs (@repo/typescript-config)
+- `docs/plans/` — Architecture planning documents (MONOREPO_PLAN.md, INFRA_SCHEMA.md)
 
-4. Patterns and integration notes (nothing currently present)
-   - There are no existing service boundaries or integration points to follow. When you introduce them, document: API endpoints, data shapes, and any external services (databases, object storage, 3rd-party APIs) in `README.md` or a `docs/` directory.
+**Key service boundaries**: API and web apps are separate, designed for independent deployment to AWS EC2. See `docs/plans/INFRA_SCHEMA.md` for full deployment architecture (load balancers, auto-scaling groups, DynamoDB).
 
-5. When merging or editing existing agent guidance
-   - If a `.github/copilot-instructions.md` or `AGENT.md` already exists in the future, preserve any project-specific examples and merge only to correct or extend out-of-date instructions. Prefer adding a short changelog note at the top of this file for traceability.
+## Essential Workflows
 
-6. Examples (what to reference in this repo)
-   - `README.md` — current single source of truth about project purpose.
+**Development** (run from project root):
+```bash
+pnpm install                 # Install all dependencies
+pnpm dev                     # Start all apps in watch mode
+pnpm build                   # Build all packages/apps
+pnpm lint                    # Lint all workspaces
+pnpm check-types            # TypeScript checking
+```
 
-7. Decision-making approach
-   - When implementation details are unclear, research current best practices online and choose based on modern standards.
-   - Prioritize autonomous implementation over asking questions when sufficient research can be conducted.
-   - For foundational technology choices (runtime, framework), research multiple options and select the most suitable based on project requirements and current ecosystem trends.
+**Individual app development**:
+- API: `cd apps/api && pnpm dev` (starts NestJS on default port)
+- Web: `cd apps/web && pnpm dev` (starts Next.js on port 3000 with Turbopack)
 
-Keep guidance concise and actionable. Implement features autonomously using internet research to validate modern patterns and dependencies.
+**Turborepo orchestration**: Uses `turbo.json` for task dependencies. Build tasks depend on upstream builds (`^build`).
+
+## Project-Specific Patterns
+
+**Package references**: Use workspace protocol `"@repo/eslint-config": "workspace:*"` in package.json dependencies.
+
+**ESLint configs**: Import from shared package:
+- `@repo/eslint-config/base` — Base TypeScript config
+- `@repo/eslint-config/next-js` — Next.js specific rules
+- `@repo/eslint-config/react-internal` — React component libraries
+
+**TypeScript configs**: Extend from `@repo/typescript-config/{base|nextjs|react-library}.json`
+
+**Package manager**: Uses **pnpm** (lockfile: `pnpm-lock.yaml`). Node.js >=18 required.
+
+## Current State & Implementation Focus
+
+**API state**: Basic NestJS scaffolding in `apps/api/src/` — needs modules, controllers, services for merchandise import management.
+
+**Web state**: Empty Next.js shell (`app/page.tsx` returns `<></>`) — needs UI for import coordination, group management.
+
+**Missing packages**: The planned `packages/{ui,database,shared-types,utils}` don't exist yet. Create when adding cross-app shared code.
+
+**Architecture docs**: `docs/plans/` contains detailed planning for multi-environment AWS deployment, DynamoDB schemas, and service interactions.
+
+**Key integration point**: API will serve web app data. Plan for authentication, import workflow state management, and group coordination features per the architecture docs.
