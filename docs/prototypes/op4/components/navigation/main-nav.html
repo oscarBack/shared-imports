@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Component - Shared Imports Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        .nav-item {
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+            transform: translateX(4px);
+        }
+        
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.1);
+            border-right: 3px solid #3B82F6;
+        }
+        
+        .nav-item.active .nav-icon {
+            color: #3B82F6;
+        }
+        
+        .nav-item.active .nav-text {
+            color: #3B82F6;
+            font-weight: 600;
+        }
+        
+        .sidebar-collapsed .nav-text {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        
+        .sidebar-collapsed .nav-item {
+            justify-content: center;
+        }
+        
+        .notification-badge {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <span class="nav-text font-bold text-gray-900 transition-all duration-300">Shared Imports</span>
+            </div>
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="mt-6 px-3">
+            <!-- Dashboard -->
+            <a href="dashboard.html" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group" data-page="dashboard">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Dashboard</span>
+            </a>
+
+            <!-- Products -->
+            <a href="products.html" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group" data-page="products">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Products</span>
+                <span class="notification-badge ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
+            </a>
+
+            <!-- Clients -->
+            <a href="clients.html" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group" data-page="clients">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Clients</span>
+                <span class="notification-badge ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
+            </a>
+
+            <!-- Sellers -->
+            <a href="sellers.html" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group" data-page="sellers">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Sellers</span>
+                <span class="notification-badge ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
+            </a>
+
+            <!-- Orders -->
+            <a href="orders.html" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group" data-page="orders">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Orders</span>
+                <span class="notification-badge ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
+            </a>
+
+            <!-- Divider -->
+            <div class="my-6 border-t border-gray-200"></div>
+
+            <!-- Analytics -->
+            <a href="#" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Analytics</span>
+            </a>
+
+            <!-- Reports -->
+            <a href="#" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Reports</span>
+            </a>
+
+            <!-- Settings -->
+            <a href="#" class="nav-item flex items-center px-3 py-3 mb-1 text-gray-700 rounded-lg group">
+                <svg class="nav-icon w-5 h-5 mr-3 text-gray-500 transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                <span class="nav-text transition-all duration-300">Settings</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                </div>
+                <div class="nav-text flex-1 transition-all duration-300">
+                    <p class="text-sm font-medium text-gray-900">Admin User</p>
+                    <p class="text-xs text-gray-500">admin@shared-imports.com</p>
+                </div>
+                <button id="logoutBtn" class="nav-text p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Page Title -->
+                    <div class="flex-1 lg:flex-none">
+                        <h1 id="pageTitle" class="text-xl font-semibold text-gray-900">Dashboard</h1>
+                    </div>
+
+                    <!-- Header Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Search -->
+                        <div class="hidden md:block relative">
+                            <input 
+                                type="text" 
+                                placeholder="Search..." 
+                                class="w-64 pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            >
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Notifications -->
+                        <button class="relative p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19c-5 0-8-3-8-7s3-7 8-7 8 3 8 7-3 7-8 7z"></path>
+                            </svg>
+                            <span class="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full"></span>
+                        </button>
+
+                        <!-- Profile Dropdown -->
+                        <div class="relative">
+                            <button class="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <main class="p-6">
+            <div class="max-w-7xl mx-auto">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6">Navigation Component Demo</h2>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <p class="text-gray-600">This is the main navigation component for the Shared Imports admin dashboard. Click on different navigation items to see the active states.</p>
+                    <div class="mt-4 space-y-2">
+                        <p><strong>Features:</strong></p>
+                        <ul class="list-disc list-inside text-gray-600 space-y-1">
+                            <li>Responsive design with mobile-first approach</li>
+                            <li>Active state indicators for current page</li>
+                            <li>Notification badges for important updates</li>
+                            <li>Smooth animations and hover effects</li>
+                            <li>Collapsible sidebar for desktop</li>
+                            <li>Mobile overlay menu</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        function openMobileMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('hidden');
+        }
+        
+        function closeMobileMenu() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+        
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        sidebarToggle.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Active page detection
+        function setActivePage() {
+            const currentPage = window.location.pathname.split('/').pop().replace('.html', '') || 'dashboard';
+            const navItems = document.querySelectorAll('.nav-item[data-page]');
+            
+            navItems.forEach(item => {
+                const page = item.getAttribute('data-page');
+                if (page === currentPage) {
+                    item.classList.add('active');
+                    // Update page title
+                    const pageTitle = document.getElementById('pageTitle');
+                    const navText = item.querySelector('.nav-text').textContent;
+                    pageTitle.textContent = navText;
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        }
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setActivePage();
+            
+            // Check authentication
+            const adminSession = localStorage.getItem('adminSession');
+            if (!adminSession) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const session = JSON.parse(adminSession);
+            const loginTime = new Date(session.loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff >= 24 || !session.isAdmin) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+                return;
+            }
+        });
+    </script>
+</body>
+</html>

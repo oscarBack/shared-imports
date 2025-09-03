@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients Management - Shared Imports Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        .client-card {
+            transition: all 0.3s ease;
+        }
+        
+        .client-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+        
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .casilla-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .status-indicator {
+            animation: pulse 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-gray-900">Shared Imports</span>
+            </div>
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="mt-6 px-3">
+            <!-- Dashboard -->
+            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- Products -->
+            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                Products
+                <span class="ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
+            </a>
+
+            <!-- Clients - Active -->
+            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-blue-600 bg-blue-50 border-r-3 border-blue-600 rounded-lg font-semibold">
+                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+                Clients
+                <span class="ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
+            </a>
+
+            <!-- Other nav items -->
+            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Sellers
+                <span class="ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
+            </a>
+
+            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                Orders
+                <span class="ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Admin User</p>
+                    <p class="text-xs text-gray-500">admin@shared-imports.com</p>
+                </div>
+                <button id="logoutBtn" class="p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Page Title -->
+                    <div class="flex-1 lg:flex-none">
+                        <h1 class="text-xl font-semibold text-gray-900">Clients Management</h1>
+                    </div>
+
+                    <!-- Header Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Add Client Button -->
+                        <button id="addClientBtn" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add Client
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Clients Content -->
+        <main class="p-6">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <!-- Filters and Search -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <!-- Search -->
+                        <div class="flex-1 lg:max-w-md">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="searchInput"
+                                    placeholder="Search clients by name, email, or casilla..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <!-- Country Filter -->
+                            <select id="countryFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Countries</option>
+                                <option value="México">México</option>
+                                <option value="Colombia">Colombia</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Chile">Chile</option>
+                                <option value="Perú">Perú</option>
+                            </select>
+
+                            <!-- Status Filter -->
+                            <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending Verification</option>
+                            </select>
+
+                            <!-- Casilla Filter -->
+                            <select id="casillaFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Casillas</option>
+                                <option value="has-casilla">Has Casilla</option>
+                                <option value="no-casilla">No Casilla</option>
+                            </select>
+
+                            <!-- Sort -->
+                            <select id="sortFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="name-asc">Name A-Z</option>
+                                <option value="name-desc">Name Z-A</option>
+                                <option value="date-desc">Newest First</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="orders-desc">Most Orders</option>
+                            </select>
+
+                            <!-- Clear Filters -->
+                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Client Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Clients</p>
+                                <p class="text-xl font-semibold text-gray-900">142</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Active</p>
+                                <p class="text-xl font-semibold text-gray-900">128</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">With Casilla</p>
+                                <p class="text-xl font-semibold text-gray-900">89</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Pending</p>
+                                <p class="text-xl font-semibold text-gray-900">14</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clients Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="clientsGrid">
+                    <!-- Client cards will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center" id="loadMoreContainer">
+                    <button id="loadMoreBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        Load More Clients
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Client Modal -->
+    <div id="clientModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="modalTitle" class="text-xl font-semibold text-gray-900">Add New Client</h2>
+                    <button id="closeModalBtn" class="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <form id="clientForm" class="p-6 space-y-6">
+                    <input type="hidden" id="clientId" name="clientId">
+                    
+                    <!-- Personal Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Personal Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="firstName" class="block text-sm font-medium text-gray-700 mb-2">First Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="firstName" 
+                                    name="firstName" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter first name"
+                                >
+                            </div>
+                            <div>
+                                <label for="lastName" class="block text-sm font-medium text-gray-700 mb-2">Last Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="lastName" 
+                                    name="lastName" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter last name"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter email address"
+                                >
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input 
+                                        type="tel" 
+                                        id="phone" 
+                                        name="phone"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter phone number"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="whatsapp" class="block text-sm font-medium text-gray-700 mb-2">WhatsApp</label>
+                                    <input 
+                                        type="tel" 
+                                        id="whatsapp" 
+                                        name="whatsapp"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter WhatsApp number"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Address Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Address Information</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="country" class="block text-sm font-medium text-gray-700 mb-2">Country *</label>
+                                    <select 
+                                        id="country" 
+                                        name="country" 
+                                        required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    >
+                                        <option value="">Select Country</option>
+                                        <option value="México">México</option>
+                                        <option value="Colombia">Colombia</option>
+                                        <option value="Argentina">Argentina</option>
+                                        <option value="Chile">Chile</option>
+                                        <option value="Perú">Perú</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="city" class="block text-sm font-medium text-gray-700 mb-2">City *</label>
+                                    <input 
+                                        type="text" 
+                                        id="city" 
+                                        name="city" 
+                                        required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter city"
+                                    >
+                                </div>
+                            </div>
+                            <div>
+                                <label for="address" class="block text-sm font-medium text-gray-700 mb-2">Full Address *</label>
+                                <textarea 
+                                    id="address" 
+                                    name="address" 
+                                    rows="2"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter complete address"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Casilla Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Casilla Information</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <input 
+                                    type="checkbox" 
+                                    id="hasCasilla" 
+                                    name="hasCasilla"
+                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                >
+                                <label for="hasCasilla" class="ml-2 block text-sm text-gray-900">
+                                    Client has a Casilla (Address Box)
+                                </label>
+                            </div>
+                            <div id="casillaFields" class="hidden space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="casillaNumber" class="block text-sm font-medium text-gray-700 mb-2">Casilla Number</label>
+                                        <input 
+                                            type="text" 
+                                            id="casillaNumber" 
+                                            name="casillaNumber"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter casilla number"
+                                        >
+                                    </div>
+                                    <div>
+                                        <label for="casillaProvider" class="block text-sm font-medium text-gray-700 mb-2">Casilla Provider</label>
+                                        <input 
+                                            type="text" 
+                                            id="casillaProvider" 
+                                            name="casillaProvider"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Enter casilla provider"
+                                        >
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="casillaAddress" class="block text-sm font-medium text-gray-700 mb-2">Casilla Address</label>
+                                    <textarea 
+                                        id="casillaAddress" 
+                                        name="casillaAddress" 
+                                        rows="2"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter casilla address"
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Client Status -->
+                    <div>
+                        <label for="clientStatus" class="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                        <select 
+                            id="clientStatus" 
+                            name="clientStatus" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                            <option value="pending">Pending Verification</option>
+                        </select>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Save Client
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample clients data
+        const sampleClients = [
+            {
+                id: 1,
+                firstName: "María",
+                lastName: "González",
+                email: "maria.gonzalez@email.com",
+                phone: "+52 55 1234 5678",
+                whatsapp: "+52 55 1234 5678",
+                country: "México",
+                city: "Ciudad de México",
+                address: "Av. Reforma 123, Col. Centro",
+                hasCasilla: true,
+                casillaNumber: "MX-001-234",
+                casillaProvider: "MexiPost",
+                casillaAddress: "123 Main St, Miami, FL 33101, USA",
+                status: "active",
+                joinDate: "2024-01-15",
+                totalOrders: 12,
+                totalSpent: 1250.99
+            },
+            {
+                id: 2,
+                firstName: "Carlos",
+                lastName: "Rodríguez",
+                email: "carlos.rodriguez@email.com",
+                phone: "+57 1 987 6543",
+                whatsapp: "+57 1 987 6543",
+                country: "Colombia",
+                city: "Bogotá",
+                address: "Carrera 7 #45-67, Chapinero",
+                hasCasilla: true,
+                casillaNumber: "CO-002-567",
+                casillaProvider: "ColombiaBox",
+                casillaAddress: "456 Ocean Dr, Miami, FL 33139, USA",
+                status: "active",
+                joinDate: "2024-02-20",
+                totalOrders: 8,
+                totalSpent: 890.50
+            },
+            {
+                id: 3,
+                firstName: "Ana",
+                lastName: "Silva",
+                email: "ana.silva@email.com",
+                phone: "+54 11 5555 4444",
+                whatsapp: "+54 11 5555 4444",
+                country: "Argentina",
+                city: "Buenos Aires",
+                address: "Av. Corrientes 1234, Microcentro",
+                hasCasilla: false,
+                casillaNumber: "",
+                casillaProvider: "",
+                casillaAddress: "",
+                status: "pending",
+                joinDate: "2024-08-01",
+                totalOrders: 0,
+                totalSpent: 0
+            },
+            {
+                id: 4,
+                firstName: "Diego",
+                lastName: "Morales",
+                email: "diego.morales@email.com",
+                phone: "+56 9 8888 7777",
+                whatsapp: "+56 9 8888 7777",
+                country: "Chile",
+                city: "Santiago",
+                address: "Providencia 456, Las Condes",
+                hasCasilla: true,
+                casillaNumber: "CL-003-789",
+                casillaProvider: "ChileExpress",
+                casillaAddress: "789 Biscayne Blvd, Miami, FL 33132, USA",
+                status: "active",
+                joinDate: "2024-03-10",
+                totalOrders: 15,
+                totalSpent: 2100.75
+            },
+            {
+                id: 5,
+                firstName: "Lucía",
+                lastName: "Fernández",
+                email: "lucia.fernandez@email.com",
+                phone: "+51 1 3333 2222",
+                whatsapp: "+51 1 3333 2222",
+                country: "Perú",
+                city: "Lima",
+                address: "Jr. De la Unión 789, Cercado de Lima",
+                hasCasilla: false,
+                casillaNumber: "",
+                casillaProvider: "",
+                casillaAddress: "",
+                status: "inactive",
+                joinDate: "2023-12-05",
+                totalOrders: 3,
+                totalSpent: 450.25
+            }
+        ];
+
+        let clients = [...sampleClients];
+        let filteredClients = [...clients];
+        let displayedCount = 9; // Number of clients to show initially
+
+        // DOM Elements
+        const clientsGrid = document.getElementById('clientsGrid');
+        const clientModal = document.getElementById('clientModal');
+        const clientForm = document.getElementById('clientForm');
+        const searchInput = document.getElementById('searchInput');
+        const countryFilter = document.getElementById('countryFilter');
+        const statusFilter = document.getElementById('statusFilter');
+        const casillaFilter = document.getElementById('casillaFilter');
+        const sortFilter = document.getElementById('sortFilter');
+        const hasCasillaCheckbox = document.getElementById('hasCasilla');
+        const casillaFields = document.getElementById('casillaFields');
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        function openMobileMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('hidden');
+        }
+        
+        function closeMobileMenu() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+        
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        sidebarToggle.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Status badge colors
+        function getStatusBadge(status) {
+            const badges = {
+                'active': 'bg-green-100 text-green-800',
+                'inactive': 'bg-gray-100 text-gray-800',
+                'pending': 'bg-orange-100 text-orange-800'
+            };
+            const text = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[status]}">${text}</span>`;
+        }
+
+        // Get country flag emoji
+        function getCountryFlag(country) {
+            const flags = {
+                'México': '🇲🇽',
+                'Colombia': '🇨🇴',
+                'Argentina': '🇦🇷',
+                'Chile': '🇨🇱',
+                'Perú': '🇵🇪'
+            };
+            return flags[country] || '🌍';
+        }
+
+        // Render clients grid
+        function renderClients() {
+            const clientsToShow = filteredClients.slice(0, displayedCount);
+            
+            clientsGrid.innerHTML = clientsToShow.map(client => `
+                <div class="client-card bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <!-- Client Header -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <span class="text-blue-600 font-semibold text-lg">${client.firstName.charAt(0)}${client.lastName.charAt(0)}</span>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">${client.firstName} ${client.lastName}</h3>
+                                <p class="text-sm text-gray-600 flex items-center">
+                                    <span class="mr-1">${getCountryFlag(client.country)}</span>
+                                    ${client.city}, ${client.country}
+                                </p>
+                            </div>
+                        </div>
+                        ${getStatusBadge(client.status)}
+                    </div>
+
+                    <!-- Contact Info -->
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center text-sm text-gray-600">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                            </svg>
+                            ${client.email}
+                        </div>
+                        ${client.phone ? `
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                                </svg>
+                                ${client.phone}
+                            </div>
+                        ` : ''}
+                    </div>
+
+                    <!-- Casilla Info -->
+                    ${client.hasCasilla ? `
+                        <div class="casilla-badge text-white p-3 rounded-lg mb-4">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-sm font-medium">Casilla</p>
+                                    <p class="text-xs opacity-90">${client.casillaNumber}</p>
+                                </div>
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    ` : `
+                        <div class="bg-gray-50 p-3 rounded-lg mb-4">
+                            <p class="text-sm text-gray-600">No Casilla</p>
+                        </div>
+                    `}
+
+                    <!-- Stats -->
+                    <div class="grid grid-cols-2 gap-4 mb-4">
+                        <div class="text-center">
+                            <p class="text-lg font-semibold text-gray-900">${client.totalOrders}</p>
+                            <p class="text-xs text-gray-600">Orders</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-lg font-semibold text-gray-900">$${client.totalSpent.toFixed(2)}</p>
+                            <p class="text-xs text-gray-600">Total Spent</p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editClient(${client.id})" class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+                            Edit
+                        </button>
+                        <button onclick="deleteClient(${client.id})" class="px-3 py-2 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200 transition-colors">
+                            Delete
+                        </button>
+                        <button onclick="viewOrders(${client.id})" class="px-3 py-2 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200 transition-colors">
+                            Orders
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update load more button
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (displayedCount >= filteredClients.length) {
+                loadMoreContainer.classList.add('hidden');
+            } else {
+                loadMoreContainer.classList.remove('hidden');
+            }
+        }
+
+        // Filter and search functionality
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const countryValue = countryFilter.value;
+            const statusValue = statusFilter.value;
+            const casillaValue = casillaFilter.value;
+
+            filteredClients = clients.filter(client => {
+                const matchesSearch = client.firstName.toLowerCase().includes(searchTerm) || 
+                                    client.lastName.toLowerCase().includes(searchTerm) ||
+                                    client.email.toLowerCase().includes(searchTerm) ||
+                                    (client.casillaNumber && client.casillaNumber.toLowerCase().includes(searchTerm));
+                const matchesCountry = !countryValue || client.country === countryValue;
+                const matchesStatus = !statusValue || client.status === statusValue;
+                const matchesCasilla = !casillaValue || 
+                                     (casillaValue === 'has-casilla' && client.hasCasilla) ||
+                                     (casillaValue === 'no-casilla' && !client.hasCasilla);
+
+                return matchesSearch && matchesCountry && matchesStatus && matchesCasilla;
+            });
+
+            // Apply sorting
+            const sortValue = sortFilter.value;
+            filteredClients.sort((a, b) => {
+                switch(sortValue) {
+                    case 'name-asc': return `${a.firstName} ${a.lastName}`.localeCompare(`${b.firstName} ${b.lastName}`);
+                    case 'name-desc': return `${b.firstName} ${b.lastName}`.localeCompare(`${a.firstName} ${a.lastName}`);
+                    case 'date-desc': return new Date(b.joinDate) - new Date(a.joinDate);
+                    case 'date-asc': return new Date(a.joinDate) - new Date(b.joinDate);
+                    case 'orders-desc': return b.totalOrders - a.totalOrders;
+                    default: return 0;
+                }
+            });
+
+            displayedCount = 9; // Reset to initial count
+            renderClients();
+        }
+
+        // Modal functions
+        function openModal(title = 'Add New Client') {
+            document.getElementById('modalTitle').textContent = title;
+            clientModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            clientModal.classList.add('hidden');
+            clientForm.reset();
+            document.getElementById('clientId').value = '';
+            casillaFields.classList.add('hidden');
+        }
+
+        function editClient(id) {
+            const client = clients.find(c => c.id === id);
+            if (!client) return;
+
+            openModal('Edit Client');
+            
+            // Fill form with client data
+            document.getElementById('clientId').value = client.id;
+            document.getElementById('firstName').value = client.firstName;
+            document.getElementById('lastName').value = client.lastName;
+            document.getElementById('email').value = client.email;
+            document.getElementById('phone').value = client.phone || '';
+            document.getElementById('whatsapp').value = client.whatsapp || '';
+            document.getElementById('country').value = client.country;
+            document.getElementById('city').value = client.city;
+            document.getElementById('address').value = client.address;
+            document.getElementById('hasCasilla').checked = client.hasCasilla;
+            document.getElementById('casillaNumber').value = client.casillaNumber || '';
+            document.getElementById('casillaProvider').value = client.casillaProvider || '';
+            document.getElementById('casillaAddress').value = client.casillaAddress || '';
+            document.getElementById('clientStatus').value = client.status;
+
+            if (client.hasCasilla) {
+                casillaFields.classList.remove('hidden');
+            }
+        }
+
+        function deleteClient(id) {
+            if (confirm('Are you sure you want to delete this client?')) {
+                clients = clients.filter(c => c.id !== id);
+                applyFilters();
+            }
+        }
+
+        function viewOrders(id) {
+            alert(`Viewing orders for client ID: ${id}`);
+        }
+
+        // Event listeners
+        document.getElementById('addClientBtn').addEventListener('click', () => openModal());
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+        clientModal.addEventListener('click', (e) => {
+            if (e.target === clientModal) closeModal();
+        });
+
+        // Casilla checkbox toggle
+        hasCasillaCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                casillaFields.classList.remove('hidden');
+            } else {
+                casillaFields.classList.add('hidden');
+            }
+        });
+
+        // Search and filter event listeners
+        searchInput.addEventListener('input', applyFilters);
+        countryFilter.addEventListener('change', applyFilters);
+        statusFilter.addEventListener('change', applyFilters);
+        casillaFilter.addEventListener('change', applyFilters);
+        sortFilter.addEventListener('change', applyFilters);
+
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            searchInput.value = '';
+            countryFilter.value = '';
+            statusFilter.value = '';
+            casillaFilter.value = '';
+            sortFilter.value = 'name-asc';
+            applyFilters();
+        });
+
+        // Load more functionality
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            displayedCount += 9;
+            renderClients();
+        });
+
+        // Form submission
+        clientForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(clientForm);
+            const clientData = {
+                firstName: formData.get('firstName'),
+                lastName: formData.get('lastName'),
+                email: formData.get('email'),
+                phone: formData.get('phone'),
+                whatsapp: formData.get('whatsapp'),
+                country: formData.get('country'),
+                city: formData.get('city'),
+                address: formData.get('address'),
+                hasCasilla: formData.get('hasCasilla') === 'on',
+                casillaNumber: formData.get('casillaNumber') || '',
+                casillaProvider: formData.get('casillaProvider') || '',
+                casillaAddress: formData.get('casillaAddress') || '',
+                status: formData.get('clientStatus'),
+                joinDate: new Date().toISOString().split('T')[0],
+                totalOrders: 0,
+                totalSpent: 0
+            };
+
+            const clientId = formData.get('clientId');
+            
+            if (clientId) {
+                // Update existing client
+                const index = clients.findIndex(c => c.id === parseInt(clientId));
+                if (index !== -1) {
+                    clients[index] = { ...clients[index], ...clientData };
+                }
+            } else {
+                // Add new client
+                const newId = Math.max(...clients.map(c => c.id)) + 1;
+                clients.push({ id: newId, ...clientData });
+            }
+
+            closeModal();
+            applyFilters();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const adminSession = localStorage.getItem('adminSession');
+            if (!adminSession) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const session = JSON.parse(adminSession);
+            const loginTime = new Date(session.loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff >= 24 || !session.isAdmin) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load clients
+            renderClients();
+        });
+    </script>
+</body>
+</html>

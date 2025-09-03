@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders Management - Shared Imports Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        .order-card {
+            transition: all 0.3s ease;
+        }
+        
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+        
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .status-processing {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+        }
+        
+        .status-shipped {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        .status-delivered {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .tag-badge {
+            animation: pulse 2s infinite;
+        }
+        
+        .cost-calculator {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .relationship-line {
+            position: relative;
+        }
+        
+        .relationship-line::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: -8px;
+            width: 0;
+            height: 0;
+            border-top: 4px solid transparent;
+            border-bottom: 4px solid transparent;
+            border-left: 6px solid #d1d5db;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-gray-900">Shared Imports</span>
+            </div>
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="mt-6 px-3">
+            <!-- Dashboard -->
+            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- Products -->
+            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                Products
+                <span class="ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
+            </a>
+
+            <!-- Clients -->
+            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+                Clients
+                <span class="ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
+            </a>
+
+            <!-- Sellers -->
+            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Sellers
+                <span class="ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
+            </a>
+
+            <!-- Orders - Active -->
+            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-blue-600 bg-blue-50 border-r-3 border-blue-600 rounded-lg font-semibold">
+                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                Orders
+                <span class="ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Admin User</p>
+                    <p class="text-xs text-gray-500">admin@shared-imports.com</p>
+                </div>
+                <button id="logoutBtn" class="p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Page Title -->
+                    <div class="flex-1 lg:flex-none">
+                        <h1 class="text-xl font-semibold text-gray-900">Orders Management</h1>
+                    </div>
+
+                    <!-- Header Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Create Order Button -->
+                        <button id="addOrderBtn" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Create Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Orders Content -->
+        <main class="p-6">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <!-- Order Statistics -->
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Orders</p>
+                                <p class="text-xl font-semibold text-gray-900">127</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Pending</p>
+                                <p class="text-xl font-semibold text-gray-900">23</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Processing</p>
+                                <p class="text-xl font-semibold text-gray-900">45</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Shipped</p>
+                                <p class="text-xl font-semibold text-gray-900">52</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Delivered</p>
+                                <p class="text-xl font-semibold text-gray-900">7</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Search -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <!-- Search -->
+                        <div class="flex-1 lg:max-w-md">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="searchInput"
+                                    placeholder="Search orders by ID, client, seller, or tracking..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <!-- Status Filter -->
+                            <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Status</option>
+                                <option value="pending">Pending</option>
+                                <option value="processing">Processing</option>
+                                <option value="shipped">Shipped</option>
+                                <option value="delivered">Delivered</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+
+                            <!-- Date Range Filter -->
+                            <select id="dateFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                                <option value="quarter">This Quarter</option>
+                            </select>
+
+                            <!-- Priority Filter -->
+                            <select id="priorityFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Priorities</option>
+                                <option value="urgent">Urgent</option>
+                                <option value="express">Express</option>
+                                <option value="standard">Standard</option>
+                            </select>
+
+                            <!-- Sort -->
+                            <select id="sortFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="date-desc">Newest First</option>
+                                <option value="date-asc">Oldest First</option>
+                                <option value="value-desc">Highest Value</option>
+                                <option value="status-asc">Status A-Z</option>
+                            </select>
+
+                            <!-- Clear Filters -->
+                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Orders Grid -->
+                <div class="space-y-4" id="ordersGrid">
+                    <!-- Order cards will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center" id="loadMoreContainer">
+                    <button id="loadMoreBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        Load More Orders
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Modal -->
+    <div id="orderModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="modalTitle" class="text-xl font-semibold text-gray-900">Create New Order</h2>
+                    <button id="closeModalBtn" class="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <form id="orderForm" class="p-6 space-y-6">
+                    <input type="hidden" id="orderId" name="orderId">
+                    
+                    <!-- Order Relationships -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Order Relationships</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <!-- Client Selection -->
+                            <div>
+                                <label for="clientSelect" class="block text-sm font-medium text-gray-700 mb-2">Client *</label>
+                                <select 
+                                    id="clientSelect" 
+                                    name="clientSelect" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Client</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+
+                            <!-- Seller Selection -->
+                            <div>
+                                <label for="sellerSelect" class="block text-sm font-medium text-gray-700 mb-2">Seller *</label>
+                                <select 
+                                    id="sellerSelect" 
+                                    name="sellerSelect" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Seller</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+
+                            <!-- Product Selection -->
+                            <div>
+                                <label for="productSelect" class="block text-sm font-medium text-gray-700 mb-2">Product *</label>
+                                <select 
+                                    id="productSelect" 
+                                    name="productSelect" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="">Select Product</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Details -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Order Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="quantity" class="block text-sm font-medium text-gray-700 mb-2">Quantity *</label>
+                                <input 
+                                    type="number" 
+                                    id="quantity" 
+                                    name="quantity" 
+                                    min="1"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter quantity"
+                                >
+                            </div>
+                            <div>
+                                <label for="priority" class="block text-sm font-medium text-gray-700 mb-2">Priority *</label>
+                                <select 
+                                    id="priority" 
+                                    name="priority" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="standard">Standard</option>
+                                    <option value="express">Express (+15%)</option>
+                                    <option value="urgent">Urgent (+30%)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cost Calculator -->
+                    <div class="cost-calculator text-white p-6 rounded-xl">
+                        <h3 class="text-lg font-medium mb-4">Dynamic Cost Calculator</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                            <div>
+                                <p class="text-sm opacity-90">Base Price</p>
+                                <p class="text-2xl font-bold" id="basePrice">$0.00</p>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-90">Additional Costs</p>
+                                <p class="text-xl font-semibold" id="additionalCosts">$0.00</p>
+                            </div>
+                            <div>
+                                <p class="text-sm opacity-90">Total Cost</p>
+                                <p class="text-3xl font-bold" id="totalCost">$0.00</p>
+                            </div>
+                        </div>
+
+                        <!-- Cost Breakdown -->
+                        <div class="bg-black bg-opacity-20 rounded-lg p-4">
+                            <h4 class="font-medium mb-2">Cost Breakdown</h4>
+                            <div class="space-y-1 text-sm" id="costBreakdown">
+                                <div class="flex justify-between">
+                                    <span>Product Price:</span>
+                                    <span id="productPrice">$0.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Quantity:</span>
+                                    <span id="quantityMultiplier">× 1</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Priority Fee:</span>
+                                    <span id="priorityFee">$0.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Shipping:</span>
+                                    <span id="shippingCost">$15.00</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Handling:</span>
+                                    <span id="handlingCost">$5.00</span>
+                                </div>
+                                <div class="flex justify-between border-t border-white border-opacity-30 pt-1 font-semibold">
+                                    <span>Total:</span>
+                                    <span id="finalTotal">$0.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tags and Notes -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Tags and Notes</h3>
+                        <div class="space-y-4">
+                            <!-- Tags -->
+                            <div>
+                                <label for="orderTags" class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                                <div class="flex flex-wrap gap-2 mb-2" id="selectedTags">
+                                    <!-- Tags will be displayed here -->
+                                </div>
+                                <div class="flex flex-wrap gap-2">
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-blue-100 text-blue-700 rounded-full hover:bg-blue-200 transition-colors" data-tag="fragile">Fragile</button>
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-green-100 text-green-700 rounded-full hover:bg-green-200 transition-colors" data-tag="perishable">Perishable</button>
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-purple-100 text-purple-700 rounded-full hover:bg-purple-200 transition-colors" data-tag="electronics">Electronics</button>
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-orange-100 text-orange-700 rounded-full hover:bg-orange-200 transition-colors" data-tag="oversized">Oversized</button>
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-red-100 text-red-700 rounded-full hover:bg-red-200 transition-colors" data-tag="customs-required">Customs Required</button>
+                                    <button type="button" class="tag-button px-3 py-1 text-xs bg-yellow-100 text-yellow-700 rounded-full hover:bg-yellow-200 transition-colors" data-tag="signature-required">Signature Required</button>
+                                </div>
+                            </div>
+
+                            <!-- Notes -->
+                            <div>
+                                <label for="orderNotes" class="block text-sm font-medium text-gray-700 mb-2">Special Instructions</label>
+                                <textarea 
+                                    id="orderNotes" 
+                                    name="orderNotes" 
+                                    rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Any special instructions or notes for this order..."
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <div>
+                        <label for="orderStatus" class="block text-sm font-medium text-gray-700 mb-2">Initial Status</label>
+                        <select 
+                            id="orderStatus" 
+                            name="orderStatus" 
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        >
+                            <option value="pending">Pending</option>
+                            <option value="processing">Processing</option>
+                        </select>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Create Order
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data for relationships
+        const sampleClients = [
+            { id: 1, name: "María González", email: "maria.gonzalez@email.com", country: "México" },
+            { id: 2, name: "Carlos Rodríguez", email: "carlos.rodriguez@email.com", country: "Colombia" },
+            { id: 3, name: "Ana Silva", email: "ana.silva@email.com", country: "Argentina" }
+        ];
+
+        const sampleSellers = [
+            { id: 1, name: "Tech Solutions Miami", location: "Miami, FL" },
+            { id: 2, name: "Fashion Forward", location: "New York, NY" },
+            { id: 3, name: "SportZone Direct", location: "Orlando, FL" }
+        ];
+
+        const sampleProducts = [
+            { id: 1, name: "iPhone 15 Pro Max", price: 1199.99, category: "Electronics" },
+            { id: 2, name: "Nike Air Max Sneakers", price: 129.99, category: "Fashion" },
+            { id: 3, name: "Wireless Bluetooth Headphones", price: 89.99, category: "Electronics" },
+            { id: 4, name: "Designer Handbag", price: 299.99, category: "Fashion" }
+        ];
+
+        // Sample orders data
+        const sampleOrders = [
+            {
+                id: "ORD-2024-001",
+                clientId: 1,
+                clientName: "María González",
+                sellerId: 1,
+                sellerName: "Tech Solutions Miami",
+                productId: 1,
+                productName: "iPhone 15 Pro Max",
+                quantity: 1,
+                priority: "express",
+                status: "processing",
+                tags: ["electronics", "signature-required"],
+                totalCost: 1244.99,
+                orderDate: "2024-08-15",
+                estimatedDelivery: "2024-08-22",
+                trackingNumber: "TRK-001-2024",
+                notes: "Customer requested expedited processing"
+            },
+            {
+                id: "ORD-2024-002",
+                clientId: 2,
+                clientName: "Carlos Rodríguez",
+                sellerId: 2,
+                sellerName: "Fashion Forward",
+                productId: 2,
+                productName: "Nike Air Max Sneakers",
+                quantity: 2,
+                priority: "standard",
+                status: "shipped",
+                tags: ["fashion"],
+                totalCost: 279.98,
+                orderDate: "2024-08-12",
+                estimatedDelivery: "2024-08-19",
+                trackingNumber: "TRK-002-2024",
+                notes: ""
+            },
+            {
+                id: "ORD-2024-003",
+                clientId: 3,
+                clientName: "Ana Silva",
+                sellerId: 3,
+                sellerName: "SportZone Direct",
+                productId: 3,
+                productName: "Wireless Bluetooth Headphones",
+                quantity: 1,
+                priority: "urgent",
+                status: "delivered",
+                tags: ["electronics", "fragile"],
+                totalCost: 136.99,
+                orderDate: "2024-08-10",
+                estimatedDelivery: "2024-08-17",
+                trackingNumber: "TRK-003-2024",
+                notes: "Handle with care - fragile item"
+            }
+        ];
+
+        let orders = [...sampleOrders];
+        let filteredOrders = [...orders];
+        let displayedCount = 10;
+
+        // Selected tags for order creation
+        let selectedTags = [];
+
+        // DOM Elements
+        const ordersGrid = document.getElementById('ordersGrid');
+        const orderModal = document.getElementById('orderModal');
+        const orderForm = document.getElementById('orderForm');
+        const searchInput = document.getElementById('searchInput');
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        function openMobileMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('hidden');
+        }
+        
+        function closeMobileMenu() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+        
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        sidebarToggle.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Status badge functions
+        function getStatusBadge(status) {
+            const badges = {
+                'pending': 'bg-orange-100 text-orange-800',
+                'processing': 'bg-blue-100 text-blue-800',
+                'shipped': 'bg-purple-100 text-purple-800',
+                'delivered': 'bg-green-100 text-green-800',
+                'cancelled': 'bg-red-100 text-red-800'
+            };
+            const text = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[status]}">${text}</span>`;
+        }
+
+        function getPriorityBadge(priority) {
+            const badges = {
+                'standard': 'bg-gray-100 text-gray-800',
+                'express': 'bg-blue-100 text-blue-800',
+                'urgent': 'bg-red-100 text-red-800'
+            };
+            const text = priority.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[priority]}">${text}</span>`;
+        }
+
+        // Render orders
+        function renderOrders() {
+            const ordersToShow = filteredOrders.slice(0, displayedCount);
+            
+            ordersGrid.innerHTML = ordersToShow.map(order => `
+                <div class="order-card bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <!-- Order Header -->
+                    <div class="flex items-start justify-between mb-4">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900">${order.id}</h3>
+                            <p class="text-sm text-gray-600">Created: ${new Date(order.orderDate).toLocaleDateString()}</p>
+                        </div>
+                        <div class="flex items-center space-x-2">
+                            ${getStatusBadge(order.status)}
+                            ${getPriorityBadge(order.priority)}
+                        </div>
+                    </div>
+
+                    <!-- Relationship Chain -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                        <!-- Client -->
+                        <div class="relationship-line bg-blue-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-600">Client</p>
+                                    <p class="text-sm font-medium text-gray-900">${order.clientName}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Seller -->
+                        <div class="relationship-line bg-purple-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-600">Seller</p>
+                                    <p class="text-sm font-medium text-gray-900">${order.sellerName}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Product -->
+                        <div class="bg-green-50 p-3 rounded-lg">
+                            <div class="flex items-center">
+                                <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
+                                    <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p class="text-xs text-gray-600">Product</p>
+                                    <p class="text-sm font-medium text-gray-900">${order.productName}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Order Details -->
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+                        <div>
+                            <p class="text-xs text-gray-600">Quantity</p>
+                            <p class="text-sm font-semibold text-gray-900">${order.quantity}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Total Cost</p>
+                            <p class="text-sm font-semibold text-gray-900">$${order.totalCost.toFixed(2)}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Tracking</p>
+                            <p class="text-sm font-semibold text-gray-900">${order.trackingNumber}</p>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-600">Est. Delivery</p>
+                            <p class="text-sm font-semibold text-gray-900">${new Date(order.estimatedDelivery).toLocaleDateString()}</p>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    ${order.tags.length > 0 ? `
+                        <div class="mb-4">
+                            <div class="flex flex-wrap gap-1">
+                                ${order.tags.map(tag => `
+                                    <span class="tag-badge inline-flex px-2 py-1 text-xs font-medium bg-indigo-50 text-indigo-700 rounded-md">
+                                        ${tag.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    <!-- Notes -->
+                    ${order.notes ? `
+                        <div class="mb-4">
+                            <p class="text-sm text-gray-600">${order.notes}</p>
+                        </div>
+                    ` : ''}
+
+                    <!-- Actions -->
+                    <div class="flex items-center space-x-2">
+                        <button onclick="editOrder('${order.id}')" class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+                            Edit
+                        </button>
+                        <button onclick="trackOrder('${order.id}')" class="px-3 py-2 bg-purple-100 text-purple-600 text-sm rounded-lg hover:bg-purple-200 transition-colors">
+                            Track
+                        </button>
+                        <button onclick="duplicateOrder('${order.id}')" class="px-3 py-2 bg-green-100 text-green-600 text-sm rounded-lg hover:bg-green-200 transition-colors">
+                            Duplicate
+                        </button>
+                        <button onclick="deleteOrder('${order.id}')" class="px-3 py-2 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200 transition-colors">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Cost calculation
+        function calculateCosts() {
+            const productSelect = document.getElementById('productSelect');
+            const quantityInput = document.getElementById('quantity');
+            const prioritySelect = document.getElementById('priority');
+
+            const selectedProduct = sampleProducts.find(p => p.id == productSelect.value);
+            const quantity = parseInt(quantityInput.value) || 0;
+            const priority = prioritySelect.value;
+
+            if (!selectedProduct || quantity === 0) {
+                updateCostDisplay(0, 0, 0, 0, 0, 0, 0);
+                return;
+            }
+
+            const basePrice = selectedProduct.price * quantity;
+            
+            // Priority fees
+            let priorityMultiplier = 1;
+            if (priority === 'express') priorityMultiplier = 1.15;
+            if (priority === 'urgent') priorityMultiplier = 1.30;
+            
+            const priorityFee = basePrice * (priorityMultiplier - 1);
+            const shippingCost = 15.00;
+            const handlingCost = 5.00;
+            
+            const additionalCosts = priorityFee + shippingCost + handlingCost;
+            const totalCost = basePrice + additionalCosts;
+
+            updateCostDisplay(
+                basePrice,
+                additionalCosts,
+                totalCost,
+                selectedProduct.price,
+                quantity,
+                priorityFee,
+                shippingCost,
+                handlingCost
+            );
+        }
+
+        function updateCostDisplay(basePrice, additionalCosts, totalCost, productPrice, quantity, priorityFee, shippingCost, handlingCost) {
+            document.getElementById('basePrice').textContent = `$${basePrice.toFixed(2)}`;
+            document.getElementById('additionalCosts').textContent = `$${additionalCosts.toFixed(2)}`;
+            document.getElementById('totalCost').textContent = `$${totalCost.toFixed(2)}`;
+            
+            document.getElementById('productPrice').textContent = `$${productPrice.toFixed(2)}`;
+            document.getElementById('quantityMultiplier').textContent = `× ${quantity}`;
+            document.getElementById('priorityFee').textContent = `$${priorityFee.toFixed(2)}`;
+            document.getElementById('shippingCost').textContent = `$${shippingCost.toFixed(2)}`;
+            document.getElementById('handlingCost').textContent = `$${handlingCost.toFixed(2)}`;
+            document.getElementById('finalTotal').textContent = `$${totalCost.toFixed(2)}`;
+        }
+
+        // Modal functions
+        function openModal(title = 'Create New Order') {
+            document.getElementById('modalTitle').textContent = title;
+            populateSelects();
+            orderModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            orderModal.classList.add('hidden');
+            orderForm.reset();
+            selectedTags = [];
+            updateSelectedTags();
+            updateCostDisplay(0, 0, 0, 0, 0, 0, 0, 0);
+        }
+
+        function populateSelects() {
+            // Populate clients
+            const clientSelect = document.getElementById('clientSelect');
+            clientSelect.innerHTML = '<option value="">Select Client</option>' +
+                sampleClients.map(client => `<option value="${client.id}">${client.name} (${client.country})</option>`).join('');
+
+            // Populate sellers
+            const sellerSelect = document.getElementById('sellerSelect');
+            sellerSelect.innerHTML = '<option value="">Select Seller</option>' +
+                sampleSellers.map(seller => `<option value="${seller.id}">${seller.name} - ${seller.location}</option>`).join('');
+
+            // Populate products
+            const productSelect = document.getElementById('productSelect');
+            productSelect.innerHTML = '<option value="">Select Product</option>' +
+                sampleProducts.map(product => `<option value="${product.id}">${product.name} - $${product.price}</option>`).join('');
+        }
+
+        // Tag management
+        function updateSelectedTags() {
+            const container = document.getElementById('selectedTags');
+            container.innerHTML = selectedTags.map(tag => `
+                <span class="inline-flex items-center px-2 py-1 text-xs font-medium bg-indigo-100 text-indigo-800 rounded-full">
+                    ${tag.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    <button type="button" onclick="removeTag('${tag}')" class="ml-1 text-indigo-600 hover:text-indigo-800">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </span>
+            `).join('');
+        }
+
+        function addTag(tag) {
+            if (!selectedTags.includes(tag)) {
+                selectedTags.push(tag);
+                updateSelectedTags();
+            }
+        }
+
+        function removeTag(tag) {
+            selectedTags = selectedTags.filter(t => t !== tag);
+            updateSelectedTags();
+        }
+
+        // Order actions
+        function editOrder(id) {
+            alert(`Editing order: ${id}`);
+        }
+
+        function trackOrder(id) {
+            alert(`Tracking order: ${id}`);
+        }
+
+        function duplicateOrder(id) {
+            alert(`Duplicating order: ${id}`);
+        }
+
+        function deleteOrder(id) {
+            if (confirm('Are you sure you want to cancel this order?')) {
+                orders = orders.filter(o => o.id !== id);
+                applyFilters();
+            }
+        }
+
+        // Filter functionality
+        function applyFilters() {
+            // Simple implementation - full filtering would be more complex
+            filteredOrders = [...orders];
+            displayedCount = 10;
+            renderOrders();
+        }
+
+        // Event listeners
+        document.getElementById('addOrderBtn').addEventListener('click', () => openModal());
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+        // Cost calculation listeners
+        document.getElementById('productSelect').addEventListener('change', calculateCosts);
+        document.getElementById('quantity').addEventListener('input', calculateCosts);
+        document.getElementById('priority').addEventListener('change', calculateCosts);
+
+        // Tag button listeners
+        document.querySelectorAll('.tag-button').forEach(button => {
+            button.addEventListener('click', () => {
+                const tag = button.dataset.tag;
+                addTag(tag);
+            });
+        });
+
+        // Form submission
+        orderForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(orderForm);
+            const selectedClient = sampleClients.find(c => c.id == formData.get('clientSelect'));
+            const selectedSeller = sampleSellers.find(s => s.id == formData.get('sellerSelect'));
+            const selectedProduct = sampleProducts.find(p => p.id == formData.get('productSelect'));
+            
+            if (!selectedClient || !selectedSeller || !selectedProduct) {
+                alert('Please select all required relationships');
+                return;
+            }
+            
+            const quantity = parseInt(formData.get('quantity'));
+            const priority = formData.get('priority');
+            
+            // Calculate total cost
+            const basePrice = selectedProduct.price * quantity;
+            let priorityMultiplier = 1;
+            if (priority === 'express') priorityMultiplier = 1.15;
+            if (priority === 'urgent') priorityMultiplier = 1.30;
+            const totalCost = basePrice * priorityMultiplier + 20; // + shipping & handling
+
+            const newOrder = {
+                id: `ORD-2024-${String(orders.length + 1).padStart(3, '0')}`,
+                clientId: selectedClient.id,
+                clientName: selectedClient.name,
+                sellerId: selectedSeller.id,
+                sellerName: selectedSeller.name,
+                productId: selectedProduct.id,
+                productName: selectedProduct.name,
+                quantity: quantity,
+                priority: priority,
+                status: formData.get('orderStatus'),
+                tags: [...selectedTags],
+                totalCost: totalCost,
+                orderDate: new Date().toISOString().split('T')[0],
+                estimatedDelivery: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+                trackingNumber: `TRK-${String(orders.length + 1).padStart(3, '0')}-2024`,
+                notes: formData.get('orderNotes') || ''
+            };
+
+            orders.push(newOrder);
+            closeModal();
+            applyFilters();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const adminSession = localStorage.getItem('adminSession');
+            if (!adminSession) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const session = JSON.parse(adminSession);
+            const loginTime = new Date(session.loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff >= 24 || !session.isAdmin) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load orders
+            renderOrders();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sellers Management - Shared Imports Admin</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style type="text/tailwindcss">
+        .seller-card {
+            transition: all 0.3s ease;
+        }
+        
+        .seller-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .modal-backdrop {
+            backdrop-filter: blur(4px);
+        }
+        
+        .modal-enter {
+            animation: modalEnter 0.3s ease-out;
+        }
+        
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+        
+        .rating-stars {
+            color: #fbbf24;
+        }
+        
+        .performance-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .partnership-badge {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+        
+        .metric-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Mobile Overlay -->
+    <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
+    
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                    </svg>
+                </div>
+                <span class="font-bold text-gray-900">Shared Imports</span>
+            </div>
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+                <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="mt-6 px-3">
+            <!-- Dashboard -->
+            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
+                </svg>
+                Dashboard
+            </a>
+
+            <!-- Products -->
+            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                </svg>
+                Products
+                <span class="ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
+            </a>
+
+            <!-- Clients -->
+            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                </svg>
+                Clients
+                <span class="ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
+            </a>
+
+            <!-- Sellers - Active -->
+            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-blue-600 bg-blue-50 border-r-3 border-blue-600 rounded-lg font-semibold">
+                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                </svg>
+                Sellers
+                <span class="ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
+            </a>
+
+            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+                <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                </svg>
+                Orders
+                <span class="ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
+            </a>
+        </nav>
+
+        <!-- User Profile -->
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
+            <div class="flex items-center space-x-3">
+                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-gray-900">Admin User</p>
+                    <p class="text-xs text-gray-500">admin@shared-imports.com</p>
+                </div>
+                <button id="logoutBtn" class="p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="lg:pl-64">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200">
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Mobile Menu Button -->
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Page Title -->
+                    <div class="flex-1 lg:flex-none">
+                        <h1 class="text-xl font-semibold text-gray-900">Sellers Management</h1>
+                    </div>
+
+                    <!-- Header Actions -->
+                    <div class="flex items-center space-x-4">
+                        <!-- Add Seller Button -->
+                        <button id="addSellerBtn" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Add Seller
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Sellers Content -->
+        <main class="p-6">
+            <div class="max-w-7xl mx-auto space-y-6">
+                <!-- Performance Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                    <div class="metric-card text-white p-6 rounded-xl">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm opacity-90">Total Sellers</p>
+                                <p class="text-3xl font-bold">18</p>
+                                <p class="text-xs opacity-75 mt-1">+2 this month</p>
+                            </div>
+                            <svg class="w-8 h-8 opacity-80" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Active Sellers</p>
+                                <p class="text-xl font-semibold text-gray-900">15</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-yellow-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Avg. Rating</p>
+                                <p class="text-xl font-semibold text-gray-900">4.7</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                        <div class="flex items-center">
+                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Total Revenue</p>
+                                <p class="text-xl font-semibold text-gray-900">$45.2K</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filters and Search -->
+                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
+                        <!-- Search -->
+                        <div class="flex-1 lg:max-w-md">
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                    </svg>
+                                </div>
+                                <input 
+                                    type="text" 
+                                    id="searchInput"
+                                    placeholder="Search sellers by name, company, or location..." 
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                            </div>
+                        </div>
+
+                        <!-- Filters -->
+                        <div class="flex flex-wrap items-center gap-3">
+                            <!-- Status Filter -->
+                            <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Status</option>
+                                <option value="active">Active</option>
+                                <option value="inactive">Inactive</option>
+                                <option value="pending">Pending</option>
+                                <option value="suspended">Suspended</option>
+                            </select>
+
+                            <!-- Rating Filter -->
+                            <select id="ratingFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Ratings</option>
+                                <option value="5">5 Stars</option>
+                                <option value="4">4+ Stars</option>
+                                <option value="3">3+ Stars</option>
+                                <option value="2">2+ Stars</option>
+                            </select>
+
+                            <!-- Partnership Filter -->
+                            <select id="partnershipFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Partnerships</option>
+                                <option value="gold">Gold Partner</option>
+                                <option value="silver">Silver Partner</option>
+                                <option value="bronze">Bronze Partner</option>
+                                <option value="basic">Basic</option>
+                            </select>
+
+                            <!-- Sort -->
+                            <select id="sortFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="name-asc">Name A-Z</option>
+                                <option value="name-desc">Name Z-A</option>
+                                <option value="rating-desc">Highest Rating</option>
+                                <option value="revenue-desc">Top Revenue</option>
+                                <option value="orders-desc">Most Orders</option>
+                                <option value="date-desc">Newest First</option>
+                            </select>
+
+                            <!-- Clear Filters -->
+                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sellers Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6" id="sellersGrid">
+                    <!-- Seller cards will be loaded here by JavaScript -->
+                </div>
+
+                <!-- Load More Button -->
+                <div class="text-center" id="loadMoreContainer">
+                    <button id="loadMoreBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        Load More Sellers
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Seller Modal -->
+    <div id="sellerModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="modalTitle" class="text-xl font-semibold text-gray-900">Add New Seller</h2>
+                    <button id="closeModalBtn" class="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <form id="sellerForm" class="p-6 space-y-6">
+                    <input type="hidden" id="sellerId" name="sellerId">
+                    
+                    <!-- Basic Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="sellerName" class="block text-sm font-medium text-gray-700 mb-2">Seller Name *</label>
+                                <input 
+                                    type="text" 
+                                    id="sellerName" 
+                                    name="sellerName" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter seller name"
+                                >
+                            </div>
+                            <div>
+                                <label for="companyName" class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                                <input 
+                                    type="text" 
+                                    id="companyName" 
+                                    name="companyName"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Enter company name"
+                                >
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Information -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Contact Information</h3>
+                        <div class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="sellerEmail" class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                                    <input 
+                                        type="email" 
+                                        id="sellerEmail" 
+                                        name="sellerEmail" 
+                                        required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter email address"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="sellerPhone" class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                                    <input 
+                                        type="tel" 
+                                        id="sellerPhone" 
+                                        name="sellerPhone"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="Enter phone number"
+                                    >
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="sellerLocation" class="block text-sm font-medium text-gray-700 mb-2">Location *</label>
+                                    <input 
+                                        type="text" 
+                                        id="sellerLocation" 
+                                        name="sellerLocation" 
+                                        required
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="City, Country"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="website" class="block text-sm font-medium text-gray-700 mb-2">Website</label>
+                                    <input 
+                                        type="url" 
+                                        id="website" 
+                                        name="website"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        placeholder="https://..."
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Partnership & Performance -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Partnership & Performance</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="partnershipLevel" class="block text-sm font-medium text-gray-700 mb-2">Partnership Level *</label>
+                                <select 
+                                    id="partnershipLevel" 
+                                    name="partnershipLevel" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="basic">Basic</option>
+                                    <option value="bronze">Bronze Partner</option>
+                                    <option value="silver">Silver Partner</option>
+                                    <option value="gold">Gold Partner</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="sellerStatus" class="block text-sm font-medium text-gray-700 mb-2">Status *</label>
+                                <select 
+                                    id="sellerStatus" 
+                                    name="sellerStatus" 
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                >
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="suspended">Suspended</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Specialization -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Specialization</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label for="categories" class="block text-sm font-medium text-gray-700 mb-2">Product Categories</label>
+                                <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="electronics" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Electronics</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="fashion" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Fashion</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="home" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Home & Garden</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="sports" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Sports</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="beauty" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Beauty</span>
+                                    </label>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" name="categories" value="automotive" class="h-4 w-4 text-blue-600 rounded">
+                                        <span class="ml-2 text-sm">Automotive</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="description" class="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                                <textarea 
+                                    id="description" 
+                                    name="description" 
+                                    rows="3"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="Brief description of the seller's business"
+                                ></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal Footer -->
+                    <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                            Cancel
+                        </button>
+                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                            Save Seller
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample sellers data
+        const sampleSellers = [
+            {
+                id: 1,
+                sellerName: "Tech Solutions Miami",
+                companyName: "Tech Solutions Inc.",
+                email: "contact@techsolutions.com",
+                phone: "+1 305 555 0123",
+                location: "Miami, FL, USA",
+                website: "https://techsolutions.com",
+                partnershipLevel: "gold",
+                status: "active",
+                rating: 4.9,
+                totalOrders: 245,
+                totalRevenue: 18750.50,
+                categories: ["electronics", "automotive"],
+                description: "Leading provider of consumer electronics and automotive accessories with over 10 years of experience.",
+                joinDate: "2022-01-15",
+                lastOrderDate: "2024-08-15"
+            },
+            {
+                id: 2,
+                sellerName: "Fashion Forward",
+                companyName: "Fashion Forward LLC",
+                email: "sales@fashionforward.com",
+                phone: "+1 212 555 0187",
+                location: "New York, NY, USA",
+                website: "https://fashionforward.com",
+                partnershipLevel: "silver",
+                status: "active",
+                rating: 4.7,
+                totalOrders: 189,
+                totalRevenue: 12340.75,
+                categories: ["fashion", "beauty"],
+                description: "Trendy fashion and beauty products for the modern consumer. Fast shipping worldwide.",
+                joinDate: "2022-03-22",
+                lastOrderDate: "2024-08-14"
+            },
+            {
+                id: 3,
+                sellerName: "Home Comfort Store",
+                companyName: "Home Comfort Co.",
+                email: "info@homecomfort.com",
+                phone: "+1 213 555 0199",
+                location: "Los Angeles, CA, USA",
+                website: "",
+                partnershipLevel: "bronze",
+                status: "active",
+                rating: 4.5,
+                totalOrders: 156,
+                totalRevenue: 9875.25,
+                categories: ["home"],
+                description: "Quality home and garden products at competitive prices.",
+                joinDate: "2022-06-10",
+                lastOrderDate: "2024-08-13"
+            },
+            {
+                id: 4,
+                sellerName: "SportZone Direct",
+                companyName: "SportZone International",
+                email: "orders@sportzone.com",
+                phone: "+1 786 555 0156",
+                location: "Orlando, FL, USA",
+                website: "https://sportzone.com",
+                partnershipLevel: "gold",
+                status: "active",
+                rating: 4.8,
+                totalOrders: 312,
+                totalRevenue: 23100.00,
+                categories: ["sports", "electronics"],
+                description: "Premier sports equipment and fitness technology supplier.",
+                joinDate: "2021-11-05",
+                lastOrderDate: "2024-08-16"
+            },
+            {
+                id: 5,
+                sellerName: "Beauty Essentials",
+                companyName: "Beauty Essentials Corp",
+                email: "support@beautyessentials.com",
+                phone: "+1 954 555 0145",
+                location: "Fort Lauderdale, FL, USA",
+                website: "https://beautyessentials.com",
+                partnershipLevel: "silver",
+                status: "pending",
+                rating: 4.6,
+                totalOrders: 98,
+                totalRevenue: 6750.80,
+                categories: ["beauty", "fashion"],
+                description: "Premium beauty products and skincare solutions.",
+                joinDate: "2023-02-14",
+                lastOrderDate: "2024-08-12"
+            },
+            {
+                id: 6,
+                sellerName: "AutoParts Express",
+                companyName: "AutoParts Express LLC",
+                email: "sales@autoparts.com",
+                phone: "+1 407 555 0178",
+                location: "Tampa, FL, USA",
+                website: "",
+                partnershipLevel: "basic",
+                status: "inactive",
+                rating: 4.2,
+                totalOrders: 67,
+                totalRevenue: 4200.30,
+                categories: ["automotive"],
+                description: "Automotive parts and accessories for all vehicle types.",
+                joinDate: "2023-05-18",
+                lastOrderDate: "2024-07-22"
+            }
+        ];
+
+        let sellers = [...sampleSellers];
+        let filteredSellers = [...sellers];
+        let displayedCount = 6; // Number of sellers to show initially
+
+        // DOM Elements
+        const sellersGrid = document.getElementById('sellersGrid');
+        const sellerModal = document.getElementById('sellerModal');
+        const sellerForm = document.getElementById('sellerForm');
+        const searchInput = document.getElementById('searchInput');
+        const statusFilter = document.getElementById('statusFilter');
+        const ratingFilter = document.getElementById('ratingFilter');
+        const partnershipFilter = document.getElementById('partnershipFilter');
+        const sortFilter = document.getElementById('sortFilter');
+
+        // Mobile menu functionality
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const mobileOverlay = document.getElementById('mobileOverlay');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        
+        function openMobileMenu() {
+            sidebar.classList.remove('-translate-x-full');
+            sidebar.classList.add('translate-x-0');
+            mobileOverlay.classList.remove('hidden');
+        }
+        
+        function closeMobileMenu() {
+            sidebar.classList.remove('translate-x-0');
+            sidebar.classList.add('-translate-x-full');
+            mobileOverlay.classList.add('hidden');
+        }
+        
+        mobileMenuBtn.addEventListener('click', openMobileMenu);
+        sidebarToggle.addEventListener('click', closeMobileMenu);
+        mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Partnership badge colors
+        function getPartnershipBadge(level) {
+            const badges = {
+                'gold': 'bg-gradient-to-r from-yellow-400 to-yellow-600 text-white',
+                'silver': 'bg-gradient-to-r from-gray-400 to-gray-600 text-white',
+                'bronze': 'bg-gradient-to-r from-orange-400 to-orange-600 text-white',
+                'basic': 'bg-gray-100 text-gray-800'
+            };
+            const text = level.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[level]}">${text}</span>`;
+        }
+
+        // Status badge colors
+        function getStatusBadge(status) {
+            const badges = {
+                'active': 'bg-green-100 text-green-800',
+                'inactive': 'bg-gray-100 text-gray-800',
+                'pending': 'bg-orange-100 text-orange-800',
+                'suspended': 'bg-red-100 text-red-800'
+            };
+            const text = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[status]}">${text}</span>`;
+        }
+
+        // Generate star rating display
+        function getStarRating(rating) {
+            const fullStars = Math.floor(rating);
+            const hasHalfStar = rating % 1 !== 0;
+            let stars = '';
+            
+            for (let i = 0; i < fullStars; i++) {
+                stars += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>';
+            }
+            
+            if (hasHalfStar) {
+                stars += '<svg class="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 20 20"><defs><linearGradient id="half"><stop offset="50%" stop-color="currentColor"/><stop offset="50%" stop-color="transparent"/></linearGradient></defs><path fill="url(#half)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>';
+            }
+            
+            const emptyStars = 5 - Math.ceil(rating);
+            for (let i = 0; i < emptyStars; i++) {
+                stars += '<svg class="w-4 h-4 text-gray-300 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>';
+            }
+            
+            return stars;
+        }
+
+        // Render sellers grid
+        function renderSellers() {
+            const sellersToShow = filteredSellers.slice(0, displayedCount);
+            
+            sellersGrid.innerHTML = sellersToShow.map(seller => `
+                <div class="seller-card bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Seller Header -->
+                    <div class="p-6 pb-4">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <span class="text-blue-600 font-semibold text-lg">${seller.sellerName.charAt(0)}</span>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">${seller.sellerName}</h3>
+                                    ${seller.companyName ? `<p class="text-sm text-gray-600">${seller.companyName}</p>` : ''}
+                                </div>
+                            </div>
+                            ${getStatusBadge(seller.status)}
+                        </div>
+
+                        <!-- Location & Contact -->
+                        <div class="space-y-2 mb-4">
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                </svg>
+                                ${seller.location}
+                            </div>
+                            <div class="flex items-center text-sm text-gray-600">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"></path>
+                                </svg>
+                                ${seller.email}
+                            </div>
+                            ${seller.website ? `
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                                    </svg>
+                                    <a href="${seller.website}" target="_blank" class="text-blue-600 hover:underline">Website</a>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="flex items-center space-x-2 mb-4">
+                            <div class="flex items-center">
+                                ${getStarRating(seller.rating)}
+                            </div>
+                            <span class="text-sm font-semibold text-gray-900">${seller.rating}</span>
+                            <span class="text-sm text-gray-500">(${seller.totalOrders} orders)</span>
+                        </div>
+
+                        <!-- Partnership Level -->
+                        <div class="mb-4">
+                            ${getPartnershipBadge(seller.partnershipLevel)}
+                        </div>
+
+                        <!-- Categories -->
+                        <div class="mb-4">
+                            <div class="flex flex-wrap gap-1">
+                                ${seller.categories.map(cat => `
+                                    <span class="inline-flex px-2 py-1 text-xs font-medium bg-blue-50 text-blue-700 rounded-md">
+                                        ${cat.replace(/\b\w/g, l => l.toUpperCase())}
+                                    </span>
+                                `).join('')}
+                            </div>
+                        </div>
+
+                        <!-- Description -->
+                        <p class="text-sm text-gray-600 mb-4 line-clamp-2">${seller.description}</p>
+                    </div>
+
+                    <!-- Performance Stats -->
+                    <div class="bg-gray-50 px-6 py-4">
+                        <div class="grid grid-cols-2 gap-4 mb-4">
+                            <div class="text-center">
+                                <p class="text-lg font-semibold text-gray-900">${seller.totalOrders}</p>
+                                <p class="text-xs text-gray-600">Total Orders</p>
+                            </div>
+                            <div class="text-center">
+                                <p class="text-lg font-semibold text-gray-900">$${seller.totalRevenue.toLocaleString()}</p>
+                                <p class="text-xs text-gray-600">Revenue</p>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="flex items-center space-x-2">
+                            <button onclick="editSeller(${seller.id})" class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+                                Edit
+                            </button>
+                            <button onclick="viewPerformance(${seller.id})" class="px-3 py-2 bg-purple-100 text-purple-600 text-sm rounded-lg hover:bg-purple-200 transition-colors">
+                                Performance
+                            </button>
+                            <button onclick="deleteSeller(${seller.id})" class="px-3 py-2 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200 transition-colors">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Update load more button
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (displayedCount >= filteredSellers.length) {
+                loadMoreContainer.classList.add('hidden');
+            } else {
+                loadMoreContainer.classList.remove('hidden');
+            }
+        }
+
+        // Filter and search functionality
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const statusValue = statusFilter.value;
+            const ratingValue = parseInt(ratingFilter.value);
+            const partnershipValue = partnershipFilter.value;
+
+            filteredSellers = sellers.filter(seller => {
+                const matchesSearch = seller.sellerName.toLowerCase().includes(searchTerm) || 
+                                    (seller.companyName && seller.companyName.toLowerCase().includes(searchTerm)) ||
+                                    seller.location.toLowerCase().includes(searchTerm) ||
+                                    seller.email.toLowerCase().includes(searchTerm);
+                const matchesStatus = !statusValue || seller.status === statusValue;
+                const matchesRating = !ratingValue || seller.rating >= ratingValue;
+                const matchesPartnership = !partnershipValue || seller.partnershipLevel === partnershipValue;
+
+                return matchesSearch && matchesStatus && matchesRating && matchesPartnership;
+            });
+
+            // Apply sorting
+            const sortValue = sortFilter.value;
+            filteredSellers.sort((a, b) => {
+                switch(sortValue) {
+                    case 'name-asc': return a.sellerName.localeCompare(b.sellerName);
+                    case 'name-desc': return b.sellerName.localeCompare(a.sellerName);
+                    case 'rating-desc': return b.rating - a.rating;
+                    case 'revenue-desc': return b.totalRevenue - a.totalRevenue;
+                    case 'orders-desc': return b.totalOrders - a.totalOrders;
+                    case 'date-desc': return new Date(b.joinDate) - new Date(a.joinDate);
+                    default: return 0;
+                }
+            });
+
+            displayedCount = 6; // Reset to initial count
+            renderSellers();
+        }
+
+        // Modal functions
+        function openModal(title = 'Add New Seller') {
+            document.getElementById('modalTitle').textContent = title;
+            sellerModal.classList.remove('hidden');
+        }
+
+        function closeModal() {
+            sellerModal.classList.add('hidden');
+            sellerForm.reset();
+            document.getElementById('sellerId').value = '';
+        }
+
+        function editSeller(id) {
+            const seller = sellers.find(s => s.id === id);
+            if (!seller) return;
+
+            openModal('Edit Seller');
+            
+            // Fill form with seller data
+            document.getElementById('sellerId').value = seller.id;
+            document.getElementById('sellerName').value = seller.sellerName;
+            document.getElementById('companyName').value = seller.companyName || '';
+            document.getElementById('sellerEmail').value = seller.email;
+            document.getElementById('sellerPhone').value = seller.phone || '';
+            document.getElementById('sellerLocation').value = seller.location;
+            document.getElementById('website').value = seller.website || '';
+            document.getElementById('partnershipLevel').value = seller.partnershipLevel;
+            document.getElementById('sellerStatus').value = seller.status;
+            document.getElementById('description').value = seller.description || '';
+
+            // Set category checkboxes
+            const categoryCheckboxes = document.querySelectorAll('input[name="categories"]');
+            categoryCheckboxes.forEach(checkbox => {
+                checkbox.checked = seller.categories.includes(checkbox.value);
+            });
+        }
+
+        function deleteSeller(id) {
+            if (confirm('Are you sure you want to delete this seller?')) {
+                sellers = sellers.filter(s => s.id !== id);
+                applyFilters();
+            }
+        }
+
+        function viewPerformance(id) {
+            alert(`Viewing performance metrics for seller ID: ${id}`);
+        }
+
+        // Event listeners
+        document.getElementById('addSellerBtn').addEventListener('click', () => openModal());
+        document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+        document.getElementById('cancelBtn').addEventListener('click', closeModal);
+
+        sellerModal.addEventListener('click', (e) => {
+            if (e.target === sellerModal) closeModal();
+        });
+
+        // Search and filter event listeners
+        searchInput.addEventListener('input', applyFilters);
+        statusFilter.addEventListener('change', applyFilters);
+        ratingFilter.addEventListener('change', applyFilters);
+        partnershipFilter.addEventListener('change', applyFilters);
+        sortFilter.addEventListener('change', applyFilters);
+
+        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
+            searchInput.value = '';
+            statusFilter.value = '';
+            ratingFilter.value = '';
+            partnershipFilter.value = '';
+            sortFilter.value = 'name-asc';
+            applyFilters();
+        });
+
+        // Load more functionality
+        document.getElementById('loadMoreBtn').addEventListener('click', () => {
+            displayedCount += 6;
+            renderSellers();
+        });
+
+        // Form submission
+        sellerForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData(sellerForm);
+            const categories = Array.from(formData.getAll('categories'));
+            
+            const sellerData = {
+                sellerName: formData.get('sellerName'),
+                companyName: formData.get('companyName'),
+                email: formData.get('sellerEmail'),
+                phone: formData.get('sellerPhone'),
+                location: formData.get('sellerLocation'),
+                website: formData.get('website'),
+                partnershipLevel: formData.get('partnershipLevel'),
+                status: formData.get('sellerStatus'),
+                description: formData.get('description'),
+                categories: categories,
+                rating: 0,
+                totalOrders: 0,
+                totalRevenue: 0,
+                joinDate: new Date().toISOString().split('T')[0],
+                lastOrderDate: null
+            };
+
+            const sellerId = formData.get('sellerId');
+            
+            if (sellerId) {
+                // Update existing seller
+                const index = sellers.findIndex(s => s.id === parseInt(sellerId));
+                if (index !== -1) {
+                    sellers[index] = { ...sellers[index], ...sellerData };
+                }
+            } else {
+                // Add new seller
+                const newId = Math.max(...sellers.map(s => s.id)) + 1;
+                sellers.push({ id: newId, ...sellerData });
+            }
+
+            closeModal();
+            applyFilters();
+        });
+
+        // Logout functionality
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const adminSession = localStorage.getItem('adminSession');
+            if (!adminSession) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            const session = JSON.parse(adminSession);
+            const loginTime = new Date(session.loginTime);
+            const now = new Date();
+            const hoursDiff = (now - loginTime) / (1000 * 60 * 60);
+            
+            if (hoursDiff >= 24 || !session.isAdmin) {
+                localStorage.removeItem('adminSession');
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Load sellers
+            renderSellers();
+        });
+    </script>
+</body>
+</html>
