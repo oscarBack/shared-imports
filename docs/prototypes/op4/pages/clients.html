@@ -4,15 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clients Management - Shared Imports Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
+        * {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
         .client-card {
-            transition: all 0.3s ease;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #E5E7EB;
         }
         
         .client-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: translateY(-2px);
+            box-shadow: 
+                0 10px 15px -3px rgba(139, 92, 246, 0.1),
+                0 4px 6px -2px rgba(139, 92, 246, 0.05);
+            border-color: rgba(139, 92, 246, 0.2);
         }
         
         .modal-backdrop {
@@ -52,14 +63,14 @@
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <div class="w-8 h-8 bg-purple-600 rounded-none flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                     </svg>
                 </div>
-                <span class="font-bold text-gray-900">Shared Imports</span>
+                <span class="font-light text-gray-900">Shared<span class="font-medium text-purple-600">Imports</span></span>
             </div>
-            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-none hover:bg-gray-100">
                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -69,7 +80,7 @@
         <!-- Navigation Menu -->
         <nav class="mt-6 px-3">
             <!-- Dashboard -->
-            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
@@ -78,52 +89,48 @@
             </a>
 
             <!-- Products -->
-            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 Products
-                <span class="ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
             </a>
 
             <!-- Clients - Active -->
-            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-blue-600 bg-blue-50 border-r-3 border-blue-600 rounded-lg font-semibold">
-                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-purple-600 bg-purple-50 border-r-3 border-purple-600 rounded-none font-medium">
+                <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                 </svg>
                 Clients
-                <span class="ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
             </a>
 
             <!-- Other nav items -->
-            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
                 Sellers
-                <span class="ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
             </a>
 
-            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                 </svg>
                 Orders
-                <span class="ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
             </a>
         </nav>
 
         <!-- User Profile -->
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                <div class="w-8 h-8 bg-purple-100 rounded-none flex items-center justify-center">
+                    <span class="text-purple-600 font-medium text-sm">A</span>
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Admin User</p>
                     <p class="text-xs text-gray-500">admin@shared-imports.com</p>
                 </div>
-                <button id="logoutBtn" class="p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                <button id="logoutBtn" class="p-1 rounded-none hover:bg-gray-100 transition-colors" title="Logout">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
@@ -139,7 +146,7 @@
             <div class="px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-none text-gray-600 hover:text-gray-900 hover:bg-gray-100">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -147,13 +154,13 @@
 
                     <!-- Page Title -->
                     <div class="flex-1 lg:flex-none">
-                        <h1 class="text-xl font-semibold text-gray-900">Clients Management</h1>
+                        <h1 class="text-xl font-light text-gray-900">Clients Management</h1>
                     </div>
 
                     <!-- Header Actions -->
                     <div class="flex items-center space-x-4">
                         <!-- Add Client Button -->
-                        <button id="addClientBtn" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <button id="addClientBtn" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
@@ -168,7 +175,7 @@
         <main class="p-6">
             <div class="max-w-7xl mx-auto space-y-6">
                 <!-- Filters and Search -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-none shadow-sm p-6 border border-gray-100">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
                         <!-- Search -->
                         <div class="flex-1 lg:max-w-md">
@@ -182,7 +189,7 @@
                                     type="text" 
                                     id="searchInput"
                                     placeholder="Search clients by name, email, or casilla..." 
-                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                                 >
                             </div>
                         </div>
@@ -190,7 +197,7 @@
                         <!-- Filters -->
                         <div class="flex flex-wrap items-center gap-3">
                             <!-- Country Filter -->
-                            <select id="countryFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="countryFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                                 <option value="">All Countries</option>
                                 <option value="México">México</option>
                                 <option value="Colombia">Colombia</option>
@@ -200,7 +207,7 @@
                             </select>
 
                             <!-- Status Filter -->
-                            <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="statusFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                                 <option value="">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -208,14 +215,14 @@
                             </select>
 
                             <!-- Casilla Filter -->
-                            <select id="casillaFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="casillaFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                                 <option value="">All Casillas</option>
                                 <option value="has-casilla">Has Casilla</option>
                                 <option value="no-casilla">No Casilla</option>
                             </select>
 
                             <!-- Sort -->
-                            <select id="sortFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="sortFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                                 <option value="name-asc">Name A-Z</option>
                                 <option value="name-desc">Name Z-A</option>
                                 <option value="date-desc">Newest First</option>
@@ -224,7 +231,7 @@
                             </select>
 
                             <!-- Clear Filters -->
-                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-none transition-colors">
                                 Clear
                             </button>
                         </div>
@@ -233,58 +240,58 @@
 
                 <!-- Client Statistics -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 bg-purple-100 rounded-none flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Total Clients</p>
-                                <p class="text-xl font-semibold text-gray-900">142</p>
+                                <p class="text-sm font-medium text-gray-600">Total Clients</p>
+                                <p class="text-2xl font-light text-gray-900">142</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 bg-green-100 rounded-none flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Active</p>
-                                <p class="text-xl font-semibold text-gray-900">128</p>
+                                <p class="text-sm font-medium text-gray-600">Active</p>
+                                <p class="text-2xl font-light text-gray-900">128</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 bg-purple-100 rounded-none flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">With Casilla</p>
-                                <p class="text-xl font-semibold text-gray-900">89</p>
+                                <p class="text-sm font-medium text-gray-600">With Casilla</p>
+                                <p class="text-2xl font-light text-gray-900">89</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-12 h-12 bg-orange-100 rounded-none flex items-center justify-center mr-4">
+                                <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Pending</p>
-                                <p class="text-xl font-semibold text-gray-900">14</p>
+                                <p class="text-sm font-medium text-gray-600">Pending</p>
+                                <p class="text-2xl font-light text-gray-900">14</p>
                             </div>
                         </div>
                     </div>
@@ -297,7 +304,7 @@
 
                 <!-- Load More Button -->
                 <div class="text-center" id="loadMoreContainer">
-                    <button id="loadMoreBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                    <button id="loadMoreBtn" class="px-6 py-3 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 transition-colors">
                         Load More Clients
                     </button>
                 </div>
@@ -308,11 +315,11 @@
     <!-- Client Modal -->
     <div id="clientModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">
                     <h2 id="modalTitle" class="text-xl font-semibold text-gray-900">Add New Client</h2>
-                    <button id="closeModalBtn" class="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                    <button id="closeModalBtn" class="p-2 rounded-none hover:bg-gray-100 transition-colors">
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -334,7 +341,7 @@
                                     id="firstName" 
                                     name="firstName" 
                                     required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter first name"
                                 >
                             </div>
@@ -345,7 +352,7 @@
                                     id="lastName" 
                                     name="lastName" 
                                     required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter last name"
                                 >
                             </div>
@@ -363,7 +370,7 @@
                                     id="email" 
                                     name="email" 
                                     required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter email address"
                                 >
                             </div>
@@ -374,7 +381,7 @@
                                         type="tel" 
                                         id="phone" 
                                         name="phone"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter phone number"
                                     >
                                 </div>
@@ -384,7 +391,7 @@
                                         type="tel" 
                                         id="whatsapp" 
                                         name="whatsapp"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter WhatsApp number"
                                     >
                                 </div>
@@ -403,7 +410,7 @@
                                         id="country" 
                                         name="country" 
                                         required
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     >
                                         <option value="">Select Country</option>
                                         <option value="México">México</option>
@@ -420,7 +427,7 @@
                                         id="city" 
                                         name="city" 
                                         required
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter city"
                                     >
                                 </div>
@@ -432,7 +439,7 @@
                                     name="address" 
                                     rows="2"
                                     required
-                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     placeholder="Enter complete address"
                                 ></textarea>
                             </div>
@@ -448,7 +455,7 @@
                                     type="checkbox" 
                                     id="hasCasilla" 
                                     name="hasCasilla"
-                                    class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                                    class="h-4 w-4 text-purple-600 focus:ring-purple-500 border-gray-300 rounded-none"
                                 >
                                 <label for="hasCasilla" class="ml-2 block text-sm text-gray-900">
                                     Client has a Casilla (Address Box)
@@ -462,7 +469,7 @@
                                             type="text" 
                                             id="casillaNumber" 
                                             name="casillaNumber"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             placeholder="Enter casilla number"
                                         >
                                     </div>
@@ -472,7 +479,7 @@
                                             type="text" 
                                             id="casillaProvider" 
                                             name="casillaProvider"
-                                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                             placeholder="Enter casilla provider"
                                         >
                                     </div>
@@ -483,7 +490,7 @@
                                         id="casillaAddress" 
                                         name="casillaAddress" 
                                         rows="2"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                         placeholder="Enter casilla address"
                                     ></textarea>
                                 </div>
@@ -498,7 +505,7 @@
                             id="clientStatus" 
                             name="clientStatus" 
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         >
                             <option value="active">Active</option>
                             <option value="inactive">Inactive</option>
@@ -508,10 +515,10 @@
 
                     <!-- Modal Footer -->
                     <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
-                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-none hover:bg-gray-200 transition-colors">
                             Cancel
                         </button>
-                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors">
                             Save Client
                         </button>
                     </div>
@@ -666,7 +673,7 @@
                 'pending': 'bg-orange-100 text-orange-800'
             };
             const text = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[status]}">${text}</span>`;
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-none ${badges[status]}">${text}</span>`;
         }
 
         // Get country flag emoji
@@ -686,12 +693,12 @@
             const clientsToShow = filteredClients.slice(0, displayedCount);
             
             clientsGrid.innerHTML = clientsToShow.map(client => `
-                <div class="client-card bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                <div class="client-card bg-white rounded-none shadow-sm border border-gray-100 p-6">
                     <!-- Client Header -->
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center space-x-3">
-                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                <span class="text-blue-600 font-semibold text-lg">${client.firstName.charAt(0)}${client.lastName.charAt(0)}</span>
+                            <div class="w-12 h-12 bg-purple-100 rounded-none flex items-center justify-center">
+                                <span class="text-purple-600 font-semibold text-lg">${client.firstName.charAt(0)}${client.lastName.charAt(0)}</span>
                             </div>
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">${client.firstName} ${client.lastName}</h3>
@@ -724,7 +731,7 @@
 
                     <!-- Casilla Info -->
                     ${client.hasCasilla ? `
-                        <div class="casilla-badge text-white p-3 rounded-lg mb-4">
+                        <div class="casilla-badge text-white p-3 rounded-none mb-4">
                             <div class="flex items-center justify-between">
                                 <div>
                                     <p class="text-sm font-medium">Casilla</p>
@@ -736,7 +743,7 @@
                             </div>
                         </div>
                     ` : `
-                        <div class="bg-gray-50 p-3 rounded-lg mb-4">
+                        <div class="bg-gray-50 p-3 rounded-none mb-4">
                             <p class="text-sm text-gray-600">No Casilla</p>
                         </div>
                     `}
@@ -755,13 +762,13 @@
 
                     <!-- Actions -->
                     <div class="flex items-center space-x-2">
-                        <button onclick="editClient(${client.id})" class="flex-1 px-3 py-2 bg-blue-600 text-white text-sm rounded-lg hover:bg-blue-700 transition-colors">
+                        <button onclick="editClient(${client.id})" class="flex-1 px-3 py-2 bg-purple-600 text-white text-sm rounded-none hover:bg-purple-700 transition-colors">
                             Edit
                         </button>
-                        <button onclick="deleteClient(${client.id})" class="px-3 py-2 bg-red-100 text-red-600 text-sm rounded-lg hover:bg-red-200 transition-colors">
+                        <button onclick="deleteClient(${client.id})" class="px-3 py-2 bg-red-100 text-red-600 text-sm rounded-none hover:bg-red-200 transition-colors">
                             Delete
                         </button>
-                        <button onclick="viewOrders(${client.id})" class="px-3 py-2 bg-gray-100 text-gray-600 text-sm rounded-lg hover:bg-gray-200 transition-colors">
+                        <button onclick="viewOrders(${client.id})" class="px-3 py-2 bg-gray-100 text-gray-600 text-sm rounded-none hover:bg-gray-200 transition-colors">
                             Orders
                         </button>
                     </div>

@@ -4,14 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products Management - Shared Imports Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style type="text/tailwindcss">
+        * {
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        
         .table-row {
-            transition: all 0.2s ease;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid transparent;
         }
         
         .table-row:hover {
-            background-color: rgba(59, 130, 246, 0.05);
+            background-color: rgba(139, 92, 246, 0.04);
+            border-color: rgba(139, 92, 246, 0.1);
         }
         
         .modal-backdrop {
@@ -34,35 +43,49 @@
         }
         
         .badge {
-            transition: all 0.2s ease;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .filter-chip {
-            transition: all 0.2s ease;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .filter-chip:hover {
             transform: translateY(-1px);
         }
+        
+        .sidebar-nav-item {
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .sidebar-nav-item:hover {
+            background: rgba(139, 92, 246, 0.06);
+            transform: translateX(2px);
+        }
+        
+        .sidebar-nav-item.active {
+            background: rgba(139, 92, 246, 0.1);
+            border-right: 3px solid #8B5CF6;
+        }
     </style>
 </head>
-<body class="bg-gray-50">
+<body class="bg-gray-50 font-sans">
     <!-- Mobile Overlay -->
     <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
     
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full border-r border-gray-200">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                <div class="w-8 h-8 bg-purple-600 rounded-none flex items-center justify-center">
                     <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                     </svg>
                 </div>
-                <span class="font-bold text-gray-900">Shared Imports</span>
+                <span class="font-semibold text-gray-900">Shared Imports</span>
             </div>
-            <button id="sidebarToggle" class="lg:hidden p-1 rounded-md hover:bg-gray-100">
+            <button id="sidebarToggle" class="lg:hidden p-1 rounded-none hover:bg-gray-100" aria-label="Close sidebar">
                 <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -70,9 +93,9 @@
         </div>
 
         <!-- Navigation Menu -->
-        <nav class="mt-6 px-3">
+        <nav class="mt-6 px-3" role="navigation" aria-label="Main navigation">
             <!-- Dashboard -->
-            <a href="dashboard.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="dashboard.html" class="sidebar-nav-item flex items-center px-3 py-3 mb-1 text-gray-700 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v14l-5-3-5 3V5z"></path>
@@ -81,51 +104,47 @@
             </a>
 
             <!-- Products - Active -->
-            <a href="products.html" class="flex items-center px-3 py-3 mb-1 text-blue-600 bg-blue-50 border-r-3 border-blue-600 rounded-lg font-semibold">
-                <svg class="w-5 h-5 mr-3 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <a href="products.html" class="sidebar-nav-item active flex items-center px-3 py-3 mb-1 text-purple-600 rounded-none font-medium">
+                <svg class="w-5 h-5 mr-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                 </svg>
                 Products
-                <span class="ml-auto bg-blue-500 text-white text-xs rounded-full px-2 py-1">24</span>
             </a>
 
             <!-- Other nav items -->
-            <a href="clients.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="clients.html" class="sidebar-nav-item flex items-center px-3 py-3 mb-1 text-gray-700 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
                 </svg>
                 Clients
-                <span class="ml-auto bg-green-500 text-white text-xs rounded-full px-2 py-1">142</span>
             </a>
 
-            <a href="sellers.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="sellers.html" class="sidebar-nav-item flex items-center px-3 py-3 mb-1 text-gray-700 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
                 Sellers
-                <span class="ml-auto bg-purple-500 text-white text-xs rounded-full px-2 py-1">18</span>
             </a>
 
-            <a href="orders.html" class="flex items-center px-3 py-3 mb-1 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded-lg transition-all">
+            <a href="orders.html" class="sidebar-nav-item flex items-center px-3 py-3 mb-1 text-gray-700 hover:text-purple-600 rounded-none transition-all">
                 <svg class="w-5 h-5 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
                 </svg>
                 Orders
-                <span class="ml-auto bg-orange-500 text-white text-xs rounded-full px-2 py-1">7</span>
             </a>
         </nav>
 
         <!-- User Profile -->
         <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200 bg-white">
             <div class="flex items-center space-x-3">
-                <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span class="text-blue-600 font-semibold text-sm">A</span>
+                <div class="w-8 h-8 bg-purple-100 rounded-none flex items-center justify-center">
+                    <span class="text-purple-600 font-medium text-sm">A</span>
                 </div>
                 <div class="flex-1">
                     <p class="text-sm font-medium text-gray-900">Admin User</p>
                     <p class="text-xs text-gray-500">admin@shared-imports.com</p>
                 </div>
-                <button id="logoutBtn" class="p-1 rounded-md hover:bg-gray-100 transition-colors" title="Logout">
+                <button id="logoutBtn" class="p-1 rounded-none hover:bg-gray-100 transition-colors" title="Logout" aria-label="Logout">
                     <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
                     </svg>
@@ -141,7 +160,7 @@
             <div class="px-4 sm:px-6 lg:px-8">
                 <div class="flex justify-between items-center h-16">
                     <!-- Mobile Menu Button -->
-                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100">
+                    <button id="mobileMenuBtn" class="lg:hidden p-2 rounded-none text-gray-600 hover:text-gray-900 hover:bg-gray-100" aria-label="Open mobile menu">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
                         </svg>
@@ -149,13 +168,14 @@
 
                     <!-- Page Title -->
                     <div class="flex-1 lg:flex-none">
-                        <h1 class="text-xl font-semibold text-gray-900">Products Management</h1>
+                        <h1 class="text-2xl font-light text-gray-900">Products Management</h1>
+                        <p class="text-sm text-gray-600 mt-1">Manage your merchandise inventory</p>
                     </div>
 
                     <!-- Header Actions -->
                     <div class="flex items-center space-x-4">
                         <!-- Add Product Button -->
-                        <button id="addProductBtn" class="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <button id="addProductBtn" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors shadow-sm">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                             </svg>
@@ -168,9 +188,9 @@
 
         <!-- Products Content -->
         <main class="p-6">
-            <div class="max-w-7xl mx-auto space-y-6">
+            <div class="max-w-7xl mx-auto space-y-8">
                 <!-- Filters and Search -->
-                <div class="bg-white rounded-xl shadow-sm p-6 border border-gray-100">
+                <div class="bg-white rounded-none shadow-sm p-6">
                     <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0">
                         <!-- Search -->
                         <div class="flex-1 lg:max-w-md">
@@ -184,7 +204,8 @@
                                     type="text" 
                                     id="searchInput"
                                     placeholder="Search products..." 
-                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    aria-label="Search products"
                                 >
                             </div>
                         </div>
@@ -192,7 +213,7 @@
                         <!-- Filters -->
                         <div class="flex flex-wrap items-center gap-3">
                             <!-- Category Filter -->
-                            <select id="categoryFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="categoryFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent" aria-label="Filter by category">
                                 <option value="">All Categories</option>
                                 <option value="K-Pop">K-Pop</option>
                                 <option value="Anime">Anime</option>
@@ -202,7 +223,7 @@
                             </select>
 
                             <!-- Status Filter -->
-                            <select id="statusFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="statusFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent" aria-label="Filter by status">
                                 <option value="">All Status</option>
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -210,7 +231,7 @@
                             </select>
 
                             <!-- Sort -->
-                            <select id="sortFilter" class="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <select id="sortFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent" aria-label="Sort products">
                                 <option value="name-asc">Name A-Z</option>
                                 <option value="name-desc">Name Z-A</option>
                                 <option value="price-asc">Price Low-High</option>
@@ -220,7 +241,7 @@
                             </select>
 
                             <!-- Clear Filters -->
-                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors">
+                            <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-none transition-colors">
                                 Clear
                             </button>
                         </div>
@@ -228,83 +249,83 @@
 
                     <!-- Active Filters -->
                     <div id="activeFilters" class="mt-4 flex flex-wrap gap-2 hidden">
-                        <span class="text-sm text-gray-600">Active filters:</span>
+                        <span class="text-sm text-gray-600 font-medium">Active filters:</span>
                     </div>
                 </div>
 
                 <!-- Products Statistics -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-4">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-8 h-8 bg-purple-100 rounded-none flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Total Products</p>
-                                <p class="text-xl font-semibold text-gray-900">247</p>
+                                <p class="text-sm text-gray-600 font-medium">Total Products</p>
+                                <p class="text-xl font-light text-gray-900">247</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-4">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <div class="w-8 h-8 bg-emerald-100 rounded-none flex items-center justify-center mr-3">
+                                <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Active</p>
-                                <p class="text-xl font-semibold text-gray-900">198</p>
+                                <p class="text-sm text-gray-600 font-medium">Active</p>
+                                <p class="text-xl font-light text-gray-900">198</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-4">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                            <div class="w-8 h-8 bg-orange-100 rounded-none flex items-center justify-center mr-3">
                                 <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Low Stock</p>
-                                <p class="text-xl font-semibold text-gray-900">24</p>
+                                <p class="text-sm text-gray-600 font-medium">Low Stock</p>
+                                <p class="text-xl font-light text-gray-900">24</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="bg-white rounded-lg shadow-sm p-4 border border-gray-100">
+                    <div class="bg-white rounded-none shadow-sm p-4">
                         <div class="flex items-center">
-                            <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                            <div class="w-8 h-8 bg-red-100 rounded-none flex items-center justify-center mr-3">
                                 <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-sm text-gray-600">Out of Stock</p>
-                                <p class="text-xl font-semibold text-gray-900">25</p>
+                                <p class="text-sm text-gray-600 font-medium">Out of Stock</p>
+                                <p class="text-xl font-light text-gray-900">25</p>
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Products Table -->
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-white rounded-none shadow-sm overflow-hidden">
                     <div class="p-6 border-b border-gray-200">
                         <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900">Products List</h3>
+                            <h3 class="text-lg font-medium text-gray-900">Products List</h3>
                             <div class="flex items-center space-x-3">
-                                <span class="text-sm text-gray-600">Showing <span id="showingCount">1-10</span> of <span id="totalCount">247</span></span>
+                                <span class="text-sm text-gray-600 font-light">Showing <span id="showingCount">1-10</span> of <span id="totalCount">247</span></span>
                                 <div class="flex items-center space-x-1">
-                                    <button id="prevPageBtn" class="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button id="prevPageBtn" class="p-2 rounded-none hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" aria-label="Previous page">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                                         </svg>
                                     </button>
-                                    <button id="nextPageBtn" class="p-2 rounded-md hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button id="nextPageBtn" class="p-2 rounded-none hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed transition-colors" aria-label="Next page">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                         </svg>
@@ -341,11 +362,11 @@
     <!-- Product Modal -->
     <div id="productModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
         <div class="flex items-center justify-center min-h-screen p-4">
-            <div class="modal-enter bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                 <!-- Modal Header -->
                 <div class="flex items-center justify-between p-6 border-b border-gray-200">
                     <h2 id="modalTitle" class="text-xl font-semibold text-gray-900">Add New Product</h2>
-                    <button id="closeModalBtn" class="p-2 rounded-md hover:bg-gray-100 transition-colors">
+                    <button id="closeModalBtn" class="p-2 rounded-none hover:bg-gray-100 transition-colors">
                         <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -360,14 +381,14 @@
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-2">Product Image</label>
                         <div class="flex items-center space-x-4">
-                            <div id="imagePreview" class="w-20 h-20 bg-gray-100 rounded-lg flex items-center justify-center border-2 border-dashed border-gray-300">
+                            <div id="imagePreview" class="w-20 h-20 bg-gray-100 rounded-none flex items-center justify-center border-2 border-dashed border-gray-300">
                                 <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                                 </svg>
                             </div>
                             <div>
                                 <input type="file" id="productImage" name="productImage" accept="image/*" class="hidden">
-                                <button type="button" onclick="document.getElementById('productImage').click()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                                <button type="button" onclick="document.getElementById('productImage').click()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-none hover:bg-gray-200 transition-colors">
                                     Choose Image
                                 </button>
                                 <p class="text-xs text-gray-500 mt-1">PNG, JPG up to 2MB</p>
@@ -383,7 +404,7 @@
                             id="productName" 
                             name="productName" 
                             required
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="Enter product name"
                         >
                     </div>
@@ -395,7 +416,7 @@
                             id="productDescription" 
                             name="productDescription" 
                             rows="3"
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="Enter product description"
                         ></textarea>
                     </div>
@@ -408,7 +429,7 @@
                                 id="productCategory" 
                                 name="productCategory" 
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="">Select Category</option>
                                 <option value="K-Pop">K-Pop</option>
@@ -425,7 +446,7 @@
                                 id="productSeller" 
                                 name="productSeller" 
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="">Select Seller</option>
                                 <option value="Seoul Music Store">Seoul Music Store</option>
@@ -448,7 +469,7 @@
                                 step="0.01"
                                 min="0"
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="0.00"
                             >
                         </div>
@@ -461,7 +482,7 @@
                                 name="productStock" 
                                 min="0"
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="0"
                             >
                         </div>
@@ -472,7 +493,7 @@
                                 id="productStatus" 
                                 name="productStatus" 
                                 required
-                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             >
                                 <option value="active">Active</option>
                                 <option value="inactive">Inactive</option>
@@ -488,7 +509,7 @@
                             type="text" 
                             id="productTags" 
                             name="productTags" 
-                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="Enter tags separated by commas"
                         >
                         <p class="text-xs text-gray-500 mt-1">Separate multiple tags with commas</p>
@@ -496,10 +517,10 @@
 
                     <!-- Modal Footer -->
                     <div class="flex items-center justify-end space-x-3 pt-6 border-t border-gray-200">
-                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors">
+                        <button type="button" id="cancelBtn" class="px-4 py-2 text-gray-700 bg-gray-100 rounded-none hover:bg-gray-200 transition-colors">
                             Cancel
                         </button>
-                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                        <button type="submit" id="saveBtn" class="px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors">
                             Save Product
                         </button>
                     </div>
@@ -617,7 +638,7 @@
                 'out-of-stock': 'bg-red-100 text-red-800'
             };
             const text = status.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
-            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${badges[status]}">${text}</span>`;
+            return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-none ${badges[status]}">${text}</span>`;
         }
 
         // Stock indicator
@@ -637,7 +658,7 @@
                 <tr class="table-row">
                     <td class="px-6 py-4">
                         <div class="flex items-center">
-                            <img src="${product.image}" alt="${product.name}" class="w-12 h-12 rounded-lg object-cover mr-4">
+                            <img src="${product.image}" alt="${product.name}" class="w-12 h-12 rounded-none object-cover mr-4">
                             <div>
                                 <div class="text-sm font-medium text-gray-900">${product.name}</div>
                                 <div class="text-sm text-gray-500">${product.description}</div>
@@ -650,7 +671,7 @@
                     <td class="px-6 py-4">${getStatusBadge(product.status)}</td>
                     <td class="px-6 py-4 text-sm text-gray-900">${product.seller}</td>
                     <td class="px-6 py-4 text-sm font-medium space-x-2">
-                        <button onclick="editProduct(${product.id})" class="text-blue-600 hover:text-blue-900 transition-colors">Edit</button>
+                        <button onclick="editProduct(${product.id})" class="text-purple-600 hover:text-purple-900 transition-colors">Edit</button>
                         <button onclick="deleteProduct(${product.id})" class="text-red-600 hover:text-red-900 transition-colors">Delete</button>
                     </td>
                 </tr>
