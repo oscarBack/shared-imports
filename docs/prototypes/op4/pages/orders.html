@@ -109,6 +109,78 @@
         .border-purple-100 {
             border-color: #ede9fe;
         }
+        
+        /* Screen reader only content */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        /* Improved price visibility styles */
+        .price-highlight {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            color: white;
+            font-weight: 700;
+            font-size: 16px;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+            min-width: 60px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        .price-unit {
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            color: #7c3aed;
+            font-weight: 600;
+            font-size: 13px;
+            border: 1px solid #c4b5fd;
+            min-width: 45px;
+            display: inline-block;
+            text-align: center;
+        }
+        
+        /* Keyboard focus styles for accessibility */
+        .orders-table th:focus-visible,
+        .orders-table td:focus-visible,
+        button:focus-visible {
+            outline: 2px solid #3b82f6;
+            outline-offset: 2px;
+        }
+        
+        /* High contrast improvements */
+        @media (prefers-contrast: high) {
+            .price-highlight {
+                background: #5b21b6;
+                color: #fff;
+                border: 2px solid #5b21b6;
+            }
+            
+            .price-unit {
+                background: #fff;
+                color: #5b21b6;
+                border: 1px solid #5b21b6;
+            }
+        }
+        
+        /* Reduced motion support */
+        @media (prefers-reduced-motion: reduce) {
+            .orders-table tbody tr {
+                transition: none;
+            }
+            
+            .modal-enter {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -377,19 +449,22 @@
                 <!-- Orders Table -->
                 <div class="bg-white rounded-none shadow-sm border border-gray-100 overflow-hidden">
                     <div class="overflow-x-auto">
-                        <table class="orders-table w-full" id="ordersTable">
+                        <table class="orders-table w-full" id="ordersTable" role="table" aria-label="Orders management table">
+                            <caption class="sr-only">
+                                Order management table showing order details including client information, products, quantities, costs, status, and available actions
+                            </caption>
                             <thead>
                                 <tr>
-                                    <th class="text-left">Order ID</th>
-                                    <th class="text-left">Client</th>
-                                    <th class="text-left">Product</th>
-                                    <th class="text-right">Quantity</th>
-                                    <th class="text-right">Total Cost</th>
-                                    <th class="text-center">Status</th>
-                                    <th class="text-center">Actions</th>
+                                    <th scope="col" class="text-left" id="order-id-header" aria-sort="none">Order ID</th>
+                                    <th scope="col" class="text-left" id="client-header">Client</th>
+                                    <th scope="col" class="text-left" id="product-header">Product & Pricing</th>
+                                    <th scope="col" class="text-right" id="quantity-header">Quantity</th>
+                                    <th scope="col" class="text-right" id="total-cost-header">Total Cost</th>
+                                    <th scope="col" class="text-center" id="status-header">Status</th>
+                                    <th scope="col" class="text-center" id="actions-header">Actions</th>
                                 </tr>
                             </thead>
-                            <tbody id="ordersTableBody">
+                            <tbody id="ordersTableBody" role="rowgroup">
                                 <!-- Order rows will be loaded here by JavaScript -->
                             </tbody>
                         </table>
@@ -689,9 +764,11 @@
     <script>
         // Sample data for relationships
         const sampleClients = [
-            { id: 1, name: "María González", email: "maria.gonzalez@email.com", country: "México" },
-            { id: 2, name: "Carlos Rodríguez", email: "carlos.rodriguez@email.com", country: "Colombia" },
-            { id: 3, name: "Ana Silva", email: "ana.silva@email.com", country: "Argentina" }
+            { id: 1, name: "María González", email: "maria.gonzalez@email.com", country: "México", whatsapp: "✨🪻🎨🎤Marie🎧🎼⭐🦋⁩" },
+            { id: 2, name: "Carlos Rodríguez", email: "carlos.rodriguez@email.com", country: "Colombia", whatsapp: "Caro🥀" },
+            { id: 3, name: "Ana Silva", email: "ana.silva@email.com", country: "Argentina", whatsapp: "catalina✨️🧸🖤" },
+            { id: 4, name: "Laly Morales", email: "laly.morales@email.com", country: "Venezuela", whatsapp: "Laly 💜" },
+            { id: 5, name: "Fernanda Torres", email: "fernanda.torres@email.com", country: "Brasil", whatsapp: "𝙛𝙚𝙧𝙧𝙧 💗" }
         ];
 
         const sampleSellers = [
@@ -831,6 +908,49 @@
                         ]
                     }
                 ]
+            },
+            {
+                id: "ORD-2024-004",
+                priority: "express",
+                status: "processing",
+                orderDate: "2024-08-14",
+                estimatedDelivery: "2024-08-21",
+                trackingNumber: "TRK-004-2024",
+                notes: "WhatsApp VIP clients group order",
+                clients: [
+                    {
+                        clientId: 4,
+                        clientName: "Laly Morales",
+                        items: [
+                            {
+                                sellerId: 2,
+                                sellerName: "Fashion Forward",
+                                productId: 4,
+                                productName: "Designer Handbag",
+                                quantity: 1,
+                                unitPrice: 299.99,
+                                totalCost: 324.99,
+                                tags: ["fashion", "luxury"]
+                            }
+                        ]
+                    },
+                    {
+                        clientId: 5,
+                        clientName: "Fernanda Torres",
+                        items: [
+                            {
+                                sellerId: 1,
+                                sellerName: "Tech Solutions Miami",
+                                productId: 1,
+                                productName: "iPhone 15 Pro Max",
+                                quantity: 1,
+                                unitPrice: 1199.99,
+                                totalCost: 1244.99,
+                                tags: ["electronics", "signature-required"]
+                            }
+                        ]
+                    }
+                ]
             }
         ];
 
@@ -948,6 +1068,12 @@
             return [...new Set(allTags)];
         }
 
+        // Helper function to get WhatsApp username by client name
+        function getWhatsAppUsername(clientName) {
+            const client = sampleClients.find(c => c.name === clientName);
+            return client ? client.whatsapp : null;
+        }
+
         // Render orders
         function renderOrders() {
             const ordersToShow = filteredOrders.slice(0, displayedCount);
@@ -968,9 +1094,9 @@
                     
                     // First client row shows order-level info with rowspan, subsequent rows show client details
                     return `
-                    <tr class="${clientIndex > 0 ? 'border-t-2 border-purple-100' : ''} ${clientIndex === 0 ? 'bg-gray-50' : 'bg-purple-25'}">
+                    <tr class="${clientIndex > 0 ? 'border-t-2 border-purple-100' : ''} ${clientIndex === 0 ? 'bg-gray-50' : 'bg-purple-25'}" role="row">
                         ${clientIndex === 0 ? `
-                            <td rowspan="${order.clients.length}" class="font-medium text-gray-900 border-r-2 border-purple-200">
+                            <td rowspan="${order.clients.length}" class="font-medium text-gray-900 border-r-2 border-purple-200" headers="order-id-header" role="gridcell">
                                 <div class="p-2">
                                     <div class="text-sm font-semibold text-purple-800">${order.id}</div>
                                     <div class="text-xs text-gray-500">${new Date(order.orderDate).toLocaleDateString()}</div>
@@ -978,61 +1104,64 @@
                                 </div>
                             </td>
                         ` : ''}
-                        <td class="pl-4">
+                        <td class="pl-4" headers="client-header" role="gridcell">
                             <div class="flex items-start">
                                 <div class="w-6 h-6 bg-purple-100 rounded-none flex items-center justify-center mr-3 mt-1">
                                     <span class="text-xs text-purple-600 font-medium">${clientIndex + 1}</span>
                                 </div>
                                 <div class="flex-1">
                                     <div class="text-sm font-medium text-gray-900">${client.clientName}</div>
-                                    <div class="text-xs text-gray-500">
-                                        ${client.items.length} item${client.items.length > 1 ? 's' : ''} • 
-                                        $${clientTotalCost.toFixed(2)}
-                                    </div>
+                                    <div class="text-xs text-purple-600 font-medium mt-1">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</div>
                                 </div>
                             </div>
                         </td>
-                        <td>
+                        <td headers="product-header" role="gridcell">
                             <div class="space-y-2">
-                                ${client.items.map(item => `
-                                    <div class="flex items-start">
-                                        <div class="w-5 h-5 bg-green-100 rounded-none flex items-center justify-center mr-2 mt-1">
-                                            <svg class="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                ${client.items.map((item, itemIndex) => `
+                                    <div class="flex items-start" role="group" aria-label="Product ${itemIndex + 1} details">
+                                        <div class="w-5 h-5 bg-purple-100 rounded-none flex items-center justify-center mr-2 mt-1">
+                                            <svg class="w-3 h-3 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
                                             </svg>
                                         </div>
                                         <div class="flex-1">
-                                            <div class="text-sm text-gray-900">${item.productName}</div>
-                                            <div class="text-xs text-gray-500">Qty: ${item.quantity} • $${item.unitPrice} • Total: $${item.totalCost.toFixed(2)}</div>
+                                            <div class="text-sm text-gray-900 font-medium">${item.productName}</div>
+                                            <div class="text-sm mt-1 flex items-center gap-2 flex-wrap">
+                                                <span class="text-gray-600 text-xs">Qty: ${item.quantity}</span>
+                                                <span class="text-gray-400" aria-hidden="true">•</span>
+                                                <span class="font-semibold text-sm text-gray-900 price-unit px-1 py-0.5 rounded" role="text" aria-label="Unit price: $${item.unitPrice}">$${item.unitPrice}</span>
+                                                <span class="text-gray-400" aria-hidden="true">•</span>
+                                                <span class="font-bold text-base text-white price-highlight px-2 py-1 rounded" role="text" aria-label="Total cost for this item: $${item.totalCost.toFixed(2)}">$${item.totalCost.toFixed(2)}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 `).join('')}
                             </div>
                         </td>
-                        <td class="text-right text-sm font-semibold text-gray-900">${clientTotalItems}</td>
-                        <td class="text-right text-sm font-semibold text-gray-900">$${clientTotalCost.toFixed(2)}</td>
+                        <td class="text-right text-sm font-semibold text-gray-900" headers="quantity-header" role="gridcell">${clientTotalItems}</td>
+                        <td class="text-right text-sm font-bold text-purple-700" headers="total-cost-header" role="gridcell" aria-label="Client total: $${clientTotalCost.toFixed(2)}">$${clientTotalCost.toFixed(2)}</td>
                         ${clientIndex === 0 ? `
-                            <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200">${getStatusBadge(order.status)}</td>
-                            <td rowspan="${order.clients.length}" class="text-center">
-                                <div class="flex items-center justify-center space-x-2">
-                                    <button onclick="editOrder('${order.id}')" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status)}</td>
+                            <td rowspan="${order.clients.length}" class="text-center" headers="actions-header" role="gridcell">
+                                <div class="flex items-center justify-center space-x-2" role="group" aria-label="Order actions">
+                                    <button onclick="editOrder('${order.id}')" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit order" aria-label="Edit order ${order.id}">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
                                         </svg>
                                     </button>
-                                    <button onclick="trackOrder('${order.id}')" class="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Track">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <button onclick="trackOrder('${order.id}')" class="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Track order" aria-label="Track order ${order.id}">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
                                         </svg>
                                     </button>
-                                    <button onclick="duplicateOrder('${order.id}')" class="p-1 text-gray-400 hover:text-purple-600 transition-colors" title="Duplicate">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <button onclick="duplicateOrder('${order.id}')" class="p-1 text-gray-400 hover:text-purple-600 transition-colors" title="Duplicate order" aria-label="Duplicate order ${order.id}">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
                                         </svg>
                                     </button>
-                                    <button onclick="deleteOrder('${order.id}')" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Cancel">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <button onclick="deleteOrder('${order.id}')" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Cancel order" aria-label="Cancel order ${order.id}">
+                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
                                         </svg>
                                     </button>
