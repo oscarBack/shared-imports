@@ -31,6 +31,12 @@ pnpm check-types            # TypeScript checking
 - API: `cd apps/api && pnpm dev` (starts NestJS on default port)
 - Web: `cd apps/web && pnpm dev` (starts Next.js on port 3000 with Turbopack)
 
+**HTTP Server Management**:
+- Before starting any development server, check for existing processes: `lsof -i :PORT` or `netstat -tulpn | grep PORT`
+- Kill existing servers if needed: `kill -9 PID` or `pkill -f "python.*http.server"`
+- For prototype testing: `cd docs/prototypes/opX && python3 -m http.server 8000` (check port 8000 first)
+- Common ports: API (3001), Web (3000), Prototypes (8000)
+
 **Turborepo orchestration**: Uses `turbo.json` for task dependencies. Build tasks depend on upstream builds (`^build`).
 
 ## Project-Specific Patterns
