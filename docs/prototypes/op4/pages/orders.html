@@ -588,6 +588,115 @@
         .collection-badge.indigo { background-color: #6366f1; }
         .collection-badge.pink { background-color: #ec4899; }
         .collection-badge.gray { background-color: #6b7280; }
+
+        /* Notification styles */
+        .notification-badge {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.375rem;
+            margin: 0.125rem 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .notification-badge.upcoming {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .notification-badge.overdue {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        .notification-time {
+            font-size: 0.625rem;
+            opacity: 0.9;
+        }
+
+        .notification-list {
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .notification-form-section {
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #f9fafb;
+        }
+
+        .notification-form-section.active {
+            border-color: #8b5cf6;
+            background-color: #faf5ff;
+        }
+
+        .email-input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .email-input-group input {
+            flex: 1;
+            margin-right: 0.5rem;
+        }
+
+        .remove-email-btn {
+            color: #ef4444;
+            padding: 0.25rem;
+        }
+
+        .remove-email-btn:hover {
+            color: #dc2626;
+        }
+
+        .add-notification-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .add-notification-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-notification-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .notification-counter {
+            background-color: #8b5cf6;
+            color: white;
+            font-size: 0.75rem;
+            padding: 0.125rem 0.375rem;
+            border-radius: 9999px;
+            margin-left: 0.5rem;
+        }
+
+        /* Payment complete row styling */
+        .payment-complete-row {
+            background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+        }
+
+        .payment-complete-row:hover {
+            background: linear-gradient(135deg, #a7f3d0 0%, #86efac 100%);
+        }
+
+        .payment-complete-indicator {
+            border-left: 4px solid #10b981;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -935,6 +1044,7 @@
                                     <th scope="col" class="text-left" id="product-header">Product & Pricing</th>
                                     <th scope="col" class="text-right" id="quantity-header">Quantity</th>
                                     <th scope="col" class="text-right" id="total-cost-header">Total Cost</th>
+                                    <th scope="col" class="text-center" id="notifications-header">Notifications</th>
                                     <th scope="col" class="text-center" id="status-header">Status</th>
                                     <th scope="col" class="text-center" id="actions-header">Actions</th>
                                 </tr>
@@ -1316,6 +1426,59 @@
         </div>
     </div>
 
+    <!-- Notification Management Modal -->
+    <div id="notificationModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="notificationModalTitle" class="text-xl font-semibold text-gray-900">Manage Notifications</h2>
+                    <button id="closeNotificationModalBtn" class="p-2 rounded-none hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <div id="currentNotifications" class="mb-6">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Current Notifications</h3>
+                        <div id="notificationsList" class="space-y-3 mb-4">
+                            <!-- Current notifications will be listed here -->
+                        </div>
+                    </div>
+
+                    <form id="notificationForm">
+                        <div id="notificationSections" class="space-y-6">
+                            <!-- Notification sections will be added here dynamically -->
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-6">
+                            <button type="button" id="addNotificationSectionBtn" class="add-notification-btn">
+                                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                </svg>
+                                Add Notification
+                                <span id="notificationCounter" class="notification-counter">0/3</span>
+                            </button>
+                        </div>
+
+                        <!-- Modal Actions -->
+                        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                            <button type="button" id="cancelNotificationBtn" class="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-none hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Cancel
+                            </button>
+                            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-purple-600 border border-transparent rounded-none hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                                Save Notifications
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sample data for relationships
         const sampleClients = [
@@ -1354,6 +1517,26 @@
                     {
                         clientId: 1,
                         clientName: "María González",
+                        paymentStatus: "completed",
+                        paymentCompleteDate: "2024-08-18",
+                        notifications: [
+                            {
+                                id: "notif-001",
+                                name: "Payment Confirmation",
+                                date: "2024-08-18",
+                                time: "14:00",
+                                emails: ["maria.gonzalez@email.com"],
+                                status: "sent"
+                            },
+                            {
+                                id: "notif-002",
+                                name: "Shipping Update",
+                                date: "2024-08-22",
+                                time: "10:00",
+                                emails: ["maria.gonzalez@email.com"],
+                                status: "upcoming"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 1,
@@ -1370,6 +1553,17 @@
                     {
                         clientId: 2,
                         clientName: "Carlos Rodríguez",
+                        paymentStatus: "pending",
+                        notifications: [
+                            {
+                                id: "notif-003",
+                                name: "Payment Reminder",
+                                date: "2024-08-20",
+                                time: "14:00",
+                                emails: ["carlos.rodriguez@email.com"],
+                                status: "upcoming"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 2,
@@ -1386,6 +1580,17 @@
                     {
                         clientId: 3,
                         clientName: "Ana Silva",
+                        paymentStatus: "pending",
+                        notifications: [
+                            {
+                                id: "notif-004",
+                                name: "Order Status Update",
+                                date: "2024-08-21",
+                                time: "16:00",
+                                emails: ["ana.silva@email.com"],
+                                status: "upcoming"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 3,
@@ -1423,6 +1628,16 @@
                     {
                         clientId: 2,
                         clientName: "Carlos Rodríguez",
+                        notifications: [
+                            {
+                                id: "notif-005",
+                                name: "Shipping Confirmation",
+                                date: "2024-08-15",
+                                time: "09:00",
+                                emails: ["carlos.rodriguez@email.com"],
+                                status: "sent"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 2,
@@ -1450,6 +1665,16 @@
                     {
                         clientId: 3,
                         clientName: "Ana Silva",
+                        notifications: [
+                            {
+                                id: "notif-006",
+                                name: "Delivery Confirmation",
+                                date: "2024-08-17",
+                                time: "11:30",
+                                emails: ["ana.silva@email.com"],
+                                status: "sent"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 3,
@@ -1478,6 +1703,16 @@
                     {
                         clientId: 4,
                         clientName: "Laly Morales",
+                        notifications: [
+                            {
+                                id: "notif-007",
+                                name: "Processing Update",
+                                date: "2024-08-19",
+                                time: "15:00",
+                                emails: ["laly.morales@email.com"],
+                                status: "upcoming"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 2,
@@ -1494,6 +1729,16 @@
                     {
                         clientId: 5,
                         clientName: "Fernanda Torres",
+                        notifications: [
+                            {
+                                id: "notif-008",
+                                name: "Pre-shipment Notice",
+                                date: "2024-08-20",
+                                time: "12:00",
+                                emails: ["fernanda.torres@email.com"],
+                                status: "upcoming"
+                            }
+                        ],
                         items: [
                             {
                                 sellerId: 1,
@@ -1935,7 +2180,8 @@
             'processing': { color: 'bg-purple-100 text-purple-800', label: 'Processing' },
             'shipped': { color: 'bg-blue-100 text-blue-800', label: 'Shipped' },
             'delivered': { color: 'bg-green-100 text-green-800', label: 'Delivered' },
-            'cancelled': { color: 'bg-red-100 text-red-800', label: 'Cancelled' }
+            'cancelled': { color: 'bg-red-100 text-red-800', label: 'Cancelled' },
+            'payment-complete': { color: 'bg-green-100 text-green-800', label: 'Payment Complete' }
         };
 
         // Save custom statuses to localStorage
@@ -2061,6 +2307,370 @@
             });
         }
 
+        // Notification Management Functions
+        let currentEditingOrderId = null;
+        let notificationSectionCount = 0;
+
+        function renderNotifications(order) {
+            if (!order.notifications || order.notifications.length === 0) {
+                return '<div class="text-xs text-gray-500">No notifications</div>';
+            }
+
+            return order.notifications.map(notification => {
+                const status = getNotificationStatus(notification);
+                const dateTime = new Date(`${notification.date}T${notification.time}`);
+                const isOverdue = status === 'overdue';
+                const isUpcoming = status === 'upcoming';
+                
+                return `
+                    <div class="notification-badge ${isOverdue ? 'overdue' : isUpcoming ? 'upcoming' : ''}">
+                        <div>
+                            <div class="font-medium">${notification.name}</div>
+                            <div class="notification-time">${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                        </div>
+                        <button onclick="editNotification('${order.id}', '${notification.id}')" class="ml-2 hover:text-white/80" title="Edit notification">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderClientNotifications(client) {
+            if (!client.notifications || client.notifications.length === 0) {
+                return '<div class="text-xs text-gray-500">No notifications</div>';
+            }
+
+            return client.notifications.map(notification => {
+                const status = getNotificationStatus(notification);
+                const dateTime = new Date(`${notification.date}T${notification.time}`);
+                const isOverdue = status === 'overdue';
+                const isUpcoming = status === 'upcoming';
+                
+                return `
+                    <div class="notification-badge ${isOverdue ? 'overdue' : isUpcoming ? 'upcoming' : ''}">
+                        <div>
+                            <div class="font-medium">${notification.name}</div>
+                            <div class="notification-time">${dateTime.toLocaleDateString()} ${dateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                        </div>
+                        <button onclick="editClientNotification('${client.clientId}', '${notification.id}')" class="ml-2 hover:text-white/80" title="Edit notification">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getNotificationStatus(notification) {
+            const now = new Date();
+            const notificationDateTime = new Date(`${notification.date}T${notification.time}`);
+            
+            if (notification.status === 'sent') return 'sent';
+            if (notificationDateTime < now) return 'overdue';
+            return 'upcoming';
+        }
+
+        function openNotificationModal(orderId) {
+            currentEditingOrderId = orderId;
+            const order = orders.find(o => o.id === orderId);
+            
+            document.getElementById('notificationModalTitle').textContent = `Manage Notifications - ${orderId}`;
+            
+            // Render current notifications
+            renderCurrentNotifications(order);
+            
+            // Reset form
+            document.getElementById('notificationSections').innerHTML = '';
+            notificationSectionCount = 0;
+            updateNotificationCounter();
+            
+            document.getElementById('notificationModal').classList.remove('hidden');
+        }
+
+        let currentEditingClientId = null;
+
+        function openClientNotificationModal(orderId, clientId) {
+            currentEditingOrderId = orderId;
+            currentEditingClientId = clientId;
+            
+            const order = orders.find(o => o.id === orderId);
+            const client = order.clients.find(c => c.clientId === clientId);
+            
+            document.getElementById('notificationModalTitle').textContent = `Manage Notifications - ${client.clientName} (${orderId})`;
+            
+            // Render current client notifications
+            renderCurrentClientNotifications(client);
+            
+            // Reset form
+            document.getElementById('notificationSections').innerHTML = '';
+            notificationSectionCount = 0;
+            updateNotificationCounter();
+            
+            document.getElementById('notificationModal').classList.remove('hidden');
+        }
+
+        function renderCurrentNotifications(order) {
+            const notificationsList = document.getElementById('notificationsList');
+            
+            if (!order.notifications || order.notifications.length === 0) {
+                notificationsList.innerHTML = '<div class="text-sm text-gray-500 italic">No notifications set for this order</div>';
+                return;
+            }
+
+            notificationsList.innerHTML = order.notifications.map(notification => {
+                const status = getNotificationStatus(notification);
+                const dateTime = new Date(`${notification.date}T${notification.time}`);
+                
+                return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">${notification.name}</div>
+                            <div class="text-sm text-gray-600">${dateTime.toLocaleDateString()} at ${dateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            <div class="text-xs text-gray-500">Emails: ${notification.emails.join(', ')}</div>
+                            <div class="text-xs mt-1">
+                                <span class="px-2 py-1 rounded-full text-white ${status === 'sent' ? 'bg-green-500' : status === 'overdue' ? 'bg-red-500' : 'bg-yellow-500'}">
+                                    ${status.charAt(0).toUpperCase() + status.slice(1)}
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="deleteNotification('${order.id}', '${notification.id}')" class="ml-3 text-red-500 hover:text-red-700" title="Delete notification">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderCurrentClientNotifications(client) {
+            const notificationsList = document.getElementById('notificationsList');
+            
+            if (!client.notifications || client.notifications.length === 0) {
+                notificationsList.innerHTML = '<div class="text-sm text-gray-500 italic">No notifications set for this client</div>';
+                return;
+            }
+
+            notificationsList.innerHTML = client.notifications.map(notification => {
+                const status = getNotificationStatus(notification);
+                const dateTime = new Date(`${notification.date}T${notification.time}`);
+                
+                return `
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex-1">
+                            <div class="font-medium text-gray-900">${notification.name}</div>
+                            <div class="text-sm text-gray-600">${dateTime.toLocaleDateString()} at ${dateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                            <div class="text-xs text-gray-500">Emails: ${notification.emails.join(', ')}</div>
+                            <div class="text-xs mt-1">
+                                <span class="px-2 py-1 rounded-full text-white ${status === 'sent' ? 'bg-green-500' : status === 'overdue' ? 'bg-red-500' : 'bg-yellow-500'}">
+                                    ${status.charAt(0).toUpperCase() + status.slice(1)}
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="deleteClientNotification('${client.clientId}', '${notification.id}')" class="ml-3 text-red-500 hover:text-red-700" title="Delete notification">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                            </svg>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function addNotificationSection() {
+            if (notificationSectionCount >= 3) return;
+            
+            const sectionId = `notification-section-${notificationSectionCount}`;
+            const sectionsContainer = document.getElementById('notificationSections');
+            
+            const sectionHtml = `
+                <div class="notification-form-section" id="${sectionId}">
+                    <div class="flex items-center justify-between mb-4">
+                        <h4 class="font-medium text-gray-900">Notification ${notificationSectionCount + 1}</h4>
+                        <button type="button" onclick="removeNotificationSection('${sectionId}')" class="text-red-500 hover:text-red-700" title="Remove notification">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Notification Name</label>
+                            <input type="text" name="notificationName" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="e.g., Payment Reminder" required maxlength="50">
+                        </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                                <input type="date" name="notificationDate" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                                <input type="time" name="notificationTime" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Email Recipients (Max 3)</label>
+                        <div class="email-inputs-container" data-section="${sectionId}">
+                            <div class="email-input-group">
+                                <input type="email" name="notificationEmails" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="recipient@email.com" required>
+                                <button type="button" onclick="addEmailInput('${sectionId}')" class="ml-2 px-3 py-2 bg-purple-100 text-purple-600 hover:bg-purple-200 rounded-md" title="Add email">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            sectionsContainer.insertAdjacentHTML('beforeend', sectionHtml);
+            notificationSectionCount++;
+            updateNotificationCounter();
+        }
+
+        function removeNotificationSection(sectionId) {
+            document.getElementById(sectionId).remove();
+            notificationSectionCount--;
+            updateNotificationCounter();
+        }
+
+        function addEmailInput(sectionId) {
+            const container = document.querySelector(`[data-section="${sectionId}"]`);
+            const emailInputs = container.querySelectorAll('input[type="email"]');
+            
+            if (emailInputs.length >= 3) return;
+            
+            const emailInputHtml = `
+                <div class="email-input-group">
+                    <input type="email" name="notificationEmails" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-purple-500 focus:border-transparent" placeholder="recipient@email.com" required>
+                    <button type="button" onclick="removeEmailInput(this)" class="remove-email-btn" title="Remove email">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+            `;
+            
+            container.insertAdjacentHTML('beforeend', emailInputHtml);
+        }
+
+        function removeEmailInput(button) {
+            button.closest('.email-input-group').remove();
+        }
+
+        function updateNotificationCounter() {
+            const counter = document.getElementById('notificationCounter');
+            counter.textContent = `${notificationSectionCount}/3`;
+            
+            const addBtn = document.getElementById('addNotificationSectionBtn');
+            addBtn.disabled = notificationSectionCount >= 3;
+        }
+
+        function closeNotificationModal() {
+            document.getElementById('notificationModal').classList.add('hidden');
+            currentEditingOrderId = null;
+            currentEditingClientId = null;
+        }
+
+        function saveNotifications() {
+            if (!currentEditingOrderId) return;
+            
+            const order = orders.find(o => o.id === currentEditingOrderId);
+            if (!order) return;
+            
+            const sections = document.querySelectorAll('.notification-form-section');
+            const notifications = [];
+            
+            sections.forEach((section, index) => {
+                const name = section.querySelector('input[name="notificationName"]').value;
+                const date = section.querySelector('input[name="notificationDate"]').value;
+                const time = section.querySelector('input[name="notificationTime"]').value;
+                const emailInputs = section.querySelectorAll('input[name="notificationEmails"]');
+                const emails = Array.from(emailInputs).map(input => input.value).filter(email => email.trim() !== '');
+                
+                if (name && date && time && emails.length > 0) {
+                    notifications.push({
+                        id: `notif-${Date.now()}-${index}`,
+                        name,
+                        date,
+                        time,
+                        emails,
+                        status: 'upcoming'
+                    });
+                }
+            });
+            
+            // Check if we're editing client notifications or order notifications
+            if (currentEditingClientId) {
+                // Add notifications to specific client
+                const client = order.clients.find(c => c.clientId === currentEditingClientId);
+                if (client) {
+                    if (!client.notifications) client.notifications = [];
+                    client.notifications.push(...notifications);
+                }
+            } else {
+                // Add notifications to order (legacy support)
+                if (!order.notifications) order.notifications = [];
+                order.notifications.push(...notifications);
+            }
+            
+            // Re-render orders and close modal
+            renderOrders();
+            closeNotificationModal();
+            
+            // Show success message
+            const targetName = currentEditingClientId ? 
+                order.clients.find(c => c.clientId === currentEditingClientId)?.clientName : 
+                `Order ${currentEditingOrderId}`;
+            alert(`${notifications.length} notification(s) added successfully for ${targetName}!`);
+        }
+
+        function deleteNotification(orderId, notificationId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.notifications) return;
+            
+            order.notifications = order.notifications.filter(n => n.id !== notificationId);
+            renderCurrentNotifications(order);
+            renderOrders();
+        }
+
+        function editNotification(orderId, notificationId) {
+            // For simplicity, just open the notification modal
+            // In a real application, you would populate the form with existing data
+            openNotificationModal(orderId);
+        }
+
+        function deleteClientNotification(clientId, notificationId) {
+            // Find the order containing this client
+            const order = orders.find(o => o.clients.some(c => c.clientId === clientId));
+            if (!order) return;
+            
+            const client = order.clients.find(c => c.clientId === clientId);
+            if (!client || !client.notifications) return;
+            
+            client.notifications = client.notifications.filter(n => n.id !== notificationId);
+            renderCurrentClientNotifications(client);
+            renderOrders();
+        }
+
+        function editClientNotification(clientId, notificationId) {
+            // Find the order containing this client
+            const order = orders.find(o => o.clients.some(c => c.clientId === clientId));
+            if (!order) return;
+            
+            // For simplicity, just open the client notification modal
+            // In a real application, you would populate the form with existing data
+            openClientNotificationModal(order.id, clientId);
+        }
+
         // Render orders
         function renderOrders() {
             const ordersToShow = filteredOrders.slice(0, displayedCount);
@@ -2079,9 +2689,17 @@
                     const clientTotalItems = client.items.reduce((total, item) => total + item.quantity, 0);
                     const clientTags = [...new Set(client.items.flatMap(item => item.tags))];
                     
+                    // Determine row styling based on client payment status
+                    const isClientPaymentComplete = client.paymentStatus === 'completed';
+                    const rowBaseClass = clientIndex > 0 ? 'border-t-2 border-purple-100' : '';
+                    const rowBgClass = clientIndex === 0 ? 'bg-gray-50' : 'bg-purple-25';
+                    
+                    // Payment complete styling will be applied per column, not per row
+                    const paymentCompleteClass = isClientPaymentComplete ? 'payment-complete-row' : '';
+                    
                     // First client row shows order-level info with rowspan, subsequent rows show client details
                     return `
-                    <tr class="${clientIndex > 0 ? 'border-t-2 border-purple-100' : ''} ${clientIndex === 0 ? 'bg-gray-50' : 'bg-purple-25'}" role="row">
+                    <tr class="${rowBaseClass} ${rowBgClass}" role="row">
                         ${clientIndex === 0 ? `
                             <td rowspan="${order.clients.length}" class="font-medium text-gray-900 border-r-2 border-purple-200" headers="order-id-header" role="gridcell">
                                 <div class="p-2">
@@ -2124,18 +2742,43 @@
                                 </div>
                             </td>
                         ` : ''}
-                        <td class="pl-4" headers="client-header" role="gridcell">
-                            <div class="flex items-start">
-                                <div class="w-6 h-6 bg-purple-100 rounded-none flex items-center justify-center mr-3 mt-1">
-                                    <span class="text-xs text-purple-600 font-medium">${clientIndex + 1}</span>
+                        <td class="pl-4 ${isClientPaymentComplete ? 'payment-complete-row payment-complete-indicator' : ''}" headers="client-header" role="gridcell">
+                            <div class="flex items-start justify-between">
+                                <div class="flex items-start">
+                                    <div class="w-6 h-6 bg-purple-100 rounded-none flex items-center justify-center mr-3 mt-1">
+                                        <span class="text-xs text-purple-600 font-medium">${clientIndex + 1}</span>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="text-sm font-medium text-gray-900">${client.clientName}</div>
+                                        <div class="text-xs text-purple-600 font-medium mt-1">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</div>
+                                        ${isClientPaymentComplete ? 
+                                            `<div class="text-xs text-green-600 mt-1 font-semibold flex items-center">
+                                                <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                </svg>
+                                                Payment Complete ${client.paymentCompleteDate ? `(${new Date(client.paymentCompleteDate).toLocaleDateString()})` : ''}
+                                            </div>` : 
+                                            '<div class="text-xs text-orange-600 mt-1 font-medium">Payment Pending</div>'
+                                        }
+                                    </div>
                                 </div>
-                                <div class="flex-1">
-                                    <div class="text-sm font-medium text-gray-900">${client.clientName}</div>
-                                    <div class="text-xs text-purple-600 font-medium mt-1">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</div>
+                                <!-- Client Row Edit Button -->
+                                <div class="ml-2 flex-shrink-0">
+                                    <button onclick="editClientRow('${order.id}', ${client.clientId})" class="p-1 transition-colors ${isClientPaymentComplete ? 'text-green-600 hover:text-green-800' : 'text-gray-400 hover:text-blue-600'}" title="${isClientPaymentComplete ? 'Payment Complete - Manage client' : 'Edit client row'}" aria-label="Edit client ${client.clientName}">
+                                        ${isClientPaymentComplete ? `
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                        ` : `
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        `}
+                                    </button>
                                 </div>
                             </div>
                         </td>
-                        <td headers="product-header" role="gridcell">
+                        <td class="${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="product-header" role="gridcell">
                             <div class="space-y-2">
                                 ${client.items.map((item, itemIndex) => `
                                     <div class="flex items-start" role="group" aria-label="Product ${itemIndex + 1} details">
@@ -2178,8 +2821,18 @@
                                 `).join('')}
                             </div>
                         </td>
-                        <td class="text-right text-sm font-semibold text-gray-900" headers="quantity-header" role="gridcell">${clientTotalItems}</td>
-                        <td class="text-right text-sm font-bold text-purple-700" headers="total-cost-header" role="gridcell" aria-label="Client total: $${clientTotalCost.toFixed(2)}">$${clientTotalCost.toFixed(2)}</td>
+                        <td class="text-right text-sm font-semibold text-gray-900 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="quantity-header" role="gridcell">${clientTotalItems}</td>
+                        <td class="text-right text-sm font-bold text-purple-700 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="total-cost-header" role="gridcell" aria-label="Client total: $${clientTotalCost.toFixed(2)}">$${clientTotalCost.toFixed(2)}</td>
+                        <td class="text-center ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="notifications-header" role="gridcell">
+                            <div class="notification-list">
+                                ${renderClientNotifications(client)}
+                            </div>
+                            <button onclick="openClientNotificationModal('${order.id}', ${client.clientId})" class="mt-2 text-xs text-purple-600 hover:text-purple-800 font-medium" title="Manage notifications for ${client.clientName}">
+                                <svg class="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM12 3v6m0 0l-3-3m3 3l3-3M3 12h6m0 0l-3-3m3 3l-3 3"></path>
+                                </svg>
+                            </button>
+                        </td>
                         ${clientIndex === 0 ? `
                             <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status)}</td>
                             <td rowspan="${order.clients.length}" class="text-center" headers="actions-header" role="gridcell">
@@ -2221,11 +2874,7 @@
                                     
                                     <!-- Action Buttons -->
                                     <div class="flex items-center justify-center space-x-2">
-                                        <button onclick="editOrder('${order.id}')" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit order" aria-label="Edit order ${order.id}">
-                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                            </svg>
-                                        </button>
+
                                         <button onclick="trackOrder('${order.id}')" class="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Track order" aria-label="Track order ${order.id}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
@@ -2240,6 +2889,12 @@
                                         <button onclick="deleteOrder('${order.id}')" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Cancel order" aria-label="Cancel order ${order.id}">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="showNotificationsModal('${order.id}')" class="p-1 text-gray-400 hover:text-yellow-600 transition-colors" title="Manage notifications" aria-label="Manage notifications for order ${order.id}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-3.5-3.5a8.959 8.959 0 010-11L21 1h-5c-4.418 0-8 3.582-8 8s3.582 8 8 8z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m-6-8h6"></path>
                                             </svg>
                                         </button>
                                     </div>
@@ -2394,7 +3049,119 @@
 
         // Order actions
         function editOrder(id) {
-            alert(`Editing order: ${id}`);
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+            
+            const options = [
+                'Edit Order Details',
+                'Mark as Payment Complete',
+                'Change Status',
+                'Cancel'
+            ];
+            
+            const choice = prompt(`Select action for Order ${id}:\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n4. ${options[3]}\n\nEnter your choice (1-4):`);
+            
+            switch(choice) {
+                case '1':
+                    alert(`Opening edit form for order: ${id}`);
+                    // Here you would open a full edit modal
+                    break;
+                case '2':
+                    markPaymentComplete(id);
+                    break;
+                case '3':
+                    changeOrderStatus(id);
+                    break;
+                case '4':
+                default:
+                    return;
+            }
+        }
+
+        function markPaymentComplete(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+            
+            if (confirm(`Mark payment as complete for Order ${id}?`)) {
+                order.status = 'payment-complete';
+                order.paymentCompleteDate = new Date().toISOString().split('T')[0];
+                renderOrders();
+                alert(`Order ${id} marked as payment complete!`);
+            }
+        }
+
+        function editClientRow(orderId, clientIndex) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.clients || !order.clients[clientIndex]) return;
+            
+            const client = order.clients[clientIndex];
+            const clientName = client.name || 'Unknown Client';
+            
+            const options = [
+                'Edit Client Details',
+                client.paymentStatus === 'payment-complete' ? 'Mark as Payment Pending' : 'Mark as Payment Complete',
+                'Cancel'
+            ];
+            
+            const choice = prompt(`Select action for ${clientName} in Order ${orderId}:\n\n1. ${options[0]}\n2. ${options[1]}\n3. ${options[2]}\n\nEnter your choice (1-3):`);
+            
+            switch(choice) {
+                case '1':
+                    alert(`Opening edit form for client: ${clientName} in order ${orderId}`);
+                    // Here you would open a client edit modal
+                    break;
+                case '2':
+                    toggleClientPaymentStatus(orderId, clientIndex);
+                    break;
+                case '3':
+                default:
+                    return;
+            }
+        }
+
+        function toggleClientPaymentStatus(orderId, clientIndex) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.clients || !order.clients[clientIndex]) return;
+            
+            const client = order.clients[clientIndex];
+            const clientName = client.name || 'Unknown Client';
+            const isCurrentlyComplete = client.paymentStatus === 'payment-complete';
+            
+            const action = isCurrentlyComplete ? 'mark as payment pending' : 'mark as payment complete';
+            
+            if (confirm(`${action.charAt(0).toUpperCase() + action.slice(1)} for ${clientName} in Order ${orderId}?`)) {
+                if (isCurrentlyComplete) {
+                    client.paymentStatus = 'pending';
+                    delete client.paymentCompleteDate;
+                } else {
+                    client.paymentStatus = 'payment-complete';
+                    client.paymentCompleteDate = new Date().toISOString().split('T')[0];
+                }
+                
+                renderOrders();
+                alert(`${clientName} payment status updated!`);
+            }
+        }
+
+        function changeOrderStatus(id) {
+            const order = orders.find(o => o.id === id);
+            if (!order) return;
+            
+            const statusOptions = Object.keys(customStatuses).map((key, index) => 
+                `${index + 1}. ${customStatuses[key].label}`
+            ).join('\n');
+            
+            const choice = prompt(`Select new status for Order ${id}:\n\n${statusOptions}\n\nEnter your choice (1-${Object.keys(customStatuses).length}):`);
+            
+            const statusKeys = Object.keys(customStatuses);
+            const selectedIndex = parseInt(choice) - 1;
+            
+            if (selectedIndex >= 0 && selectedIndex < statusKeys.length) {
+                const newStatus = statusKeys[selectedIndex];
+                order.status = newStatus;
+                renderOrders();
+                alert(`Order ${id} status changed to ${customStatuses[newStatus].label}!`);
+            }
         }
 
         function trackOrder(id) {
@@ -2850,6 +3617,22 @@
                 alert(`Status "${statusLabel}" added successfully!`);
             } else {
                 alert('Failed to add status. Status name may already exist.');
+            }
+        });
+
+        // Notification Modal Event Listeners
+        document.getElementById('closeNotificationModalBtn').addEventListener('click', closeNotificationModal);
+        document.getElementById('cancelNotificationBtn').addEventListener('click', closeNotificationModal);
+        document.getElementById('addNotificationSectionBtn').addEventListener('click', addNotificationSection);
+        
+        document.getElementById('notificationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveNotifications();
+        });
+
+        document.getElementById('notificationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeNotificationModal();
             }
         });
 
