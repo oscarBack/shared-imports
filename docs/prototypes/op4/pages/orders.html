@@ -1479,6 +1479,101 @@
         </div>
     </div>
 
+    <!-- Client Edit Modal -->
+    <div id="clientEditModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="clientEditModalTitle" class="text-xl font-bold text-gray-900">Edit Client Details</h2>
+                    <button id="closeClientEditModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6">
+                    <form id="clientEditForm" class="space-y-6">
+                        <!-- Client Basic Information -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Client Information</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="editClientName" class="block text-sm font-medium text-gray-700 mb-2">Client Name</label>
+                                    <input type="text" id="editClientName" name="clientName" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                           required>
+                                </div>
+                                <div>
+                                    <label for="editClientId" class="block text-sm font-medium text-gray-700 mb-2">Client ID</label>
+                                    <select id="editClientId" name="clientId" 
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                            required>
+                                        <option value="">Select Client</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Payment Status -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <h3 class="text-lg font-semibold text-gray-800 mb-4">Payment Status</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="editPaymentStatus" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                    <select id="editPaymentStatus" name="paymentStatus" 
+                                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                        <option value="pending">Pending</option>
+                                        <option value="completed">Completed</option>
+                                        <option value="payment-complete">Payment Complete</option>
+                                        <option value="partial">Partial</option>
+                                        <option value="cancelled">Cancelled</option>
+                                    </select>
+                                </div>
+                                <div id="paymentDateContainer" class="hidden">
+                                    <label for="editPaymentCompleteDate" class="block text-sm font-medium text-gray-700 mb-2">Payment Complete Date</label>
+                                    <input type="date" id="editPaymentCompleteDate" name="paymentCompleteDate" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Client Items -->
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <div class="flex items-center justify-between mb-4">
+                                <h3 class="text-lg font-semibold text-gray-800">Client Items</h3>
+                                <button type="button" id="addClientItemBtn" 
+                                        class="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors">
+                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Add Item
+                                </button>
+                            </div>
+                            <div id="clientItemsList" class="space-y-4">
+                                <!-- Dynamic items will be inserted here -->
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                            <button type="button" id="cancelClientEditBtn" 
+                                    class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" 
+                                    class="px-6 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                                Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sample data for relationships
         const sampleClients = [
@@ -2671,6 +2766,258 @@
             openClientNotificationModal(order.id, clientId);
         }
 
+        // Client Edit Modal Functions
+        let currentEditingClientOrderId = null;
+        let currentEditingClientIndex = null;
+
+        function openClientEditModal(orderId, clientIndex) {
+            currentEditingClientOrderId = orderId;
+            currentEditingClientIndex = clientIndex;
+            
+            const order = orders.find(o => o.id === orderId);
+            if (!order || !order.clients || !order.clients[clientIndex]) return;
+            
+            const client = order.clients[clientIndex];
+            
+            // Set modal title
+            document.getElementById('clientEditModalTitle').textContent = 
+                `Edit Client Details - ${client.clientName} (${orderId})`;
+            
+            // Populate client information
+            document.getElementById('editClientName').value = client.clientName || '';
+            populateClientIdSelect();
+            document.getElementById('editClientId').value = client.clientId || '';
+            
+            // Populate payment status
+            document.getElementById('editPaymentStatus').value = client.paymentStatus || 'pending';
+            updatePaymentDateVisibility();
+            
+            if (client.paymentCompleteDate) {
+                document.getElementById('editPaymentCompleteDate').value = client.paymentCompleteDate;
+            }
+            
+            // Populate client items
+            populateClientItems(client.items || []);
+            
+            // Show modal
+            document.getElementById('clientEditModal').classList.remove('hidden');
+            
+            // Focus management
+            setTimeout(() => {
+                document.getElementById('editClientName').focus();
+            }, 100);
+        }
+
+        function closeClientEditModal() {
+            document.getElementById('clientEditModal').classList.add('hidden');
+            currentEditingClientOrderId = null;
+            currentEditingClientIndex = null;
+            
+            // Reset form
+            document.getElementById('clientEditForm').reset();
+            document.getElementById('clientItemsList').innerHTML = '';
+        }
+
+        function populateClientIdSelect() {
+            const select = document.getElementById('editClientId');
+            select.innerHTML = '<option value="">Select Client</option>';
+            
+            sampleClients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.id;
+                option.textContent = `${client.name} (ID: ${client.id})`;
+                select.appendChild(option);
+            });
+        }
+
+        function updatePaymentDateVisibility() {
+            const paymentStatus = document.getElementById('editPaymentStatus').value;
+            const container = document.getElementById('paymentDateContainer');
+            
+            if (paymentStatus === 'completed' || paymentStatus === 'payment-complete') {
+                container.classList.remove('hidden');
+            } else {
+                container.classList.add('hidden');
+            }
+        }
+
+        function populateClientItems(items) {
+            const container = document.getElementById('clientItemsList');
+            container.innerHTML = '';
+            
+            items.forEach((item, index) => {
+                addClientItemRow(item, index);
+            });
+            
+            // Add one empty row if no items
+            if (items.length === 0) {
+                addClientItemRow(null, 0);
+            }
+        }
+
+        function addClientItemRow(item = null, index = 0) {
+            const container = document.getElementById('clientItemsList');
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'client-item-row border border-gray-200 p-4 rounded-lg';
+            itemDiv.dataset.itemIndex = index;
+            
+            itemDiv.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Product</label>
+                        <select name="productId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" onchange="updateItemPrice(this)">
+                            <option value="">Select Product</option>
+                            ${sampleProducts.map(product => 
+                                `<option value="${product.id}" ${item && item.productId === product.id ? 'selected' : ''}>
+                                    ${product.name} - $${product.price}
+                                </option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Quantity</label>
+                        <input type="number" name="quantity" min="1" value="${item ? item.quantity : 1}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                               onchange="updateItemTotalCost(this)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Unit Price</label>
+                        <input type="number" name="unitPrice" step="0.01" min="0" value="${item ? item.unitPrice : 0}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                               onchange="updateItemTotalCost(this)">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Total Cost</label>
+                        <input type="number" name="totalCost" step="0.01" min="0" value="${item ? item.totalCost : 0}" 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" readonly>
+                    </div>
+                </div>
+                <div class="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Seller</label>
+                        <select name="sellerId" class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            <option value="">Select Seller</option>
+                            ${sampleSellers.map(seller => 
+                                `<option value="${seller.id}" ${item && item.sellerId === seller.id ? 'selected' : ''}>
+                                    ${seller.name} - ${seller.location}
+                                </option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Tags</label>
+                        <input type="text" name="tags" value="${item && item.tags ? item.tags.join(', ') : ''}" 
+                               placeholder="electronics, signature-required, etc."
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    </div>
+                </div>
+                <div class="mt-4 flex justify-end">
+                    <button type="button" onclick="removeClientItemRow(this)" 
+                            class="text-red-600 hover:text-red-800 px-3 py-1 border border-red-300 rounded-md hover:bg-red-50 transition-colors">
+                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        Remove Item
+                    </button>
+                </div>
+            `;
+            
+            container.appendChild(itemDiv);
+        }
+
+        function updateItemPrice(selectElement) {
+            const itemRow = selectElement.closest('.client-item-row');
+            const productId = parseInt(selectElement.value);
+            const product = sampleProducts.find(p => p.id === productId);
+            
+            if (product) {
+                const unitPriceInput = itemRow.querySelector('input[name="unitPrice"]');
+                unitPriceInput.value = product.price;
+                updateItemTotalCost(unitPriceInput);
+            }
+        }
+
+        function updateItemTotalCost(input) {
+            const itemRow = input.closest('.client-item-row');
+            const quantity = parseFloat(itemRow.querySelector('input[name="quantity"]').value) || 0;
+            const unitPrice = parseFloat(itemRow.querySelector('input[name="unitPrice"]').value) || 0;
+            const totalCostInput = itemRow.querySelector('input[name="totalCost"]');
+            
+            const totalCost = quantity * unitPrice;
+            totalCostInput.value = totalCost.toFixed(2);
+        }
+
+        function removeClientItemRow(button) {
+            const container = document.getElementById('clientItemsList');
+            if (container.children.length > 1) {
+                button.closest('.client-item-row').remove();
+            } else {
+                // Don't remove the last item, just clear it
+                const itemRow = button.closest('.client-item-row');
+                itemRow.querySelectorAll('input, select').forEach(field => {
+                    if (field.name !== 'quantity') {
+                        field.value = '';
+                    } else {
+                        field.value = '1';
+                    }
+                });
+            }
+        }
+
+        function saveClientChanges() {
+            if (!currentEditingClientOrderId || currentEditingClientIndex === null) return;
+            
+            const order = orders.find(o => o.id === currentEditingClientOrderId);
+            if (!order || !order.clients || !order.clients[currentEditingClientIndex]) return;
+            
+            const client = order.clients[currentEditingClientIndex];
+            const form = document.getElementById('clientEditForm');
+            const formData = new FormData(form);
+            
+            // Update client basic information
+            client.clientName = formData.get('clientName');
+            client.clientId = parseInt(formData.get('clientId'));
+            client.paymentStatus = formData.get('paymentStatus');
+            client.paymentCompleteDate = formData.get('paymentCompleteDate') || null;
+            
+            // Update client items
+            const itemRows = document.querySelectorAll('.client-item-row');
+            client.items = [];
+            
+            itemRows.forEach(row => {
+                const productId = parseInt(row.querySelector('select[name="productId"]').value);
+                const sellerId = parseInt(row.querySelector('select[name="sellerId"]').value);
+                const quantity = parseInt(row.querySelector('input[name="quantity"]').value);
+                const unitPrice = parseFloat(row.querySelector('input[name="unitPrice"]').value);
+                const totalCost = parseFloat(row.querySelector('input[name="totalCost"]').value);
+                const tags = row.querySelector('input[name="tags"]').value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                
+                if (productId && sellerId && quantity > 0) {
+                    const product = sampleProducts.find(p => p.id === productId);
+                    const seller = sampleSellers.find(s => s.id === sellerId);
+                    
+                    client.items.push({
+                        sellerId: sellerId,
+                        sellerName: seller ? seller.name : '',
+                        productId: productId,
+                        productName: product ? product.name : '',
+                        quantity: quantity,
+                        unitPrice: unitPrice,
+                        totalCost: totalCost,
+                        tags: tags
+                    });
+                }
+            });
+            
+            // Save to localStorage and update display
+            localStorage.setItem('ordersData', JSON.stringify(orders));
+            renderOrders();
+            closeClientEditModal();
+            
+            // Show success message
+            alert(`Client details updated successfully for ${client.clientName}!`);
+        }
+
         // Render orders
         function renderOrders() {
             const ordersToShow = filteredOrders.slice(0, displayedCount);
@@ -3107,8 +3454,7 @@
             
             switch(choice) {
                 case '1':
-                    alert(`Opening edit form for client: ${clientName} in order ${orderId}`);
-                    // Here you would open a client edit modal
+                    openClientEditModal(orderId, clientIndex);
                     break;
                 case '2':
                     toggleClientPaymentStatus(orderId, clientIndex);
@@ -3633,6 +3979,29 @@
         document.getElementById('notificationModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeNotificationModal();
+            }
+        });
+
+        // Client Edit Modal Event Listeners
+        document.getElementById('closeClientEditModalBtn').addEventListener('click', closeClientEditModal);
+        document.getElementById('cancelClientEditBtn').addEventListener('click', closeClientEditModal);
+        
+        document.getElementById('addClientItemBtn').addEventListener('click', function() {
+            const container = document.getElementById('clientItemsList');
+            const nextIndex = container.children.length;
+            addClientItemRow(null, nextIndex);
+        });
+        
+        document.getElementById('editPaymentStatus').addEventListener('change', updatePaymentDateVisibility);
+        
+        document.getElementById('clientEditForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            saveClientChanges();
+        });
+
+        document.getElementById('clientEditModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeClientEditModal();
             }
         });
 
