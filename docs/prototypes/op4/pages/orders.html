@@ -299,6 +299,295 @@
         .order-image-fallback svg {
             margin-bottom: 8px;
         }
+
+        /* Collections section styles */
+        .collections-section {
+            background: linear-gradient(135deg, #fafbff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 8px 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .collections-header {
+            background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+            border-bottom: 1px solid #cbd5e1;
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .collections-header:hover {
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+        }
+
+        .collections-header.expanded {
+            border-bottom-color: #94a3b8;
+        }
+
+        .collections-chevron {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .collections-chevron.rotated {
+            transform: rotate(90deg);
+        }
+
+        .collections-container {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .collections-container.expanded {
+            max-height: 400px;
+        }
+
+        .collection-item {
+            border-left: 3px solid transparent;
+            position: relative;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            margin: 2px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.7);
+        }
+
+        .collection-item:first-child {
+            margin-top: 8px;
+        }
+
+        .collection-item:last-child {
+            margin-bottom: 8px;
+        }
+
+        .collection-item.all-orders {
+            background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+            border-left-color: #8b5cf6;
+            font-weight: 600;
+            margin: 8px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.1);
+        }
+
+        .collection-item.all-orders .collection-name {
+            color: #7c3aed;
+        }
+
+        .collection-item.all-orders .collection-count {
+            background: #8b5cf6;
+            color: white;
+            font-weight: 600;
+        }
+
+        .collection-item.active {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(139, 92, 246, 0.1) 100%);
+            border-left-color: #8b5cf6;
+            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.2);
+            transform: translateX(2px);
+        }
+
+        .collection-item.active .collection-name {
+            color: #7c3aed;
+            font-weight: 600;
+        }
+
+        .collection-item:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.9);
+            border-left-color: rgba(139, 92, 246, 0.4);
+            transform: translateX(1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .collection-color-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .collection-name {
+            color: #475569;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .collection-count {
+            background: #f1f5f9;
+            color: #64748b;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .collection-actions {
+            opacity: 0;
+            transform: translateX(8px);
+            transition: all 0.2s ease;
+        }
+
+        .collection-item:hover .collection-actions {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .collection-action-btn {
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+
+        .collection-action-btn:hover {
+            background: white;
+            border-color: #cbd5e1;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .collection-edit-btn:hover {
+            color: #3b82f6;
+            background: #eff6ff;
+            border-color: #bfdbfe;
+        }
+
+        .collection-delete-btn:hover {
+            color: #ef4444;
+            background: #fef2f2;
+            border-color: #fecaca;
+        }
+
+        .collections-empty-state {
+            text-align: center;
+            padding: 24px 16px;
+            background: linear-gradient(135deg, #fafbff 0%, #f8fafc 100%);
+            border: 2px dashed #cbd5e1;
+            border-radius: 8px;
+            margin: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .collections-empty-state:hover {
+            border-color: #8b5cf6;
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+        }
+
+        .collections-empty-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 12px;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .collections-empty-state:hover .collections-empty-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            transform: scale(1.05);
+        }
+
+        .collections-empty-state:hover .collections-empty-icon svg {
+            color: white;
+        }
+
+        .add-collection-quick-btn {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.3);
+        }
+
+        .add-collection-quick-btn:hover {
+            background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(139, 92, 246, 0.4);
+        }
+
+        .collections-header-btn {
+            background: rgba(139, 92, 246, 0.1);
+            color: #7c3aed;
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 6px;
+            padding: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .collections-header-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .collection-item {
+                padding: 8px 12px;
+            }
+            
+            .collection-actions {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            
+            .collections-empty-state {
+                padding: 16px 12px;
+            }
+            
+            .collections-empty-icon {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        .collection-color-btn.selected {
+            border-color: #374151;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+
+        .collection-color-purple { background-color: #8b5cf6; }
+        .collection-color-blue { background-color: #3b82f6; }
+        .collection-color-green { background-color: #10b981; }
+        .collection-color-yellow { background-color: #f59e0b; }
+        .collection-color-red { background-color: #ef4444; }
+        .collection-color-indigo { background-color: #6366f1; }
+        .collection-color-pink { background-color: #ec4899; }
+        .collection-color-gray { background-color: #6b7280; }
+
+        .collection-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: white;
+        }
+
+        .collection-badge.purple { background-color: #8b5cf6; }
+        .collection-badge.blue { background-color: #3b82f6; }
+        .collection-badge.green { background-color: #10b981; }
+        .collection-badge.yellow { background-color: #f59e0b; }
+        .collection-badge.red { background-color: #ef4444; }
+        .collection-badge.indigo { background-color: #6366f1; }
+        .collection-badge.pink { background-color: #ec4899; }
+        .collection-badge.gray { background-color: #6b7280; }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -366,6 +655,68 @@
                 </svg>
                 Orders
             </a>
+
+            <!-- Collections Section -->
+            <div class="collections-section">
+                <div class="collections-header" id="collectionsHeader">
+                    <div class="flex items-center justify-between">
+                        <button id="collectionsToggle" class="flex items-center space-x-2 text-sm font-semibold text-gray-700 hover:text-purple-600 transition-colors">
+                            <svg id="collectionsChevron" class="w-4 h-4 collections-chevron rotated" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                            </svg>
+                            <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                            <span class="text-gray-700">Collections</span>
+                        </button>
+                        <button id="addCollectionBtn" class="collections-header-btn" title="Create New Collection" aria-label="Create new collection">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div id="collectionsContainer" class="collections-container expanded">
+                    <!-- All Orders Collection - Always Visible -->
+                    <div class="collection-item all-orders active" data-collection-id="all" role="button" tabindex="0" aria-label="View all orders">
+                        <div class="flex items-center justify-between px-3 py-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="collection-color-indicator" style="background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);"></div>
+                                <div class="flex items-center space-x-2">
+                                    <svg class="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
+                                    </svg>
+                                    <span class="collection-name">All Orders</span>
+                                </div>
+                            </div>
+                            <span class="collection-count" id="allOrdersCount">0</span>
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Collections Container -->
+                    <div id="collectionsListContainer">
+                        <!-- Custom collections will be populated here -->
+                    </div>
+                    
+                    <!-- Enhanced Empty State -->
+                    <div id="collectionsEmptyState" class="collections-empty-state">
+                        <div class="collections-empty-icon">
+                            <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                            </svg>
+                        </div>
+                        <h4 class="font-semibold text-gray-700 mb-1">No Collections Yet</h4>
+                        <p class="text-sm text-gray-500 mb-3">Organize your orders with custom collections</p>
+                        <button class="add-collection-quick-btn" onclick="openCollectionModal()" aria-label="Create your first collection">
+                            <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Create Collection
+                        </button>
+                    </div>
+                </div>
+            </div>
         </nav>
 
         <!-- User Profile -->
@@ -546,6 +897,12 @@
                                 <option value="urgent">Urgent</option>
                                 <option value="express">Express</option>
                                 <option value="standard">Standard</option>
+                            </select>
+
+                            <!-- Collection Filter -->
+                            <select id="collectionFilter" class="border border-gray-300 rounded-none px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                                <option value="">All Collections</option>
+                                <!-- Collection options will be populated dynamically -->
                             </select>
 
                             <!-- Sort -->
@@ -879,6 +1236,86 @@
         </div>
     </div>
 
+    <!-- Collection Management Modal -->
+    <div id="collectionModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="collectionModalTitle" class="text-xl font-semibold text-gray-900">Create Collection</h2>
+                    <button id="closeCollectionModalBtn" class="p-2 rounded-none hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <form id="collectionForm">
+                        <!-- Collection Name -->
+                        <div class="mb-6">
+                            <label for="collectionName" class="block text-sm font-medium text-gray-700 mb-2">Collection Name</label>
+                            <input 
+                                type="text" 
+                                id="collectionName" 
+                                name="collectionName"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                placeholder="Enter collection name..."
+                                required
+                                maxlength="50"
+                            >
+                            <p class="text-xs text-gray-500 mt-1">Choose a descriptive name for your collection</p>
+                        </div>
+
+                        <!-- Collection Description -->
+                        <div class="mb-6">
+                            <label for="collectionDescription" class="block text-sm font-medium text-gray-700 mb-2">Description (Optional)</label>
+                            <textarea 
+                                id="collectionDescription" 
+                                name="collectionDescription"
+                                rows="3"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                placeholder="Brief description of this collection..."
+                                maxlength="200"
+                            ></textarea>
+                            <p class="text-xs text-gray-500 mt-1">Optional description to help identify this collection</p>
+                        </div>
+
+                        <!-- Collection Color -->
+                        <div class="mb-6">
+                            <label class="block text-sm font-medium text-gray-700 mb-3">Collection Color</label>
+                            <div class="flex flex-wrap gap-2">
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500" data-color="purple" aria-label="Purple"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500" data-color="blue" aria-label="Blue"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500" data-color="green" aria-label="Green"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-yellow-500" data-color="yellow" aria-label="Yellow"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-red-500 focus:outline-none focus:ring-2 focus:ring-red-500" data-color="red" aria-label="Red"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500" data-color="indigo" aria-label="Indigo"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-pink-500 focus:outline-none focus:ring-2 focus:ring-pink-500" data-color="pink" aria-label="Pink"></button>
+                                <button type="button" class="collection-color-btn w-8 h-8 rounded-full border-2 border-gray-300 bg-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500" data-color="gray" aria-label="Gray"></button>
+                            </div>
+                            <input type="hidden" id="selectedCollectionColor" name="collectionColor" value="purple">
+                        </div>
+
+                        <!-- Modal Actions -->
+                        <div class="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                            <button type="button" id="cancelCollectionBtn" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-none transition-colors">
+                                Cancel
+                            </button>
+                            <button type="submit" id="saveCollectionBtn" class="px-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-none transition-colors">
+                                <span id="saveCollectionBtnText">Create Collection</span>
+                            </button>
+                            <button type="button" id="deleteCollectionBtn" class="hidden px-4 py-2 bg-red-600 text-white hover:bg-red-700 rounded-none transition-colors">
+                                Delete Collection
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sample data for relationships
         const sampleClients = [
@@ -1077,6 +1514,420 @@
         let orders = [...sampleOrders];
         let filteredOrders = [...orders];
         let displayedCount = 10;
+
+        // Collections Management System
+        let collections = JSON.parse(localStorage.getItem('orderCollections')) || {};
+        let currentSelectedCollection = null;
+        let editingCollectionId = null;
+
+        // Collection CRUD Operations
+        function createCollection(name, description, color) {
+            const id = 'collection_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            collections[id] = {
+                id: id,
+                name: name.trim(),
+                description: description.trim(),
+                color: color,
+                orderIds: [],
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString()
+            };
+            saveCollections();
+            return id;
+        }
+
+        function updateCollection(id, name, description, color) {
+            if (!collections[id]) return false;
+            collections[id].name = name.trim();
+            collections[id].description = description.trim();
+            collections[id].color = color;
+            collections[id].updatedAt = new Date().toISOString();
+            saveCollections();
+            return true;
+        }
+
+        function deleteCollection(id) {
+            if (!collections[id]) return false;
+            delete collections[id];
+            saveCollections();
+            return true;
+        }
+
+        function addOrderToCollection(collectionId, orderId) {
+            if (!collections[collectionId]) return false;
+            if (!collections[collectionId].orderIds.includes(orderId)) {
+                collections[collectionId].orderIds.push(orderId);
+                collections[collectionId].updatedAt = new Date().toISOString();
+                saveCollections();
+            }
+            return true;
+        }
+
+        function removeOrderFromCollection(collectionId, orderId) {
+            if (!collections[collectionId]) return false;
+            const index = collections[collectionId].orderIds.indexOf(orderId);
+            if (index > -1) {
+                collections[collectionId].orderIds.splice(index, 1);
+                collections[collectionId].updatedAt = new Date().toISOString();
+                saveCollections();
+            }
+            return true;
+        }
+
+        function saveCollections() {
+            localStorage.setItem('orderCollections', JSON.stringify(collections));
+            renderCollections();
+            populateCollectionFilter();
+            updateOrdersDisplay();
+        }
+
+        function getOrdersInCollection(collectionId) {
+            if (collectionId === 'all') return orders;
+            if (!collections[collectionId]) return [];
+            return orders.filter(order => collections[collectionId].orderIds.includes(order.id));
+        }
+
+        function getCollectionColor(color) {
+            const colorMap = {
+                purple: '#8b5cf6',
+                blue: '#3b82f6',
+                green: '#10b981',
+                yellow: '#f59e0b',
+                red: '#ef4444',
+                indigo: '#6366f1',
+                pink: '#ec4899',
+                gray: '#6b7280'
+            };
+            return colorMap[color] || colorMap.purple;
+        }
+
+        // Collection UI Management
+        function renderCollections() {
+            const collectionsListContainer = document.getElementById('collectionsListContainer');
+            const emptyState = document.getElementById('collectionsEmptyState');
+            
+            // Update all orders count
+            document.getElementById('allOrdersCount').textContent = orders.length;
+            
+            // Clear existing custom collections
+            collectionsListContainer.innerHTML = '';
+            
+            const collectionKeys = Object.keys(collections);
+            
+            if (collectionKeys.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+                
+                collectionKeys.forEach(collectionId => {
+                    const collection = collections[collectionId];
+                    const orderCount = collection.orderIds.length;
+                    
+                    const collectionItem = document.createElement('div');
+                    collectionItem.className = `collection-item cursor-pointer`;
+                    collectionItem.setAttribute('data-collection-id', collectionId);
+                    collectionItem.setAttribute('role', 'button');
+                    collectionItem.setAttribute('tabindex', '0');
+                    collectionItem.setAttribute('aria-label', `${collection.name} collection with ${orderCount} orders`);
+                    
+                    collectionItem.innerHTML = `
+                        <div class="flex items-center justify-between px-3 py-3">
+                            <div class="flex items-center space-x-3">
+                                <div class="collection-color-indicator" style="background-color: ${getCollectionColor(collection.color)}"></div>
+                                <div class="flex items-center space-x-2">
+                                    <span class="collection-name" title="${collection.description || collection.name}">${collection.name}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="collection-count">${orderCount}</span>
+                                <div class="collection-actions flex space-x-1">
+                                    <button class="collection-action-btn collection-edit-btn" title="Edit ${collection.name}" data-collection-id="${collectionId}" aria-label="Edit collection ${collection.name}">
+                                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                        </svg>
+                                    </button>
+                                    <button class="collection-action-btn collection-delete-btn" title="Delete ${collection.name}" data-collection-id="${collectionId}" aria-label="Delete collection ${collection.name}">
+                                        <svg class="w-3 h-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    // Add click handler for selection
+                    collectionItem.addEventListener('click', (e) => {
+                        if (!e.target.closest('.collection-edit-btn') && !e.target.closest('.collection-delete-btn')) {
+                            selectCollection(collectionId);
+                        }
+                    });
+
+                    // Add keyboard support
+                    collectionItem.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            if (!e.target.closest('.collection-edit-btn') && !e.target.closest('.collection-delete-btn')) {
+                                selectCollection(collectionId);
+                            }
+                        }
+                    });
+                    
+                    collectionsListContainer.appendChild(collectionItem);
+                });
+            }
+            
+            // Add event listeners for edit and delete buttons
+            addCollectionActionListeners();
+        }
+
+        function addCollectionActionListeners() {
+            // Edit buttons
+            document.querySelectorAll('.collection-edit-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const collectionId = e.currentTarget.getAttribute('data-collection-id');
+                    openCollectionModal(collectionId);
+                });
+            });
+            
+            // Delete buttons
+            document.querySelectorAll('.collection-delete-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const collectionId = e.currentTarget.getAttribute('data-collection-id');
+                    confirmDeleteCollection(collectionId);
+                });
+            });
+        }
+
+        function selectCollection(collectionId) {
+            // Update active state - remove from all collections
+            document.querySelectorAll('.collection-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Add active state to selected collection
+            const selectedItem = document.querySelector(`[data-collection-id="${collectionId}"]`);
+            if (selectedItem) {
+                selectedItem.classList.add('active');
+                
+                // Add focus indication for accessibility
+                selectedItem.focus();
+            }
+            
+            currentSelectedCollection = collectionId;
+            
+            // Update collection filter dropdown
+            const collectionFilter = document.getElementById('collectionFilter');
+            if (collectionFilter) {
+                collectionFilter.value = collectionId === 'all' ? '' : collectionId;
+            }
+            
+            // Apply filters to show orders from selected collection
+            applyFilters();
+            
+            // Provide audio feedback for screen readers
+            const collectionName = collectionId === 'all' ? 'All Orders' : 
+                (collections[collectionId] ? collections[collectionId].name : 'Unknown Collection');
+            
+            // Announce the selection
+            announceToScreenReader(`Selected ${collectionName} collection`);
+        }
+
+        // Helper function for screen reader announcements
+        function announceToScreenReader(message) {
+            const announcement = document.createElement('div');
+            announcement.setAttribute('aria-live', 'polite');
+            announcement.setAttribute('aria-atomic', 'true');
+            announcement.className = 'sr-only';
+            announcement.textContent = message;
+            
+            document.body.appendChild(announcement);
+            
+            // Remove after announcement
+            setTimeout(() => {
+                document.body.removeChild(announcement);
+            }, 1000);
+        }
+
+        function populateCollectionFilter() {
+            const collectionFilter = document.getElementById('collectionFilter');
+            const currentValue = collectionFilter.value;
+            
+            collectionFilter.innerHTML = '<option value="">All Collections</option>';
+            
+            Object.keys(collections).forEach(collectionId => {
+                const collection = collections[collectionId];
+                const option = document.createElement('option');
+                option.value = collectionId;
+                option.textContent = `${collection.name} (${collection.orderIds.length})`;
+                collectionFilter.appendChild(option);
+            });
+            
+            // Restore selection
+            collectionFilter.value = currentValue;
+        }
+
+        // Collection Modal Management
+        function openCollectionModal(collectionId = null) {
+            const modal = document.getElementById('collectionModal');
+            const form = document.getElementById('collectionForm');
+            const title = document.getElementById('collectionModalTitle');
+            const saveBtn = document.getElementById('saveCollectionBtnText');
+            const deleteBtn = document.getElementById('deleteCollectionBtn');
+            const nameInput = document.getElementById('collectionName');
+            
+            editingCollectionId = collectionId;
+            
+            if (collectionId && collections[collectionId]) {
+                // Edit mode
+                const collection = collections[collectionId];
+                title.textContent = 'Edit Collection';
+                saveBtn.textContent = 'Update Collection';
+                deleteBtn.style.display = 'inline-block';
+                
+                document.getElementById('collectionName').value = collection.name;
+                document.getElementById('collectionDescription').value = collection.description;
+                document.getElementById('selectedCollectionColor').value = collection.color;
+                selectCollectionColor(collection.color);
+            } else {
+                // Create mode
+                title.textContent = 'Create Collection';
+                saveBtn.textContent = 'Create Collection';
+                deleteBtn.style.display = 'none';
+                
+                form.reset();
+                document.getElementById('selectedCollectionColor').value = 'purple';
+                selectCollectionColor('purple');
+            }
+            
+            modal.classList.remove('hidden');
+            
+            // Focus management for accessibility
+            setTimeout(() => {
+                nameInput.focus();
+            }, 100);
+            
+            // Trap focus in modal
+            trapFocus(modal);
+        }
+
+        function closeCollectionModal() {
+            const modal = document.getElementById('collectionModal');
+            modal.classList.add('hidden');
+            editingCollectionId = null;
+            document.getElementById('collectionForm').reset();
+            
+            // Return focus to the add collection button
+            document.getElementById('addCollectionBtn').focus();
+        }
+
+        // Focus trap utility for modals
+        function trapFocus(element) {
+            const focusableElements = element.querySelectorAll(
+                'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+            );
+            const firstElement = focusableElements[0];
+            const lastElement = focusableElements[focusableElements.length - 1];
+
+            const handleTabKey = (e) => {
+                if (e.key === 'Tab') {
+                    if (e.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            e.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            e.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+                
+                if (e.key === 'Escape') {
+                    closeCollectionModal();
+                }
+            };
+
+            element.addEventListener('keydown', handleTabKey);
+            
+            // Remove listener when modal is closed
+            const observer = new MutationObserver((mutations) => {
+                mutations.forEach((mutation) => {
+                    if (mutation.attributeName === 'class' && element.classList.contains('hidden')) {
+                        element.removeEventListener('keydown', handleTabKey);
+                        observer.disconnect();
+                    }
+                });
+            });
+            
+            observer.observe(element, { attributes: true });
+        }
+
+        function selectCollectionColor(color) {
+            document.querySelectorAll('.collection-color-btn').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            
+            const selectedBtn = document.querySelector(`[data-color="${color}"]`);
+            if (selectedBtn) {
+                selectedBtn.classList.add('selected');
+            }
+            
+            document.getElementById('selectedCollectionColor').value = color;
+        }
+
+        function confirmDeleteCollection(collectionId) {
+            const collection = collections[collectionId];
+            if (!collection) return;
+            
+            const orderCount = collection.orderIds.length;
+            const message = orderCount > 0 
+                ? `Are you sure you want to delete "${collection.name}"? This collection contains ${orderCount} order(s). The orders will not be deleted, only removed from this collection.`
+                : `Are you sure you want to delete "${collection.name}"?`;
+            
+            if (confirm(message)) {
+                deleteCollection(collectionId);
+                
+                // If this was the selected collection, reset to "All Orders"
+                if (currentSelectedCollection === collectionId) {
+                    selectCollection('all');
+                }
+            }
+        }
+
+        function toggleCollectionsSection() {
+            const container = document.getElementById('collectionsContainer');
+            const chevron = document.getElementById('collectionsChevron');
+            const header = document.getElementById('collectionsHeader');
+            
+            if (container.classList.contains('expanded')) {
+                // Collapse
+                container.classList.remove('expanded');
+                chevron.classList.remove('rotated');
+                header.classList.remove('expanded');
+            } else {
+                // Expand
+                container.classList.add('expanded');
+                chevron.classList.add('rotated');
+                header.classList.add('expanded');
+            }
+        }
+
+        function updateOrdersDisplay() {
+            // Update order count in the all orders collection
+            document.getElementById('allOrdersCount').textContent = orders.length;
+            
+            // Update individual collection counts
+            Object.keys(collections).forEach(collectionId => {
+                const countElement = document.querySelector(`[data-collection-id="${collectionId}"] .text-xs`);
+                if (countElement) {
+                    countElement.textContent = collections[collectionId].orderIds.length;
+                }
+            });
+        }
 
         // Custom Status Management System
         let customStatuses = JSON.parse(localStorage.getItem('customStatuses')) || {
@@ -1332,28 +2183,66 @@
                         ${clientIndex === 0 ? `
                             <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status)}</td>
                             <td rowspan="${order.clients.length}" class="text-center" headers="actions-header" role="gridcell">
-                                <div class="flex items-center justify-center space-x-2" role="group" aria-label="Order actions">
-                                    <button onclick="editOrder('${order.id}')" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit order" aria-label="Edit order ${order.id}">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
-                                        </svg>
-                                    </button>
-                                    <button onclick="trackOrder('${order.id}')" class="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Track order" aria-label="Track order ${order.id}">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                    </button>
-                                    <button onclick="duplicateOrder('${order.id}')" class="p-1 text-gray-400 hover:text-purple-600 transition-colors" title="Duplicate order" aria-label="Duplicate order ${order.id}">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
-                                        </svg>
-                                    </button>
-                                    <button onclick="deleteOrder('${order.id}')" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Cancel order" aria-label="Cancel order ${order.id}">
-                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                                        </svg>
-                                    </button>
+                                <div class="flex flex-col items-center space-y-3" role="group" aria-label="Order actions">
+                                    <!-- Collection Assignment -->
+                                    <div class="w-full">
+                                        <select class="collection-assignment-select text-xs w-full px-2 py-1 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" 
+                                                data-order-id="${order.id}" 
+                                                title="Assign to collection"
+                                                aria-label="Assign order ${order.id} to collection">
+                                            <option value="">Add to Collection</option>
+                                            ${Object.keys(collections).map(collectionId => {
+                                                const collection = collections[collectionId];
+                                                const isAssigned = collection.orderIds.includes(order.id);
+                                                return `<option value="${collectionId}" ${isAssigned ? 'selected' : ''} data-color="${collection.color}">
+                                                    ${isAssigned ? '✓ ' : ''}${collection.name}
+                                                </option>`;
+                                            }).join('')}
+                                        </select>
+                                        
+                                        <!-- Show assigned collections as badges -->
+                                        <div class="mt-1 space-y-1">
+                                            ${Object.keys(collections).filter(cId => collections[cId].orderIds.includes(order.id)).map(cId => {
+                                                const collection = collections[cId];
+                                                return `<div class="collection-badge ${collection.color} text-xs px-2 py-1 rounded-full flex items-center justify-between">
+                                                    <span>${collection.name}</span>
+                                                    <button class="ml-1 text-white hover:text-gray-200 remove-from-collection" 
+                                                            data-order-id="${order.id}" 
+                                                            data-collection-id="${cId}"
+                                                            title="Remove from ${collection.name}">
+                                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>`;
+                                            }).join('')}
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Action Buttons -->
+                                    <div class="flex items-center justify-center space-x-2">
+                                        <button onclick="editOrder('${order.id}')" class="p-1 text-gray-400 hover:text-blue-600 transition-colors" title="Edit order" aria-label="Edit order ${order.id}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="trackOrder('${order.id}')" class="p-1 text-gray-400 hover:text-green-600 transition-colors" title="Track order" aria-label="Track order ${order.id}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="duplicateOrder('${order.id}')" class="p-1 text-gray-400 hover:text-purple-600 transition-colors" title="Duplicate order" aria-label="Duplicate order ${order.id}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                            </svg>
+                                        </button>
+                                        <button onclick="deleteOrder('${order.id}')" class="p-1 text-gray-400 hover:text-red-600 transition-colors" title="Cancel order" aria-label="Cancel order ${order.id}">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </td>
                         ` : ''}
@@ -1524,15 +2413,25 @@
         }
 
         // Filter functionality
+        // Filter functionality
         function applyFilters() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
             const statusFilter = document.getElementById('statusFilter').value;
             const dateFilter = document.getElementById('dateFilter').value;
             const priorityFilter = document.getElementById('priorityFilter').value;
+            const collectionFilter = document.getElementById('collectionFilter').value;
             const sortFilter = document.getElementById('sortFilter').value;
 
+            // Start with base orders - either all orders or orders from selected collection
+            let baseOrders = orders;
+            if (collectionFilter) {
+                baseOrders = getOrdersInCollection(collectionFilter);
+            } else if (currentSelectedCollection && currentSelectedCollection !== 'all') {
+                baseOrders = getOrdersInCollection(currentSelectedCollection);
+            }
+
             // Apply filters
-            filteredOrders = orders.filter(order => {
+            filteredOrders = baseOrders.filter(order => {
                 // Search filter - now searches across all clients and items
                 const clientNamesMatch = order.clients.some(client => 
                     client.clientName.toLowerCase().includes(searchTerm)
@@ -1681,14 +2580,176 @@
         document.getElementById('statusFilter').addEventListener('change', applyFilters);
         document.getElementById('dateFilter').addEventListener('change', applyFilters);
         document.getElementById('priorityFilter').addEventListener('change', applyFilters);
+        document.getElementById('collectionFilter').addEventListener('change', applyFilters);
         document.getElementById('sortFilter').addEventListener('change', applyFilters);
         document.getElementById('clearFiltersBtn').addEventListener('click', () => {
             document.getElementById('searchInput').value = '';
             document.getElementById('statusFilter').value = '';
             document.getElementById('dateFilter').value = '';
             document.getElementById('priorityFilter').value = '';
+            document.getElementById('collectionFilter').value = '';
             document.getElementById('sortFilter').value = 'date-desc';
+            // Reset collection selection
+            currentSelectedCollection = null;
+            document.querySelectorAll('.collection-item').forEach(item => {
+                item.classList.remove('active');
+            });
             applyFilters();
+        });
+
+        // Collection event listeners
+        document.getElementById('collectionsToggle').addEventListener('click', toggleCollectionsSection);
+        
+        // Keyboard navigation for collections toggle
+        document.getElementById('collectionsToggle').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleCollectionsSection();
+            }
+        });
+
+        // Handle clicks on the All Orders collection
+        document.addEventListener('click', (e) => {
+            const allOrdersItem = e.target.closest('[data-collection-id="all"]');
+            if (allOrdersItem) {
+                selectCollection('all');
+            }
+        });
+
+        // Keyboard navigation for All Orders collection
+        document.addEventListener('keydown', (e) => {
+            const allOrdersItem = e.target.closest('[data-collection-id="all"]');
+            if (allOrdersItem && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                selectCollection('all');
+            }
+        });
+        
+        document.getElementById('addCollectionBtn').addEventListener('click', (e) => {
+            e.stopPropagation(); // Prevent triggering the header toggle
+            openCollectionModal();
+        });
+        
+        // Keyboard support for add collection button
+        document.getElementById('addCollectionBtn').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                e.stopPropagation();
+                openCollectionModal();
+            }
+        });
+        
+        document.getElementById('closeCollectionModalBtn').addEventListener('click', closeCollectionModal);
+        document.getElementById('cancelCollectionBtn').addEventListener('click', closeCollectionModal);
+
+        // Enhanced keyboard navigation for collections
+        document.addEventListener('keydown', (e) => {
+            // Only handle when focus is on a collection item
+            if (!e.target.closest('.collection-item')) return;
+            
+            const collectionsContainer = document.getElementById('collectionsListContainer');
+            const allOrdersItem = document.querySelector('[data-collection-id="all"]');
+            const collectionItems = [allOrdersItem, ...collectionsContainer.querySelectorAll('.collection-item')];
+            const currentIndex = collectionItems.indexOf(e.target.closest('.collection-item'));
+            
+            let newIndex = currentIndex;
+            
+            switch (e.key) {
+                case 'ArrowDown':
+                    e.preventDefault();
+                    newIndex = (currentIndex + 1) % collectionItems.length;
+                    break;
+                case 'ArrowUp':
+                    e.preventDefault();
+                    newIndex = currentIndex === 0 ? collectionItems.length - 1 : currentIndex - 1;
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    newIndex = 0;
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    newIndex = collectionItems.length - 1;
+                    break;
+                default:
+                    return;
+            }
+            
+            if (collectionItems[newIndex]) {
+                collectionItems[newIndex].focus();
+            }
+        });
+
+        // Collection color selection
+        document.querySelectorAll('.collection-color-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                selectCollectionColor(e.target.getAttribute('data-color'));
+            });
+        });
+
+        // Collection form submission
+        document.getElementById('collectionForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+            const name = formData.get('collectionName').trim();
+            const description = formData.get('collectionDescription').trim();
+            const color = formData.get('collectionColor');
+
+            if (!name) {
+                alert('Please enter a collection name.');
+                return;
+            }
+
+            if (editingCollectionId) {
+                // Update existing collection
+                if (updateCollection(editingCollectionId, name, description, color)) {
+                    closeCollectionModal();
+                } else {
+                    alert('Failed to update collection.');
+                }
+            } else {
+                // Create new collection
+                const newId = createCollection(name, description, color);
+                if (newId) {
+                    closeCollectionModal();
+                } else {
+                    alert('Failed to create collection.');
+                }
+            }
+        });
+
+        // Collection deletion
+        document.getElementById('deleteCollectionBtn').addEventListener('click', () => {
+            if (editingCollectionId && confirm('Are you sure you want to delete this collection?')) {
+                deleteCollection(editingCollectionId);
+                closeCollectionModal();
+            }
+        });
+
+        // Dynamic event delegation for collection assignment and removal
+        document.addEventListener('change', (e) => {
+            if (e.target.classList.contains('collection-assignment-select')) {
+                const orderId = e.target.getAttribute('data-order-id');
+                const collectionId = e.target.value;
+                
+                if (collectionId) {
+                    addOrderToCollection(collectionId, orderId);
+                    e.target.value = ''; // Reset dropdown
+                }
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.remove-from-collection')) {
+                const btn = e.target.closest('.remove-from-collection');
+                const orderId = btn.getAttribute('data-order-id');
+                const collectionId = btn.getAttribute('data-collection-id');
+                
+                if (confirm('Remove this order from the collection?')) {
+                    removeOrderFromCollection(collectionId, orderId);
+                }
+            }
         });
 
         // Cost calculation listeners
@@ -1814,6 +2875,10 @@
                 window.location.href = 'login.html';
                 return;
             }
+
+            // Initialize collections
+            renderCollections();
+            populateCollectionFilter();
 
             // Initialize status filter
             populateStatusFilter();
