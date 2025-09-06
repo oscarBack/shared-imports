@@ -31,6 +31,16 @@
             vertical-align: middle;
         }
         
+        /* Quantity column specific styling */
+        .orders-table th#quantity-header,
+        .orders-table td[headers="quantity-header"] {
+            width: 80px;
+            min-width: 80px;
+            max-width: 80px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        
         .orders-table tbody tr:hover {
             background-color: rgba(139, 92, 246, 0.04);
         }
@@ -697,6 +707,112 @@
         .payment-complete-indicator {
             border-left: 4px solid #10b981;
         }
+
+        /* Extra charges styles */
+        .extra-charge-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 8px;
+            margin: 2px 0;
+            border-radius: 4px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            font-size: 12px;
+            transition: all 0.2s ease;
+        }
+
+        .extra-charge-item:hover {
+            background: #f3f4f6;
+            border-color: #d1d5db;
+        }
+
+        .extra-charge-item.paid {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .extra-charge-item.unpaid {
+            background: #fff7ed;
+            border-color: #f59e0b;
+            color: #92400e;
+        }
+
+        .extra-charge-name {
+            font-weight: 500;
+            flex: 1;
+            margin-right: 8px;
+        }
+
+        .extra-charge-amount {
+            font-weight: 600;
+            margin-right: 8px;
+        }
+
+        .extra-charge-status {
+            display: flex;
+            align-items: center;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .extra-charge-status.paid {
+            color: #10b981;
+        }
+
+        .extra-charge-status.unpaid {
+            color: #f59e0b;
+        }
+
+        .extra-charge-checkbox {
+            margin-right: 4px;
+            cursor: pointer;
+        }
+
+        .extra-charges-summary {
+            font-size: 11px;
+            margin-top: 4px;
+            padding: 4px 8px;
+            background: #f8fafc;
+            border-radius: 3px;
+            text-align: center;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .extra-charges-add-btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: 500;
+            color: #8b5cf6;
+            background: #f3f4f6;
+            border: 1px dashed #d1d5db;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 4px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .extra-charges-add-btn:hover {
+            background: #f8f9fa;
+            border-color: #8b5cf6;
+            color: #7c3aed;
+        }
+
+        .extra-charges-empty {
+            text-align: center;
+            color: #9ca3af;
+            font-size: 11px;
+            font-style: italic;
+            padding: 8px;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -1044,6 +1160,7 @@
                                     <th scope="col" class="text-left" id="product-header">Product & Pricing</th>
                                     <th scope="col" class="text-right" id="quantity-header">Quantity</th>
                                     <th scope="col" class="text-right" id="total-cost-header">Total Cost</th>
+                                    <th scope="col" class="text-center" id="extra-charges-header">Extra Charges</th>
                                     <th scope="col" class="text-center" id="notifications-header">Notifications</th>
                                     <th scope="col" class="text-center" id="status-header">Status</th>
                                     <th scope="col" class="text-center" id="actions-header">Actions</th>
@@ -1574,6 +1691,101 @@
         </div>
     </div>
 
+    <!-- Extra Charges Management Modal -->
+    <div id="extraChargesModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="extraChargesModalTitle" class="text-xl font-bold text-gray-900">Manage Extra Charges</h2>
+                    <button id="closeExtraChargesModalBtn" class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Content -->
+                <div class="p-6">
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Order: <span id="extraChargesOrderId"></span></h3>
+                        <p class="text-sm text-gray-600">Add and manage extra charges for this order. Each charge can have a custom name and can be marked as paid or unpaid.</p>
+                    </div>
+
+                    <!-- Current Extra Charges -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold text-gray-800 mb-3">Current Extra Charges</h4>
+                        <div id="currentExtraCharges" class="space-y-2">
+                            <!-- Will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Add New Extra Charge Form -->
+                    <div class="bg-gray-50 p-4 rounded-lg mb-6">
+                        <h4 class="text-md font-semibold text-gray-800 mb-3">Add New Extra Charge</h4>
+                        <form id="addExtraChargeForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="extraChargeName" class="block text-sm font-medium text-gray-700 mb-2">Charge Name</label>
+                                    <input type="text" id="extraChargeName" name="extraChargeName" 
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                           placeholder="e.g., Insurance Fee, Express Shipping" required>
+                                </div>
+                                <div>
+                                    <label for="extraChargeAmount" class="block text-sm font-medium text-gray-700 mb-2">Amount ($)</label>
+                                    <input type="number" id="extraChargeAmount" name="extraChargeAmount" 
+                                           step="0.01" min="0"
+                                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500" 
+                                           placeholder="0.00" required>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <input type="checkbox" id="extraChargeIsPaid" name="extraChargeIsPaid" 
+                                       class="mr-2 focus:ring-purple-500 focus:ring-2">
+                                <label for="extraChargeIsPaid" class="text-sm text-gray-700">Mark as paid</label>
+                            </div>
+                            <button type="submit" 
+                                    class="w-full px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 transition-colors">
+                                Add Extra Charge
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Summary -->
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h4 class="text-md font-semibold text-blue-900 mb-2">Extra Charges Summary</h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-blue-700">Total Extra Charges:</span>
+                                <span id="totalExtraCharges" class="font-bold text-blue-900">$0.00</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-700">Amount Paid:</span>
+                                <span id="paidExtraCharges" class="font-bold text-green-600">$0.00</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-700">Amount Unpaid:</span>
+                                <span id="unpaidExtraCharges" class="font-bold text-orange-600">$0.00</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-700">Payment Status:</span>
+                                <span id="paymentStatus" class="font-bold">0/0 paid</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200 mt-6">
+                        <button type="button" id="cancelExtraChargesBtn" 
+                                class="px-6 py-2 border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-colors">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Sample data for relationships
         const sampleClients = [
@@ -1642,6 +1854,22 @@
                                 unitPrice: 1199.99,
                                 totalCost: 1244.99,
                                 tags: ["electronics", "signature-required"]
+                            }
+                        ],
+                        extraCharges: [
+                            {
+                                id: "extra-001",
+                                name: "Insurance Fee",
+                                amount: 15.00,
+                                isPaid: true,
+                                paidDate: "2024-08-16"
+                            },
+                            {
+                                id: "extra-002", 
+                                name: "Express Shipping",
+                                amount: 25.00,
+                                isPaid: false,
+                                paidDate: null
                             }
                         ]
                     },
@@ -1744,6 +1972,15 @@
                                 totalCost: 279.98,
                                 tags: ["fashion"]
                             }
+                        ],
+                        extraCharges: [
+                            {
+                                id: "extra-003",
+                                name: "Handling Fee",
+                                amount: 8.50,
+                                isPaid: true,
+                                paidDate: "2024-08-13"
+                            }
                         ]
                     }
                 ]
@@ -1780,6 +2017,22 @@
                                 unitPrice: 89.99,
                                 totalCost: 136.99,
                                 tags: ["electronics", "fragile"]
+                            }
+                        ],
+                        extraCharges: [
+                            {
+                                id: "extra-004",
+                                name: "Fragile Packaging",
+                                amount: 12.00,
+                                isPaid: true,
+                                paidDate: "2024-08-11"
+                            },
+                            {
+                                id: "extra-005",
+                                name: "Priority Processing",
+                                amount: 20.00,
+                                isPaid: true,
+                                paidDate: "2024-08-11"
                             }
                         ]
                     }
@@ -1818,6 +2071,15 @@
                                 unitPrice: 299.99,
                                 totalCost: 324.99,
                                 tags: ["fashion", "luxury"]
+                            }
+                        ],
+                        extraCharges: [
+                            {
+                                id: "extra-006",
+                                name: "VIP Handling",
+                                amount: 30.00,
+                                isPaid: false,
+                                paidDate: null
                             }
                         ]
                     },
@@ -2367,9 +2629,16 @@
 
         // Helper function to calculate total order cost
         function calculateOrderTotal(order) {
-            return order.clients.reduce((total, client) => {
+            // Calculate total from client items
+            const itemsTotal = order.clients.reduce((total, client) => {
                 return total + client.items.reduce((clientTotal, item) => clientTotal + item.totalCost, 0);
             }, 0);
+
+            // Sum extra charges stored on each client
+            const clientExtraCharges = (order.clients || []).flatMap(c => c.extraCharges || []);
+            const extraChargesTotal = clientExtraCharges.reduce((total, charge) => total + charge.amount, 0);
+
+            return itemsTotal + extraChargesTotal;
         }
 
         // Helper function to get all unique tags from an order
@@ -2764,6 +3033,183 @@
             // For simplicity, just open the client notification modal
             // In a real application, you would populate the form with existing data
             openClientNotificationModal(order.id, clientId);
+        }
+
+        // Extra Charges Management Functions
+        let currentEditingOrderIdForCharges = null;
+        let currentEditingClientIdForCharges = null;
+
+        function openExtraChargesModal(orderId, clientId) {
+            currentEditingOrderIdForCharges = orderId;
+            currentEditingClientIdForCharges = clientId || null;
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            // Set modal title
+            document.getElementById('extraChargesOrderId').textContent = `${orderId}${clientId ? ' - Client: ' + clientId : ''}`;
+
+            // Render current extra charges for the selected client (or order-level if no clientId)
+            renderCurrentExtraCharges(order, clientId);
+
+            // Update summary
+            updateExtraChargesSummary(order, clientId);
+
+            // Clear form
+            document.getElementById('addExtraChargeForm').reset();
+
+            // Show modal
+            document.getElementById('extraChargesModal').classList.remove('hidden');
+        }
+
+        function closeExtraChargesModal() {
+            document.getElementById('extraChargesModal').classList.add('hidden');
+            currentEditingOrderIdForCharges = null;
+            currentEditingClientIdForCharges = null;
+        }
+
+        function renderCurrentExtraCharges(order, clientId = null) {
+            const container = document.getElementById('currentExtraCharges');
+            let target = order;
+            if (clientId != null) {
+                const client = order.clients.find(c => c.clientId === clientId);
+                if (!client) {
+                    container.innerHTML = '<div class="text-center text-gray-500 py-4">Client not found</div>';
+                    return;
+                }
+                target = client;
+            }
+
+            if (!target.extraCharges || target.extraCharges.length === 0) {
+                container.innerHTML = '<div class="text-center text-gray-500 py-4">No extra charges added yet</div>';
+                return;
+            }
+
+            container.innerHTML = target.extraCharges.map(charge => `
+                <div class="extra-charge-item ${charge.isPaid ? 'paid' : 'unpaid'}" data-charge-id="${charge.id}">
+                    <div class="flex items-center justify-between w-full">
+                        <div class="flex items-center flex-1">
+                            <input type="checkbox" 
+                                   class="extra-charge-checkbox" 
+                                   ${charge.isPaid ? 'checked' : ''} 
+                                   onchange="toggleExtraChargePayment('${order.id}', ${clientId != null ? clientId : 'null'}, '${charge.id}')"
+                                   title="${charge.isPaid ? 'Mark as unpaid' : 'Mark as paid'}">
+                            <div class="extra-charge-name">${charge.name}</div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="extra-charge-amount">$${charge.amount.toFixed(2)}</div>
+                            <div class="extra-charge-status ${charge.isPaid ? 'paid' : 'unpaid'} ml-2">
+                                ${charge.isPaid ? 'PAID' : 'UNPAID'}
+                            </div>
+                            <button onclick="deleteExtraCharge('${order.id}', ${clientId != null ? clientId : 'null'}, '${charge.id}')" 
+                                    class="ml-3 text-red-500 hover:text-red-700 text-xs p-1"
+                                    title="Delete charge">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    ${charge.isPaid && charge.paidDate ? `<div class="text-xs text-green-600 mt-1">Paid on ${new Date(charge.paidDate).toLocaleDateString()}</div>` : ''}
+                </div>
+            `).join('');
+        }
+
+        function updateExtraChargesSummary(order, clientId = null) {
+            let extraCharges = [];
+            if (clientId != null) {
+                const client = order.clients.find(c => c.clientId === clientId);
+                extraCharges = client && client.extraCharges ? client.extraCharges : [];
+            } else {
+                extraCharges = order.extraCharges || [];
+            }
+
+            const totalAmount = extraCharges.reduce((sum, charge) => sum + charge.amount, 0);
+            const paidAmount = extraCharges.filter(c => c.isPaid).reduce((sum, charge) => sum + charge.amount, 0);
+            const unpaidAmount = totalAmount - paidAmount;
+            const paidCount = extraCharges.filter(c => c.isPaid).length;
+            const totalCount = extraCharges.length;
+
+            document.getElementById('totalExtraCharges').textContent = `$${totalAmount.toFixed(2)}`;
+            document.getElementById('paidExtraCharges').textContent = `$${paidAmount.toFixed(2)}`;
+            document.getElementById('unpaidExtraCharges').textContent = `$${unpaidAmount.toFixed(2)}`;
+            document.getElementById('paymentStatus').textContent = `${paidCount}/${totalCount} paid`;
+        }
+
+        function addExtraCharge(orderId, clientId, name, amount, isPaid) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            let target = order;
+            if (clientId != null) {
+                const client = order.clients.find(c => c.clientId === clientId);
+                if (!client) return;
+                target = client;
+            }
+
+            if (!target.extraCharges) {
+                target.extraCharges = [];
+            }
+
+            const newCharge = {
+                id: `extra-${Date.now()}`,
+                name: name.trim(),
+                amount: parseFloat(amount),
+                isPaid: isPaid,
+                paidDate: isPaid ? new Date().toISOString().split('T')[0] : null
+            };
+
+            target.extraCharges.push(newCharge);
+
+            // Re-render the modal and table
+            renderCurrentExtraCharges(order, clientId);
+            updateExtraChargesSummary(order, clientId);
+            renderOrders(); // Refresh the main table
+        }
+
+        function toggleExtraChargePayment(orderId, clientId, chargeId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            let target = order;
+            if (clientId != null && clientId !== 'null') {
+                const client = order.clients.find(c => c.clientId === clientId);
+                if (!client || !client.extraCharges) return;
+                target = client;
+            }
+
+            if (!target.extraCharges) return;
+
+            const charge = target.extraCharges.find(c => c.id === chargeId);
+            if (!charge) return;
+
+            charge.isPaid = !charge.isPaid;
+            charge.paidDate = charge.isPaid ? new Date().toISOString().split('T')[0] : null;
+
+            // Re-render the modal and table
+            renderCurrentExtraCharges(order, clientId);
+            updateExtraChargesSummary(order, clientId);
+            renderOrders(); // Refresh the main table
+        }
+
+        function deleteExtraCharge(orderId, clientId, chargeId) {
+            if (!confirm('Are you sure you want to delete this extra charge?')) return;
+
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+
+            let target = order;
+            if (clientId != null && clientId !== 'null') {
+                const client = order.clients.find(c => c.clientId === clientId);
+                if (!client || !client.extraCharges) return;
+                target = client;
+            }
+
+            target.extraCharges = (target.extraCharges || []).filter(c => c.id !== chargeId);
+
+            // Re-render the modal and table
+            renderCurrentExtraCharges(order, clientId);
+            updateExtraChargesSummary(order, clientId);
+            renderOrders(); // Refresh the main table
         }
 
         // Client Edit Modal Functions
@@ -3170,6 +3616,37 @@
                         </td>
                         <td class="text-right text-sm font-semibold text-gray-900 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="quantity-header" role="gridcell">${clientTotalItems}</td>
                         <td class="text-right text-sm font-bold text-purple-700 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="total-cost-header" role="gridcell" aria-label="Client total: $${clientTotalCost.toFixed(2)}">$${clientTotalCost.toFixed(2)}</td>
+
+                        <!-- Extra charges per client -->
+                        <td class="text-center ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="extra-charges-header" role="gridcell">
+                            <div class="px-2 py-1">
+                                ${client.extraCharges && client.extraCharges.length > 0 ? 
+                                    client.extraCharges.map(charge => `
+                                        <div class="extra-charge-item ${charge.isPaid ? 'paid' : 'unpaid'}" data-charge-id="${charge.id}">
+                                            <div class="flex items-center">
+                                                <input type="checkbox" class="extra-charge-checkbox" ${charge.isPaid ? 'checked' : ''} onchange="toggleExtraChargePayment('${order.id}', ${client.clientId}, '${charge.id}')" title="${charge.isPaid ? 'Mark as unpaid' : 'Mark as paid'}">
+                                                <div class="extra-charge-name ml-2">${charge.name}</div>
+                                            </div>
+                                            <div class="flex items-center">
+                                                <div class="extra-charge-amount">$${charge.amount.toFixed(2)}</div>
+                                            </div>
+                                        </div>
+                                    `).join('') : '<div class="extra-charges-empty">No extra charges</div>'}
+
+                                <div class="extra-charges-summary">
+                                    Total: $${(client.extraCharges ? client.extraCharges.reduce((s, c) => s + c.amount, 0) : 0).toFixed(2)}
+                                    ${client.extraCharges ? ` (${client.extraCharges.filter(c => c.isPaid).length}/${client.extraCharges.length} paid)` : ''}
+                                </div>
+
+                                <button onclick="openExtraChargesModal('${order.id}', ${client.clientId})" class="extra-charges-add-btn" title="Manage extra charges for ${client.clientName}">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                                    </svg>
+                                    Manage
+                                </button>
+                            </div>
+                        </td>
+
                         <td class="text-center ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="notifications-header" role="gridcell">
                             <div class="notification-list">
                                 ${renderClientNotifications(client)}
@@ -4002,6 +4479,31 @@
         document.getElementById('clientEditModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeClientEditModal();
+            }
+        });
+
+        // Extra Charges Modal Event Listeners
+        document.getElementById('closeExtraChargesModalBtn').addEventListener('click', closeExtraChargesModal);
+        document.getElementById('cancelExtraChargesBtn').addEventListener('click', closeExtraChargesModal);
+        
+        document.getElementById('addExtraChargeForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('extraChargeName').value;
+            const amount = document.getElementById('extraChargeAmount').value;
+            const isPaid = document.getElementById('extraChargeIsPaid').checked;
+            
+            if (!currentEditingOrderIdForCharges || !name || !amount) return;
+
+            addExtraCharge(currentEditingOrderIdForCharges, currentEditingClientIdForCharges, name, amount, isPaid);
+            
+            // Reset form
+            document.getElementById('addExtraChargeForm').reset();
+        });
+        
+        document.getElementById('extraChargesModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeExtraChargesModal();
             }
         });
 
