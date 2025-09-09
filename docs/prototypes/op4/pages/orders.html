@@ -306,6 +306,281 @@
             }
         }
 
+        /* ===== LAYOUT OPTIMIZATION STYLES ===== */
+
+        /* Optimized table layout with better visual hierarchy */
+        .orders-table-optimized {
+            border-collapse: collapse;
+            contain: layout style paint;
+            transform: translateZ(0);
+        }
+
+        .orders-table-optimized th {
+            background: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+            font-weight: 600;
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 2px solid var(--gray-200);
+            font-size: 13px;
+            letter-spacing: 0.025em;
+            color: var(--gray-700);
+            white-space: nowrap;
+        }
+
+        .orders-table-optimized td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--gray-100);
+            vertical-align: middle;
+            line-height: 1.4;
+        }
+
+        /* Consistent row heights */
+        .orders-table-optimized tbody tr {
+            height: 72px;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .orders-table-optimized tbody tr:hover {
+            background-color: var(--purple-50);
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.08);
+            transform: translateY(-1px);
+        }
+
+        /* Simplified client information */
+        .client-info-clean {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+        }
+
+        .client-name-primary {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--gray-900);
+            line-height: 1.2;
+        }
+
+        .client-meta {
+            font-size: 11px;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .client-whatsapp {
+            color: var(--purple-600);
+            font-weight: 500;
+        }
+
+        /* Payment status indicators */
+        .payment-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .payment-status-complete {
+            background-color: var(--success-100);
+            color: var(--success-600);
+        }
+
+        .payment-status-pending {
+            background-color: var(--warning-100);
+            color: var(--warning-600);
+        }
+
+        /* Simplified product display */
+        .product-simple-view {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .product-image-minimal {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid var(--gray-200);
+        }
+
+        .product-details-minimal {
+            flex: 1;
+        }
+
+        .product-name-primary {
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--gray-900);
+            line-height: 1.3;
+            margin-bottom: 2px;
+        }
+
+        .product-meta-compact {
+            font-size: 11px;
+            color: var(--gray-500);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .product-quantity {
+            color: var(--gray-600);
+            font-weight: 500;
+        }
+
+        .product-price-unit {
+            color: var(--gray-700);
+            font-weight: 600;
+        }
+
+        /* Enhanced price display */
+        .price-primary {
+            font-weight: 700;
+            font-size: 15px;
+            color: var(--purple-700);
+        }
+
+        .price-secondary {
+            font-size: 11px;
+            color: var(--gray-500);
+            margin-top: 1px;
+        }
+
+        /* Consolidated status badges */
+        .status-badge-compact {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+        }
+
+        .status-processing-compact {
+            background-color: var(--warning-100);
+            color: var(--warning-600);
+        }
+
+        .status-shipped-compact {
+            background-color: #dbeafe;
+            color: #1e40af;
+        }
+
+        .status-delivered-compact {
+            background-color: var(--success-100);
+            color: var(--success-600);
+        }
+
+        /* Simplified extra charges display */
+        .extra-charges-compact {
+            font-size: 11px;
+            color: var(--gray-600);
+        }
+
+        .extra-charges-amount {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .extra-charges-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 6px;
+            background-color: var(--gray-100);
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 500;
+        }
+
+        /* Notifications compact display */
+        .notifications-compact {
+            font-size: 11px;
+            color: var(--gray-500);
+            text-align: center;
+        }
+
+        .notification-count {
+            background-color: var(--purple-100);
+            color: var(--purple-600);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        /* Actions dropdown simplified */
+        .actions-compact {
+            position: relative;
+        }
+
+        .actions-trigger {
+            background: var(--gray-100);
+            border: 1px solid var(--gray-200);
+            border-radius: 4px;
+            padding: 6px 10px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--gray-700);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .actions-trigger:hover {
+            background: var(--gray-200);
+            border-color: var(--gray-300);
+        }
+
+        /* Visual separators */
+        .row-separator {
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .column-separator {
+            border-right: 1px solid var(--gray-100);
+        }
+
+        /* Improved focus states */
+        .orders-table-optimized th:focus-visible,
+        .orders-table-optimized td:focus-visible,
+        .orders-table-optimized button:focus-visible {
+            outline: 2px solid var(--purple-500);
+            outline-offset: -2px;
+            border-radius: 2px;
+        }
+
+        /* Row grouping for better visual organization */
+        .order-group-start {
+            border-top: 2px solid var(--purple-200);
+        }
+
+        .order-group-continuation {
+            border-top: 1px dashed var(--gray-200);
+        }
+
+        /* Column width optimization */
+        .col-order-id { width: 120px; min-width: 120px; max-width: 140px; }
+        .col-client { width: 180px; min-width: 160px; max-width: 200px; }
+        .col-product { width: 240px; min-width: 220px; }
+        .col-quantity { width: 80px; min-width: 70px; max-width: 90px; text-align: center; }
+        .col-total { width: 100px; min-width: 90px; max-width: 110px; text-align: right; }
+        .col-charges { width: 120px; min-width: 100px; max-width: 140px; text-align: center; }
+        .col-notifications { width: 100px; min-width: 90px; max-width: 110px; text-align: center; }
+        .col-status { width: 100px; min-width: 90px; max-width: 110px; text-align: center; }
+        .col-actions { width: 80px; min-width: 70px; max-width: 90px; text-align: center; }
+
         /* Loading States */
         .loading-container {
             display: flex;
@@ -1938,6 +2213,381 @@
                 transform: none;
             }
         }
+
+        /* ===== PROGRESSIVE DISCLOSURE STYLES ===== */
+        
+        /* Expandable container base styles */
+        .expandable-container {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .expandable-trigger {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 4px;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+            border: none;
+            font: inherit;
+            text-align: left;
+            width: 100%;
+        }
+        
+        .expandable-trigger:hover {
+            background-color: var(--gray-100);
+            transform: translateY(-1px);
+        }
+        
+        .expandable-trigger:focus-visible {
+            outline: 2px solid var(--purple-500);
+            outline-offset: 2px;
+            background-color: var(--purple-50);
+        }
+        
+        .expandable-chevron {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            color: var(--gray-500);
+        }
+        
+        .expandable-trigger.expanded .expandable-chevron {
+            transform: rotate(90deg);
+            color: var(--purple-600);
+        }
+        
+        .expandable-content {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: var(--gray-50);
+            border-radius: 6px;
+            margin-top: 4px;
+            border: 1px solid transparent;
+        }
+        
+        .expandable-content.expanded {
+            max-height: 500px;
+            opacity: 1;
+            border-color: var(--gray-200);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .expandable-content-inner {
+            padding: 8px 12px;
+        }
+        
+        /* Product column progressive disclosure */
+        .product-compact-view {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .product-summary {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+        
+        .product-quantity-total {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+        }
+        
+        .quantity-badge {
+            background: var(--purple-100);
+            color: var(--purple-700);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            min-width: 24px;
+            text-align: center;
+        }
+        
+        .total-amount {
+            background: var(--gray-800);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .product-details-expanded {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .product-item-detail {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 8px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .product-item-detail:hover {
+            border-color: var(--purple-300);
+            box-shadow: 0 1px 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .product-detail-image {
+            width: 32px;
+            height: 32px;
+            border-radius: 4px;
+            object-fit: cover;
+            border: 1px solid var(--gray-200);
+            flex-shrink: 0;
+        }
+        
+        .product-detail-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .product-detail-name {
+            font-weight: 500;
+            font-size: 13px;
+            color: var(--gray-900);
+            line-height: 1.2;
+            margin-bottom: 2px;
+            word-break: break-word;
+        }
+        
+        .product-detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--gray-600);
+        }
+        
+        .product-detail-quantity {
+            background: var(--gray-100);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        
+        .product-detail-unit-price {
+            color: var(--purple-600);
+            font-weight: 600;
+        }
+        
+        .product-detail-total {
+            color: var(--gray-800);
+            font-weight: 700;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        /* Charges column progressive disclosure */
+        .charges-compact-view {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .charges-summary {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .charges-count-badge {
+            background: var(--warning-100);
+            color: var(--warning-700);
+            border: 1px solid var(--warning-300);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 60px;
+            justify-content: center;
+        }
+        
+        .charges-count-badge.no-charges {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-color: var(--gray-300);
+        }
+        
+        .charges-count-badge.has-unpaid {
+            background: var(--error-100);
+            color: var(--error-700);
+            border-color: var(--error-300);
+            animation: pulse-warning 2s infinite;
+        }
+        
+        @keyframes pulse-warning {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .charges-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .charges-details-expanded {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .charge-item-detail {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .charge-item-detail.paid {
+            border-color: var(--success-300);
+            background: var(--success-50);
+        }
+        
+        .charge-item-detail.unpaid {
+            border-color: var(--error-300);
+            background: var(--error-50);
+        }
+        
+        .charge-detail-name {
+            font-weight: 500;
+            font-size: 12px;
+            color: var(--gray-800);
+            flex: 1;
+        }
+        
+        .charge-detail-amount {
+            font-weight: 600;
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .charge-item-detail.paid .charge-detail-amount {
+            color: var(--success-700);
+        }
+        
+        .charge-item-detail.unpaid .charge-detail-amount {
+            color: var(--error-700);
+        }
+        
+        .charge-detail-status {
+            margin-left: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .charge-item-detail.paid .charge-detail-status {
+            background: var(--success-100);
+            color: var(--success-700);
+        }
+        
+        .charge-item-detail.unpaid .charge-detail-status {
+            background: var(--error-100);
+            color: var(--error-700);
+        }
+        
+        .charges-total-summary {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px solid var(--gray-200);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            font-size: 12px;
+        }
+        
+        .charges-total-label {
+            color: var(--gray-700);
+        }
+        
+        .charges-total-amount {
+            color: var(--gray-900);
+            font-variant-numeric: tabular-nums;
+        }
+        
+        /* Enhanced accessibility for progressive disclosure */
+        .expandable-trigger[aria-expanded="true"] {
+            background-color: var(--purple-50);
+        }
+        
+        .expandable-trigger:focus-visible .expandable-chevron {
+            color: var(--purple-600);
+        }
+        
+        /* Loading states for expanded content */
+        .expandable-content.loading {
+            opacity: 0.6;
+        }
+        
+        .expandable-content.loading .expandable-content-inner {
+            pointer-events: none;
+        }
+        
+        .expandable-loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            gap: 8px;
+            color: var(--gray-600);
+            font-size: 12px;
+        }
+        
+        .expandable-loading-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--gray-300);
+            border-top: 2px solid var(--purple-500);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Reduced motion support for progressive disclosure */
+        @media (prefers-reduced-motion: reduce) {
+            .expandable-trigger,
+            .expandable-chevron,
+            .expandable-content {
+                transition: none;
+            }
+            
+            .charges-count-badge.has-unpaid {
+                animation: none;
+            }
+            
+            .expandable-loading-spinner {
+                animation: none;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -2397,21 +3047,21 @@
                     </div>
                     
                     <div class="overflow-x-auto">
-                        <table class="orders-table w-full" id="ordersTable" role="table" aria-label="Orders management table">
+                        <table class="orders-table-optimized w-full" id="ordersTable" role="table" aria-label="Orders management table">
                             <caption class="sr-only">
                                 Order management table showing order details including client information, products, quantities, costs, status, and available actions
                             </caption>
                             <thead>
                                 <tr>
-                                    <th scope="col" class="text-left" id="order-id-header" aria-sort="none">Order ID</th>
-                                    <th scope="col" class="text-left" id="client-header">Client</th>
-                                    <th scope="col" class="text-left" id="product-header">Product & Pricing</th>
-                                    <th scope="col" class="text-right" id="quantity-header">Quantity</th>
-                                    <th scope="col" class="text-right" id="total-cost-header">Total Cost</th>
-                                    <th scope="col" class="text-center" id="extra-charges-header">Extra Charges</th>
-                                    <th scope="col" class="text-center" id="notifications-header">Notifications</th>
-                                    <th scope="col" class="text-center" id="status-header">Status</th>
-                                    <th scope="col" class="text-center" id="actions-header">Actions</th>
+                                    <th scope="col" class="col-order-id text-left" id="order-id-header" aria-sort="none">Order ID</th>
+                                    <th scope="col" class="col-client text-left" id="client-header">Client</th>
+                                    <th scope="col" class="col-product text-left" id="product-header">Product</th>
+                                    <th scope="col" class="col-quantity text-center" id="quantity-header">Qty</th>
+                                    <th scope="col" class="col-total text-right" id="total-cost-header">Total</th>
+                                    <th scope="col" class="col-charges text-center" id="extra-charges-header">Charges</th>
+                                    <th scope="col" class="col-notifications text-center" id="notifications-header">Alerts</th>
+                                    <th scope="col" class="col-status text-center" id="status-header">Status</th>
+                                    <th scope="col" class="col-actions text-center" id="actions-header">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="ordersTableBody" role="rowgroup">
@@ -4753,8 +5403,496 @@
             alert(`Client details updated successfully for ${client.clientName}!`);
         }
 
+        // Render orders with optimized layout
+        function renderOrdersOptimized() {
+            const ordersToShow = filteredOrders.slice(0, displayedCount);
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            
+            ordersTableBody.innerHTML = ordersToShow.map(order => {
+                const totalCost = calculateOrderTotal(order);
+                const totalItems = order.clients.reduce((total, client) => 
+                    total + client.items.reduce((itemTotal, item) => itemTotal + item.quantity, 0), 0
+                );
+
+                // Generate rows for each client
+                return order.clients.map((client, clientIndex) => {
+                    const clientTotalCost = client.items.reduce((total, item) => total + item.totalCost, 0);
+                    const clientTotalItems = client.items.reduce((total, item) => total + item.quantity, 0);
+                    
+                    // Determine row styling based on client payment status
+                    const isClientPaymentComplete = client.paymentStatus === 'completed';
+                    const rowClass = clientIndex === 0 ? 'order-group-start' : 'order-group-continuation';
+                    
+                    return `
+                    <tr class="${rowClass}" role="row" data-order-id="${order.id}">
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="order-id-header" role="gridcell">
+                                <div class="text-sm font-semibold text-purple-800">${order.id}</div>
+                                <div class="text-xs text-gray-500 mt-1">${new Date(order.orderDate).toLocaleDateString()}</div>
+                                <div class="text-xs text-purple-600 mt-1 font-medium">${order.clients.length} client${order.clients.length > 1 ? 's' : ''}</div>
+                            </td>
+                        ` : ''}
+                        
+                        <td class="column-separator" headers="client-header" role="gridcell">
+                            <div class="client-info-clean">
+                                <div class="client-name-primary">${client.clientName}</div>
+                                <div class="client-meta">
+                                    <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
+                                    <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
+                                        ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td class="column-separator" headers="product-header" role="gridcell">
+                            ${client.items.slice(0, 1).map(item => `
+                                <div class="product-simple-view">
+                                    <img src="${getProductImage(item.productId)}" 
+                                         alt="${item.productName}"
+                                         class="product-image-minimal"
+                                         loading="lazy"
+                                         onerror="this.style.display='none';">
+                                    <div class="product-details-minimal">
+                                        <div class="product-name-primary">${item.productName}</div>
+                                        <div class="product-meta-compact">
+                                            <span class="product-quantity">Qty: ${item.quantity}</span>
+                                            <span class="product-price-unit">$${item.unitPrice}</span>
+                                            ${client.items.length > 1 ? `<span>+${client.items.length - 1} more</span>` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </td>
+                        
+                        <td headers="quantity-header" role="gridcell">
+                            <div class="text-center font-semibold">${clientTotalItems}</div>
+                        </td>
+                        
+                        <td class="column-separator" headers="total-cost-header" role="gridcell">
+                            <div class="price-primary">$${clientTotalCost.toFixed(2)}</div>
+                            // <div class="price-secondary">Client total</div>
+                        </td>
+                        
+                        <td class="column-separator" headers="extra-charges-header" role="gridcell">
+                            ${client.extraCharges && client.extraCharges.length > 0 ? `
+                                <div class="extra-charges-compact">
+                                    <div class="extra-charges-amount">$${client.extraCharges.reduce((s, c) => s + c.amount, 0).toFixed(2)}</div>
+                                    <div class="extra-charges-indicator">
+                                        ${client.extraCharges.filter(c => c.isPaid).length}/${client.extraCharges.length} paid
+                                    </div>
+                                </div>
+                            ` : '<div class="extra-charges-compact">—</div>'}
+                        </td>
+                        
+                        <td class="column-separator" headers="notifications-header" role="gridcell">
+                            <div class="notifications-compact">
+                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
+                            </div>
+                        </td>
+                        
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="status-header" role="gridcell">
+                                <span class="status-badge-compact ${getStatusClass(order.status)}">${order.status}</span>
+                            </td>
+                            <td rowspan="${order.clients.length}" headers="actions-header" role="gridcell">
+                                <div class="actions-compact">
+                                    <button class="actions-trigger" onclick="showActionsMenu('${order.id}')">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                        </svg>
+                                        Actions
+                                    </button>
+                                </div>
+                            </td>
+                        ` : ''}
+                    </tr>
+                    `;
+                }).join('');
+            }).join('');
+            
+            // Update load more button visibility
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (displayedCount >= filteredOrders.length) {
+                loadMoreContainer.style.display = 'none';
+            } else {
+                loadMoreContainer.style.display = 'block';
+            }
+        }
+
+        // Helper function to get status class
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'processing': return 'status-processing-compact';
+                case 'shipped': return 'status-shipped-compact';
+                case 'delivered': return 'status-delivered-compact';
+                default: return 'status-processing-compact';
+            }
+        }
+
+        // Show actions menu for an order
+        function showActionsMenu(orderId) {
+            // For now, show a simple alert with action options
+            // In a full implementation, this would show a dropdown menu
+            const actions = [
+                'Track Order',
+                'Duplicate Order', 
+                'Edit Order',
+                'Delete Order',
+                'Manage Notifications'
+            ];
+            
+            const selectedAction = prompt(`Select an action for order ${orderId}:\n\n${actions.map((action, index) => `${index + 1}. ${action}`).join('\n')}\n\nEnter the number of your choice:`);
+            
+            if (selectedAction) {
+                const actionIndex = parseInt(selectedAction) - 1;
+                if (actionIndex >= 0 && actionIndex < actions.length) {
+                    switch (actionIndex) {
+                        case 0: trackOrder(orderId); break;
+                        case 1: duplicateOrder(orderId); break;
+                        case 2: editOrder(orderId); break;
+                        case 3: deleteOrder(orderId); break;
+                        case 4: showNotificationsModal(orderId); break;
+                    }
+                }
+            }
+        }
+
+        // Helper function to get status class
+        function getStatusClass(status) {
+            switch (status.toLowerCase()) {
+                case 'processing': return 'status-processing-compact';
+                case 'shipped': return 'status-shipped-compact';
+                case 'delivered': return 'status-delivered-compact';
+                default: return 'status-processing-compact';
+            }
+        }
+
+        // Show actions menu for an order
+        function showActionsMenu(orderId) {
+            // For now, show a simple alert with action options
+            // In a full implementation, this would show a dropdown menu
+            const actions = [
+                'Track Order',
+                'Duplicate Order', 
+                'Edit Order',
+                'Delete Order',
+                'Manage Notifications'
+            ];
+            
+            const selectedAction = prompt(`Select an action for order ${orderId}:\n\n${actions.map((action, index) => `${index + 1}. ${action}`).join('\n')}\n\nEnter the number of your choice:`);
+            
+            if (selectedAction) {
+                const actionIndex = parseInt(selectedAction) - 1;
+                if (actionIndex >= 0 && actionIndex < actions.length) {
+                    switch (actionIndex) {
+                        case 0: trackOrder(orderId); break;
+                        case 1: duplicateOrder(orderId); break;
+                        case 2: editOrder(orderId); break;
+                        case 3: deleteOrder(orderId); break;
+                        case 4: showNotificationsModal(orderId); break;
+                    }
+                }
+            }
+        }
+
+        // ===== PROGRESSIVE DISCLOSURE FUNCTIONS =====
+        
+        // Toggle product details expansion
+        function toggleProductDetails(rowId) {
+            const trigger = document.querySelector(`button[onclick="toggleProductDetails('${rowId}')"]`);
+            const content = document.getElementById(`product-details-${rowId}`);
+            const chevron = trigger.querySelector('.expandable-chevron');
+            
+            if (!trigger || !content) {
+                console.warn('Product details elements not found for:', rowId);
+                return;
+            }
+            
+            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+            
+            // Toggle states
+            trigger.setAttribute('aria-expanded', !isExpanded);
+            trigger.classList.toggle('expanded', !isExpanded);
+            content.classList.toggle('expanded', !isExpanded);
+            
+            // Announce to screen readers
+            const announcement = !isExpanded ? 'Product details expanded' : 'Product details collapsed';
+            announceToScreenReader(announcement);
+            
+            // Add micro animation
+            if (!isExpanded) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                setTimeout(() => {
+                    content.style.maxHeight = '500px';
+                }, 50);
+            } else {
+                content.style.maxHeight = '0px';
+            }
+        }
+        
+        // Toggle charges details expansion
+        function toggleChargesDetails(rowId) {
+            const trigger = document.querySelector(`button[onclick="toggleChargesDetails('${rowId}')"]`);
+            const content = document.getElementById(`charges-details-${rowId}`);
+            const chevron = trigger.querySelector('.expandable-chevron');
+            
+            if (!trigger || !content) {
+                console.warn('Charges details elements not found for:', rowId);
+                return;
+            }
+            
+            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
+            
+            // Toggle states
+            trigger.setAttribute('aria-expanded', !isExpanded);
+            trigger.classList.toggle('expanded', !isExpanded);
+            content.classList.toggle('expanded', !isExpanded);
+            
+            // Announce to screen readers
+            const announcement = !isExpanded ? 'Charges details expanded' : 'Charges details collapsed';
+            announceToScreenReader(announcement);
+            
+            // Add micro animation
+            if (!isExpanded) {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                setTimeout(() => {
+                    content.style.maxHeight = '500px';
+                }, 50);
+            } else {
+                content.style.maxHeight = '0px';
+            }
+        }
+        
+        // Batch toggle for expanding/collapsing all product details
+        function toggleAllProductDetails(expand = null) {
+            const triggers = document.querySelectorAll('button[onclick*="toggleProductDetails"]');
+            
+            triggers.forEach(trigger => {
+                const rowId = trigger.getAttribute('onclick').match(/toggleProductDetails\('([^']+)'\)/)[1];
+                const currentExpanded = trigger.getAttribute('aria-expanded') === 'true';
+                
+                if (expand === null || expand !== currentExpanded) {
+                    toggleProductDetails(rowId);
+                }
+            });
+        }
+        
+        // Batch toggle for expanding/collapsing all charges details
+        function toggleAllChargesDetails(expand = null) {
+            const triggers = document.querySelectorAll('button[onclick*="toggleChargesDetails"]');
+            
+            triggers.forEach(trigger => {
+                const rowId = trigger.getAttribute('onclick').match(/toggleChargesDetails\('([^']+)'\)/)[1];
+                const currentExpanded = trigger.getAttribute('aria-expanded') === 'true';
+                
+                if (expand === null || expand !== currentExpanded) {
+                    toggleChargesDetails(rowId);
+                }
+            });
+        }
+        
+        // Collapse all expanded sections (useful for cleanup)
+        function collapseAllDetails() {
+            toggleAllProductDetails(false);
+            toggleAllChargesDetails(false);
+        }
+        
+        // Enhanced keyboard support for progressive disclosure
+        function handleProgressiveDisclosureKeydown(event, toggleFunction, rowId) {
+            const { key, target } = event;
+            
+            switch (key) {
+                case 'Enter':
+                case ' ':
+                    event.preventDefault();
+                    toggleFunction(rowId);
+                    break;
+                    
+                case 'Escape':
+                    event.preventDefault();
+                    collapseAllDetails();
+                    target.blur();
+                    break;
+                    
+                case 'ArrowDown':
+                    event.preventDefault();
+                    const nextTrigger = getNextProgressiveDisclosureTrigger(target);
+                    if (nextTrigger) nextTrigger.focus();
+                    break;
+                    
+                case 'ArrowUp':
+                    event.preventDefault();
+                    const prevTrigger = getPrevProgressiveDisclosureTrigger(target);
+                    if (prevTrigger) prevTrigger.focus();
+                    break;
+            }
+        }
+        
+        // Helper functions for keyboard navigation
+        function getNextProgressiveDisclosureTrigger(currentTrigger) {
+            const allTriggers = Array.from(document.querySelectorAll('.expandable-trigger'));
+            const currentIndex = allTriggers.indexOf(currentTrigger);
+            return allTriggers[currentIndex + 1] || allTriggers[0];
+        }
+        
+        function getPrevProgressiveDisclosureTrigger(currentTrigger) {
+            const allTriggers = Array.from(document.querySelectorAll('.expandable-trigger'));
+            const currentIndex = allTriggers.indexOf(currentTrigger);
+            return allTriggers[currentIndex - 1] || allTriggers[allTriggers.length - 1];
+        }
+
         // Render orders
         function renderOrders() {
+            const ordersToShow = filteredOrders.slice(0, displayedCount);
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            
+            if (!ordersTableBody) {
+                console.error('Orders table body not found');
+                return;
+            }
+            
+            ordersTableBody.innerHTML = ordersToShow.map(order => {
+                const totalCost = calculateOrderTotal(order);
+                const totalItems = order.clients.reduce((total, client) => 
+                    total + client.items.reduce((itemTotal, item) => itemTotal + item.quantity, 0), 0
+                );
+
+                // Generate rows for each client
+                return order.clients.map((client, clientIndex) => {
+                    const clientTotalCost = client.items.reduce((total, item) => total + item.totalCost, 0);
+                    const clientTotalItems = client.items.reduce((total, item) => total + item.quantity, 0);
+                    
+                    // Determine row styling based on client payment status
+                    const isClientPaymentComplete = client.paymentStatus === 'completed';
+                    const rowClass = clientIndex === 0 ? 'order-group-start' : 'order-group-continuation';
+                    
+                    return `
+                    <tr class="${rowClass}" role="row" data-order-id="${order.id}">
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="order-id-header" role="gridcell">
+                                <div class="text-sm font-semibold text-purple-800">${order.id}</div>
+                                <div class="text-xs text-gray-500 mt-1">${new Date(order.orderDate).toLocaleDateString()}</div>
+                                <div class="text-xs text-purple-600 mt-1 font-medium">${order.clients.length} client${order.clients.length > 1 ? 's' : ''}</div>
+                            </td>
+                        ` : ''}
+                        
+                        <td class="column-separator" headers="client-header" role="gridcell">
+                            <div class="client-info-clean">
+                                <div class="client-name-primary">${client.clientName}</div>
+                                <div class="client-meta">
+                                    <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
+                                    <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
+                                        ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td class="column-separator" headers="product-header" role="gridcell">
+                            <div class="expandable-container">
+                                <button class="expandable-trigger" 
+                                        onclick="toggleProductDetails('${order.id}-${clientIndex}')"
+                                        aria-expanded="false"
+                                        aria-controls="product-details-${order.id}-${clientIndex}"
+                                        role="button">
+                                    <svg class="expandable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <div class="product-compact-view">
+                                        <div class="product-summary">
+                                            <div class="product-quantity-total">
+                                                <span class="quantity-badge">${clientTotalItems}</span>
+                                                <span class="total-amount">$${clientTotalCost.toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="expandable-content" id="product-details-${order.id}-${clientIndex}">
+                                    <div class="expandable-content-inner">
+                                        <div class="product-details-expanded">
+                                            ${client.items.map(item => `
+                                                <div class="product-item-detail">
+                                                    <img src="${getProductImage(item.productId)}" 
+                                                         alt="${item.productName}"
+                                                         class="product-detail-image"
+                                                         loading="lazy"
+                                                         onerror="this.style.display='none';">
+                                                    <div class="product-detail-info">
+                                                        <div class="product-detail-name">${item.productName}</div>
+                                                        <div class="product-detail-meta">
+                                                            <span class="product-detail-quantity">Qty: ${item.quantity}</span>
+                                                            <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td headers="quantity-header" role="gridcell">
+                            <div class="text-center font-semibold">${clientTotalItems}</div>
+                        </td>
+                        
+                        <td class="column-separator" headers="total-cost-header" role="gridcell">
+                            <div class="price-primary">$${clientTotalCost.toFixed(2)}</div>
+                            
+                        </td>
+                        
+                        <td class="column-separator" headers="extra-charges-header" role="gridcell">
+                            ${client.extraCharges && client.extraCharges.length > 0 ? `
+                                <div class="extra-charges-compact">
+                                    <div class="extra-charges-amount">$${client.extraCharges.reduce((s, c) => s + c.amount, 0).toFixed(2)}</div>
+                                    <div class="extra-charges-indicator">
+                                        ${client.extraCharges.filter(c => c.isPaid).length}/${client.extraCharges.length} paid
+                                    </div>
+                                </div>
+                            ` : '<div class="extra-charges-compact">—</div>'}
+                        </td>
+                        
+                        <td class="column-separator" headers="notifications-header" role="gridcell">
+                            <div class="notifications-compact">
+                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
+                            </div>
+                        </td>
+                        
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="status-header" role="gridcell">
+                                <span class="status-badge-compact ${getStatusClass(order.status)}">${order.status}</span>
+                            </td>
+                            <td rowspan="${order.clients.length}" headers="actions-header" role="gridcell">
+                                <div class="actions-compact">
+                                    <button class="actions-trigger" onclick="showActionsMenu('${order.id}')">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                        </svg>
+                                        Actions
+                                    </button>
+                                </div>
+                            </td>
+                        ` : ''}
+                    </tr>
+                    `;
+                }).join('');
+            }).join('');
+            
+            // Update load more button visibility
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (loadMoreContainer) {
+                if (displayedCount >= filteredOrders.length) {
+                    loadMoreContainer.style.display = 'none';
+                } else {
+                    loadMoreContainer.style.display = 'block';
+                }
+            }
+        }
+
+        // Original render function (kept for reference)
+        function renderOrdersOriginal() {
             const ordersToShow = filteredOrders.slice(0, displayedCount);
             const ordersTableBody = document.getElementById('ordersTableBody');
             
@@ -5780,6 +6918,108 @@
             });
         });
 
+        // Progressive Disclosure Event Listeners
+        document.addEventListener('keydown', function(e) {
+            if (e.target.classList.contains('expandable-trigger')) {
+                const onClick = e.target.getAttribute('onclick');
+                if (onClick && onClick.includes('toggleProductDetails')) {
+                    const rowId = onClick.match(/toggleProductDetails\('([^']+)'\)/)[1];
+                    handleProgressiveDisclosureKeydown(e, toggleProductDetails, rowId);
+                } else if (onClick && onClick.includes('toggleChargesDetails')) {
+                    const rowId = onClick.match(/toggleChargesDetails\('([^']+)'\)/)[1];
+                    handleProgressiveDisclosureKeydown(e, toggleChargesDetails, rowId);
+                }
+            }
+        });
+
+        // Global keyboard shortcuts for progressive disclosure
+        document.addEventListener('keydown', function(e) {
+            // Ctrl+E to expand all product details
+            if (e.ctrlKey && e.key === 'e' && !e.shiftKey) {
+                e.preventDefault();
+                toggleAllProductDetails(true);
+                announceToScreenReader('All product details expanded');
+            }
+            
+            // Ctrl+Shift+E to collapse all product details
+            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
+                e.preventDefault();
+                toggleAllProductDetails(false);
+                announceToScreenReader('All product details collapsed');
+            }
+            
+            // Ctrl+R to expand all charges details
+            if (e.ctrlKey && e.key === 'r' && !e.shiftKey) {
+                e.preventDefault();
+                toggleAllChargesDetails(true);
+                announceToScreenReader('All charges details expanded');
+            }
+            
+            // Ctrl+Shift+R to collapse all charges details
+            if (e.ctrlKey && e.shiftKey && e.key === 'R') {
+                e.preventDefault();
+                toggleAllChargesDetails(false);
+                announceToScreenReader('All charges details collapsed');
+            }
+            
+            // Escape to collapse all details
+            if (e.key === 'Escape' && document.querySelector('.expandable-trigger[aria-expanded="true"]')) {
+                e.preventDefault();
+                collapseAllDetails();
+                announceToScreenReader('All details collapsed');
+            }
+        });
+
+        // Enhanced focus management for progressive disclosure
+        document.addEventListener('focusin', function(e) {
+            if (e.target.classList.contains('expandable-trigger')) {
+                e.target.addEventListener('blur', function onBlur() {
+                    e.target.removeEventListener('blur', onBlur);
+                    // Add slight delay to allow for keyboard navigation
+                    setTimeout(() => {
+                        if (!document.activeElement || !document.activeElement.classList.contains('expandable-trigger')) {
+                            // User has left the progressive disclosure area
+                            // Optional: auto-collapse or other cleanup
+                        }
+                    }, 100);
+                });
+            }
+        });
+
+        // Mutation observer to handle dynamically added progressive disclosure elements
+        const progressiveDisclosureObserver = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(function(node) {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            const triggers = node.querySelectorAll ? node.querySelectorAll('.expandable-trigger') : [];
+                            triggers.forEach(function(trigger) {
+                                // Ensure proper ARIA attributes
+                                if (!trigger.getAttribute('aria-expanded')) {
+                                    trigger.setAttribute('aria-expanded', 'false');
+                                }
+                                if (!trigger.getAttribute('role')) {
+                                    trigger.setAttribute('role', 'button');
+                                }
+                                if (!trigger.getAttribute('tabindex')) {
+                                    trigger.setAttribute('tabindex', '0');
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        // Start observing the orders table for changes
+        const ordersTableBody = document.getElementById('ordersTableBody');
+        if (ordersTableBody) {
+            progressiveDisclosureObserver.observe(ordersTableBody, {
+                childList: true,
+                subtree: true
+            });
+        }
+
         // Add status form submission
         document.getElementById('addStatusForm').addEventListener('submit', (e) => {
             e.preventDefault();
@@ -6649,7 +7889,7 @@
                     }
                 } else {
                     // Standard rendering for smaller datasets
-                    renderOrdersStandard();
+                    renderOrders();
                 }
             }, 'orders-render');
         }
@@ -10088,9 +11328,203 @@
             }
         }
 
+        // Override renderOrders function with progressive disclosure support
+        const originalRenderOrders = renderOrders;
+        renderOrders = function() {
+            const ordersToShow = filteredOrders.slice(0, displayedCount);
+            const ordersTableBody = document.getElementById('ordersTableBody');
+            
+            if (!ordersTableBody) {
+                console.error('Orders table body not found');
+                return;
+            }
+            
+            ordersTableBody.innerHTML = ordersToShow.map(order => {
+                const totalCost = calculateOrderTotal(order);
+                const totalItems = order.clients.reduce((total, client) => 
+                    total + client.items.reduce((itemTotal, item) => itemTotal + item.quantity, 0), 0
+                );
+
+                // Generate rows for each client
+                return order.clients.map((client, clientIndex) => {
+                    const clientTotalCost = client.items.reduce((total, item) => total + item.totalCost, 0);
+                    const clientTotalItems = client.items.reduce((total, item) => total + item.quantity, 0);
+                    
+                    // Determine row styling based on client payment status
+                    const isClientPaymentComplete = client.paymentStatus === 'completed';
+                    const rowClass = clientIndex === 0 ? 'order-group-start' : 'order-group-continuation';
+                    
+                    return `
+                    <tr class="${rowClass}" role="row" data-order-id="${order.id}">
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="order-id-header" role="gridcell">
+                                <div class="text-sm font-semibold text-purple-800">${order.id}</div>
+                                <div class="text-xs text-gray-500 mt-1">${new Date(order.orderDate).toLocaleDateString()}</div>
+                                <div class="text-xs text-purple-600 mt-1 font-medium">${order.clients.length} client${order.clients.length > 1 ? 's' : ''}</div>
+                            </td>
+                        ` : ''}
+                        
+                        <td class="column-separator" headers="client-header" role="gridcell">
+                            <div class="client-info-clean">
+                                <div class="client-name-primary">${client.clientName}</div>
+                                <div class="client-meta">
+                                    <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
+                                    <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
+                                        ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
+                                    </span>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td class="column-separator" headers="product-header" role="gridcell">
+                            <div class="expandable-container">
+                                <button class="expandable-trigger" 
+                                        onclick="toggleProductDetails('${order.id}-${clientIndex}')"
+                                        aria-expanded="false"
+                                        aria-controls="product-details-${order.id}-${clientIndex}"
+                                        role="button"
+                                        tabindex="0">
+                                    <svg class="expandable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <div class="product-compact-view">
+                                        <div class="product-summary">
+                                            <div class="product-quantity-total">
+                                                <span class="quantity-badge">${clientTotalItems}</span>
+                                                <span class="total-amount">$${clientTotalCost.toFixed(2)}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="expandable-content" id="product-details-${order.id}-${clientIndex}">
+                                    <div class="expandable-content-inner">
+                                        <div class="product-details-expanded">
+                                            ${client.items.map(item => `
+                                                <div class="product-item-detail">
+                                                    <img src="${getProductImage(item.productId)}" 
+                                                         alt="${item.productName}"
+                                                         class="product-detail-image"
+                                                         loading="lazy"
+                                                         onerror="this.style.display='none';">
+                                                    <div class="product-detail-info">
+                                                        <div class="product-detail-name">${item.productName}</div>
+                                                        <div class="product-detail-meta">
+                                                            <span class="product-detail-quantity">Qty: ${item.quantity}</span>
+                                                            <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
+                                                </div>
+                                            `).join('')}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td headers="quantity-header" role="gridcell">
+                            <div class="text-center font-semibold">${clientTotalItems}</div>
+                        </td>
+                        
+                        <td class="column-separator" headers="total-cost-header" role="gridcell">
+                            <div class="price-primary">$${clientTotalCost.toFixed(2)}</div>
+                        </td>
+                        
+                        <td class="column-separator" headers="extra-charges-header" role="gridcell">
+                            <div class="expandable-container">
+                                <button class="expandable-trigger" 
+                                        onclick="toggleChargesDetails('${order.id}-${clientIndex}')"
+                                        aria-expanded="false"
+                                        aria-controls="charges-details-${order.id}-${clientIndex}"
+                                        role="button"
+                                        tabindex="0">
+                                    <svg class="expandable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    </svg>
+                                    <div class="charges-compact-view">
+                                        <div class="charges-summary">
+                                            ${client.extraCharges && client.extraCharges.length > 0 ? `
+                                                <div class="charges-count-badge ${client.extraCharges.some(c => !c.isPaid) ? 'has-unpaid' : ''}">
+                                                    <svg class="charges-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                                    </svg>
+                                                    ${client.extraCharges.length} charge${client.extraCharges.length > 1 ? 's' : ''}
+                                                </div>
+                                            ` : `
+                                                <div class="charges-count-badge no-charges">
+                                                    No charges
+                                                </div>
+                                            `}
+                                        </div>
+                                    </div>
+                                </button>
+                                <div class="expandable-content" id="charges-details-${order.id}-${clientIndex}">
+                                    <div class="expandable-content-inner">
+                                        <div class="charges-details-expanded">
+                                            ${client.extraCharges && client.extraCharges.length > 0 ? 
+                                                client.extraCharges.map(charge => `
+                                                    <div class="charge-item-detail ${charge.isPaid ? 'paid' : 'unpaid'}">
+                                                        <div class="charge-detail-name">${charge.name}</div>
+                                                        <div class="charge-detail-amount">$${charge.amount.toFixed(2)}</div>
+                                                        <div class="charge-detail-status">${charge.isPaid ? 'Paid' : 'Unpaid'}</div>
+                                                    </div>
+                                                `).join('') + `
+                                                <div class="charges-total-summary">
+                                                    <div class="charges-total-label">Total Charges:</div>
+                                                    <div class="charges-total-amount">$${client.extraCharges.reduce((s, c) => s + c.amount, 0).toFixed(2)}</div>
+                                                </div>
+                                            ` : `
+                                                <div style="text-align: center; color: var(--gray-500); font-size: 12px; padding: 8px;">
+                                                    No additional charges for this client
+                                                </div>
+                                            `}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        
+                        <td class="column-separator" headers="notifications-header" role="gridcell">
+                            <div class="notifications-compact">
+                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
+                            </div>
+                        </td>
+                        
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="status-header" role="gridcell">
+                                <span class="status-badge-compact ${getStatusClass(order.status)}">${order.status}</span>
+                            </td>
+                            <td rowspan="${order.clients.length}" headers="actions-header" role="gridcell">
+                                <div class="actions-compact">
+                                    <button class="actions-trigger" onclick="showActionsMenu('${order.id}')">
+                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                        </svg>
+                                        Actions
+                                    </button>
+                                </div>
+                            </td>
+                        ` : ''}
+                    </tr>
+                    `;
+                }).join('');
+            }).join('');
+            
+            // Update load more button visibility
+            const loadMoreContainer = document.getElementById('loadMoreContainer');
+            if (loadMoreContainer) {
+                if (displayedCount >= filteredOrders.length) {
+                    loadMoreContainer.style.display = 'none';
+                } else {
+                    loadMoreContainer.style.display = 'block';
+                }
+            }
+        };
+
         // End of LOW PRIORITY implementation
         console.log('🎯 LOW PRIORITY (Polish & Performance) implementation complete!');
         console.log('📊 All 10 todo items successfully completed and integrated');
+        console.log('🚀 Progressive disclosure implementation added successfully!');
         
         // Failsafe: Ensure orders table loads even if DOMContentLoaded missed
         window.addEventListener('load', function() {
