@@ -2305,49 +2305,14 @@
             padding: 8px 12px;
         }
         
-        /* Product column progressive disclosure */
-        .product-compact-view {
+        .product-details-expanded {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-        }
-        
-        .product-summary {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
             gap: 8px;
         }
         
-        .product-quantity-total {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-        }
-        
-        .quantity-badge {
-            background: var(--purple-100);
-            color: var(--purple-700);
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            min-width: 24px;
-            text-align: center;
-        }
-        
-        .total-amount {
-            background: var(--gray-800);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-        }
-        
-        .product-details-expanded {
+        /* Static product details container (no expanding/collapsing) */
+        .product-details-static {
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -5644,39 +5609,6 @@
 
         // ===== PROGRESSIVE DISCLOSURE FUNCTIONS =====
         
-        // Toggle product details expansion
-        function toggleProductDetails(rowId) {
-            const trigger = document.querySelector(`button[onclick="toggleProductDetails('${rowId}')"]`);
-            const content = document.getElementById(`product-details-${rowId}`);
-            const chevron = trigger.querySelector('.expandable-chevron');
-            
-            if (!trigger || !content) {
-                console.warn('Product details elements not found for:', rowId);
-                return;
-            }
-            
-            const isExpanded = trigger.getAttribute('aria-expanded') === 'true';
-            
-            // Toggle states
-            trigger.setAttribute('aria-expanded', !isExpanded);
-            trigger.classList.toggle('expanded', !isExpanded);
-            content.classList.toggle('expanded', !isExpanded);
-            
-            // Announce to screen readers
-            const announcement = !isExpanded ? 'Product details expanded' : 'Product details collapsed';
-            announceToScreenReader(announcement);
-            
-            // Add micro animation
-            if (!isExpanded) {
-                content.style.maxHeight = content.scrollHeight + 'px';
-                setTimeout(() => {
-                    content.style.maxHeight = '500px';
-                }, 50);
-            } else {
-                content.style.maxHeight = '0px';
-            }
-        }
-        
         // Toggle charges details expansion
         function toggleChargesDetails(rowId) {
             const trigger = document.querySelector(`button[onclick="toggleChargesDetails('${rowId}')"]`);
@@ -5710,20 +5642,6 @@
             }
         }
         
-        // Batch toggle for expanding/collapsing all product details
-        function toggleAllProductDetails(expand = null) {
-            const triggers = document.querySelectorAll('button[onclick*="toggleProductDetails"]');
-            
-            triggers.forEach(trigger => {
-                const rowId = trigger.getAttribute('onclick').match(/toggleProductDetails\('([^']+)'\)/)[1];
-                const currentExpanded = trigger.getAttribute('aria-expanded') === 'true';
-                
-                if (expand === null || expand !== currentExpanded) {
-                    toggleProductDetails(rowId);
-                }
-            });
-        }
-        
         // Batch toggle for expanding/collapsing all charges details
         function toggleAllChargesDetails(expand = null) {
             const triggers = document.querySelectorAll('button[onclick*="toggleChargesDetails"]');
@@ -5740,7 +5658,6 @@
         
         // Collapse all expanded sections (useful for cleanup)
         function collapseAllDetails() {
-            toggleAllProductDetails(false);
             toggleAllChargesDetails(false);
         }
         
@@ -5861,47 +5778,24 @@
                         </td>
                         
                         <td class="column-separator" headers="product-header" role="gridcell">
-                            <div class="expandable-container">
-                                <button class="expandable-trigger" 
-                                        onclick="toggleProductDetails('${order.id}-${clientIndex}')"
-                                        aria-expanded="false"
-                                        aria-controls="product-details-${order.id}-${clientIndex}"
-                                        role="button">
-                                    <svg class="expandable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <div class="product-compact-view">
-                                        <div class="product-summary">
-                                            <div class="product-quantity-total">
-                                                <span class="quantity-badge">${clientTotalItems}</span>
-                                                <span class="total-amount">$${clientTotalCost.toFixed(2)}</span>
+                            <div class="product-details-static">
+                                ${client.items.map(item => `
+                                    <div class="product-item-detail">
+                                        <img src="${getProductImage(item.productId)}" 
+                                             alt="${item.productName}"
+                                             class="product-detail-image"
+                                             loading="lazy"
+                                             onerror="this.style.display='none';">
+                                        <div class="product-detail-info">
+                                            <div class="product-detail-name">${item.productName}</div>
+                                            <div class="product-detail-meta">
+                                                <span class="product-detail-quantity">Qty: ${item.quantity}</span>
+                                                <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
                                             </div>
                                         </div>
+                                        <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
                                     </div>
-                                </button>
-                                <div class="expandable-content" id="product-details-${order.id}-${clientIndex}">
-                                    <div class="expandable-content-inner">
-                                        <div class="product-details-expanded">
-                                            ${client.items.map(item => `
-                                                <div class="product-item-detail">
-                                                    <img src="${getProductImage(item.productId)}" 
-                                                         alt="${item.productName}"
-                                                         class="product-detail-image"
-                                                         loading="lazy"
-                                                         onerror="this.style.display='none';">
-                                                    <div class="product-detail-info">
-                                                        <div class="product-detail-name">${item.productName}</div>
-                                                        <div class="product-detail-meta">
-                                                            <span class="product-detail-quantity">Qty: ${item.quantity}</span>
-                                                            <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                </div>
+                                `).join('')}
                             </div>
                         </td>
                         
@@ -6993,10 +6887,7 @@
         document.addEventListener('keydown', function(e) {
             if (e.target.classList.contains('expandable-trigger')) {
                 const onClick = e.target.getAttribute('onclick');
-                if (onClick && onClick.includes('toggleProductDetails')) {
-                    const rowId = onClick.match(/toggleProductDetails\('([^']+)'\)/)[1];
-                    handleProgressiveDisclosureKeydown(e, toggleProductDetails, rowId);
-                } else if (onClick && onClick.includes('toggleChargesDetails')) {
+                if (onClick && onClick.includes('toggleChargesDetails')) {
                     const rowId = onClick.match(/toggleChargesDetails\('([^']+)'\)/)[1];
                     handleProgressiveDisclosureKeydown(e, toggleChargesDetails, rowId);
                 }
@@ -7005,20 +6896,6 @@
 
         // Global keyboard shortcuts for progressive disclosure
         document.addEventListener('keydown', function(e) {
-            // Ctrl+E to expand all product details
-            if (e.ctrlKey && e.key === 'e' && !e.shiftKey) {
-                e.preventDefault();
-                toggleAllProductDetails(true);
-                announceToScreenReader('All product details expanded');
-            }
-            
-            // Ctrl+Shift+E to collapse all product details
-            if (e.ctrlKey && e.shiftKey && e.key === 'E') {
-                e.preventDefault();
-                toggleAllProductDetails(false);
-                announceToScreenReader('All product details collapsed');
-            }
-            
             // Ctrl+R to expand all charges details
             if (e.ctrlKey && e.key === 'r' && !e.shiftKey) {
                 e.preventDefault();
@@ -11470,50 +11347,24 @@
                         </td>
                         
                         <td class="column-separator" headers="product-header" role="gridcell">
-                            <div class="expandable-container">
-                                <button class="expandable-trigger" 
-                                        onclick="toggleProductDetails('${order.id}-${clientIndex}')"
-                                        aria-expanded="false"
-                                        aria-controls="product-details-${order.id}-${clientIndex}"
-                                        role="button"
-                                        tabindex="0">
-                                    <svg class="expandable-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <div class="product-compact-view">
-                                        <div class="product-summary">
-                                            <div class="product-quantity-total">
-                                                <span class="quantity-badge">${clientTotalItems}</span>
-                                                <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
-                                                    ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
-                                                </span>
+                            <div class="product-details-static">
+                                ${client.items.map(item => `
+                                    <div class="product-item-detail">
+                                        <img src="${getProductImage(item.productId)}" 
+                                             alt="${item.productName}"
+                                             class="product-detail-image"
+                                             loading="lazy"
+                                             onerror="this.style.display='none';">
+                                        <div class="product-detail-info">
+                                            <div class="product-detail-name">${item.productName}</div>
+                                            <div class="product-detail-meta">
+                                                <span class="product-detail-quantity">Qty: ${item.quantity}</span>
+                                                <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
                                             </div>
                                         </div>
+                                        <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
                                     </div>
-                                </button>
-                                <div class="expandable-content" id="product-details-${order.id}-${clientIndex}">
-                                    <div class="expandable-content-inner">
-                                        <div class="product-details-expanded">
-                                            ${client.items.map(item => `
-                                                <div class="product-item-detail">
-                                                    <img src="${getProductImage(item.productId)}" 
-                                                         alt="${item.productName}"
-                                                         class="product-detail-image"
-                                                         loading="lazy"
-                                                         onerror="this.style.display='none';">
-                                                    <div class="product-detail-info">
-                                                        <div class="product-detail-name">${item.productName}</div>
-                                                        <div class="product-detail-meta">
-                                                            <span class="product-detail-quantity">Qty: ${item.quantity}</span>
-                                                            <span class="product-detail-unit-price">$${item.unitPrice}/unit</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
-                                                </div>
-                                            `).join('')}
-                                        </div>
-                                    </div>
-                                </div>
+                                `).join('')}
                             </div>
                         </td>
                         
