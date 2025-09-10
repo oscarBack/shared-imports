@@ -1290,6 +1290,119 @@
             }
         }
 
+        /* Responsive sidebar management */
+        .sidebar-responsive {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+
+        .content-expanded {
+            margin-left: 0 !important;
+            padding-left: 0 !important;
+        }
+
+        .content-with-sidebar {
+            margin-left: 256px; /* 16rem = 256px, same as sidebar width */
+            transition: margin-left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .sidebar-toggle-btn {
+            position: fixed;
+            top: 20px;
+            left: 280px; /* Position it just outside the sidebar when visible */
+            z-index: 60;
+            background: var(--purple-600);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: none;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: var(--purple-700);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(139, 92, 246, 0.4);
+        }
+
+        .sidebar-toggle-btn:active {
+            transform: translateY(0);
+        }
+
+        .sidebar-toggle-btn.visible {
+            display: block;
+        }
+
+        .sidebar-toggle-btn svg {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .sidebar-toggle-btn.sidebar-open svg {
+            transform: rotate(180deg);
+        }
+
+        /* Adjust toggle button position when sidebar is hidden */
+        .sidebar-hidden ~ .sidebar-toggle-btn,
+        body.auto-hide-sidebar .sidebar-toggle-btn {
+            left: 20px;
+        }
+
+        /* Auto-hide sidebar based on table width needs */
+        @media (max-width: 1400px) {
+            .auto-hide-sidebar .sidebar-responsive {
+                transform: translateX(-100%);
+            }
+            
+            .auto-hide-sidebar .content-with-sidebar {
+                margin-left: 0;
+            }
+            
+            .auto-hide-sidebar .sidebar-toggle-btn {
+                display: block;
+            }
+        }
+
+        /* Force hide on very small screens */
+        @media (max-width: 1024px) {
+            .sidebar-responsive {
+                transform: translateX(-100%);
+            }
+            
+            .content-with-sidebar {
+                margin-left: 0;
+            }
+            
+            .sidebar-toggle-btn {
+                display: block !important;
+            }
+        }
+
+        /* Table overflow handling */
+        .orders-table-container {
+            overflow-x: auto;
+            min-width: 100%;
+            position: relative;
+        }
+
+        .orders-table-wrapper {
+            min-width: 1200px; /* Minimum width needed for table */
+            width: 100%;
+        }
+
+        /* Compact table mode when sidebar is hidden */
+        .sidebar-hidden ~ .main-content .orders-table th,
+        .sidebar-hidden ~ .main-content .orders-table td {
+            padding: 10px 12px;
+        }
+
         .collection-color-btn.selected {
             border-color: #374151;
             box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
@@ -2701,8 +2814,15 @@
     <!-- Mobile Overlay -->
     <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
     
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebarToggleBtn" class="sidebar-toggle-btn" aria-label="Toggle sidebar" title="Toggle sidebar">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+    </button>
+    
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
+    <div id="sidebar" class="sidebar-responsive fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
@@ -2846,7 +2966,7 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="lg:pl-64">
+    <div id="mainContent" class="content-with-sidebar">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200">
             <div class="px-4 sm:px-6 lg:px-8">
@@ -3153,8 +3273,9 @@
                         </div>
                     </div>
                     
-                    <div class="overflow-x-auto">
-                        <table class="orders-table-optimized w-full" id="ordersTable" role="table" aria-label="Orders management table">
+                    <div class="orders-table-container">
+                        <div class="orders-table-wrapper overflow-x-auto">
+                            <table class="orders-table-optimized w-full" id="ordersTable" role="table" aria-label="Orders management table">
                             <caption class="sr-only">
                                 Order management table showing order details including client information, products, quantities, costs, status, and available actions
                             </caption>
@@ -3175,6 +3296,7 @@
                                 <!-- Order rows will be loaded here by JavaScript -->
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
 
@@ -4616,6 +4738,131 @@
         mobileMenuBtn.addEventListener('click', openMobileMenu);
         sidebarToggle.addEventListener('click', closeMobileMenu);
         mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Responsive sidebar functionality
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const mainContent = document.getElementById('mainContent');
+        let sidebarVisible = true;
+
+        function toggleSidebar() {
+            sidebarVisible = !sidebarVisible;
+            
+            if (sidebarVisible) {
+                // Show sidebar
+                sidebar.classList.remove('sidebar-hidden');
+                mainContent.classList.remove('content-expanded');
+                mainContent.classList.add('content-with-sidebar');
+                sidebarToggleBtn.classList.add('sidebar-open');
+                sidebarToggleBtn.setAttribute('aria-label', 'Hide sidebar');
+                announceToScreenReader('Sidebar shown');
+            } else {
+                // Hide sidebar
+                sidebar.classList.add('sidebar-hidden');
+                mainContent.classList.remove('content-with-sidebar');
+                mainContent.classList.add('content-expanded');
+                sidebarToggleBtn.classList.remove('sidebar-open');
+                sidebarToggleBtn.setAttribute('aria-label', 'Show sidebar');
+                announceToScreenReader('Sidebar hidden');
+            }
+            
+            // Update toggle button visibility
+            updateSidebarToggleVisibility();
+        }
+
+        function updateSidebarToggleVisibility() {
+            const viewportWidth = window.innerWidth;
+            const tableWidth = document.getElementById('ordersTable')?.scrollWidth || 1200;
+            const availableWidth = sidebarVisible ? viewportWidth - 256 : viewportWidth; // 256px = sidebar width
+            
+            // Show toggle button if table doesn't fit or on smaller screens
+            if (viewportWidth <= 1024 || tableWidth > availableWidth - 100) { // 100px buffer
+                sidebarToggleBtn.classList.add('visible');
+                document.body.classList.add('auto-hide-sidebar');
+            } else {
+                sidebarToggleBtn.classList.remove('visible');
+                document.body.classList.remove('auto-hide-sidebar');
+            }
+        }
+
+        function checkTableOverflow() {
+            const table = document.getElementById('ordersTable');
+            const container = table?.closest('.orders-table-wrapper');
+            
+            if (table && container) {
+                const tableWidth = table.scrollWidth;
+                const containerWidth = container.clientWidth;
+                
+                // If table is wider than container, suggest hiding sidebar
+                if (tableWidth > containerWidth && sidebarVisible && window.innerWidth < 1400) {
+                    updateSidebarToggleVisibility();
+                }
+            }
+        }
+
+        // Event listeners for responsive sidebar
+        sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        
+        // Handle window resize
+        window.addEventListener('resize', debounce(() => {
+            updateSidebarToggleVisibility();
+            checkTableOverflow();
+        }, 250));
+
+        // Handle table content changes
+        const tableObserver = new MutationObserver(debounce(() => {
+            checkTableOverflow();
+        }, 100));
+
+        // Initialize responsive sidebar
+        function initResponsiveSidebar() {
+            // Check initial state and adjust if needed
+            const viewportWidth = window.innerWidth;
+            
+            // Auto-hide sidebar on smaller screens on initial load
+            if (viewportWidth <= 1024) {
+                sidebarVisible = false;
+                sidebar.classList.add('sidebar-hidden');
+                mainContent.classList.remove('content-with-sidebar');
+                mainContent.classList.add('content-expanded');
+                sidebarToggleBtn.classList.remove('sidebar-open');
+                sidebarToggleBtn.setAttribute('aria-label', 'Show sidebar');
+            }
+            
+            updateSidebarToggleVisibility();
+            
+            // Start observing table changes
+            const ordersTable = document.getElementById('ordersTable');
+            if (ordersTable) {
+                tableObserver.observe(ordersTable, { 
+                    childList: true, 
+                    subtree: true,
+                    attributes: true,
+                    attributeFilter: ['class', 'style']
+                });
+            }
+        }
+
+        // Keyboard support for sidebar toggle
+        sidebarToggleBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+        });
+
+        // Auto-hide sidebar on initial load if needed
+        document.addEventListener('DOMContentLoaded', () => {
+            initResponsiveSidebar();
+        });
+
+        // Also run immediately in case DOM is already loaded
+        if (document.readyState === 'loading') {
+            // DOM is still loading
+            document.addEventListener('DOMContentLoaded', initResponsiveSidebar);
+        } else {
+            // DOM is already loaded
+            initResponsiveSidebar();
+        }
 
         // Status badge functions
         function getStatusBadge(status, order = null) {
