@@ -9000,51 +9000,8 @@
             }
 
             enhanceKeyboardNavigation() {
-                // Add skip links
-                this.addSkipLinks();
-                
                 // Enhance table navigation
                 this.enhanceTableNavigation();
-            }
-
-            addSkipLinks() {
-                const skipNav = document.createElement('div');
-                skipNav.className = 'skip-links';
-                skipNav.style.cssText = `
-                    position: absolute;
-                    top: -40px;
-                    left: 6px;
-                    z-index: 10000;
-                `;
-                
-                skipNav.innerHTML = `
-                    <a href="#main-content" class="skip-link">Skip to main content</a>
-                    <a href="#orders-table" class="skip-link">Skip to orders table</a>
-                    <a href="#search-controls" class="skip-link">Skip to search controls</a>
-                `;
-                
-                // Style skip links
-                const style = document.createElement('style');
-                style.textContent = `
-                    .skip-link {
-                        position: absolute;
-                        top: -40px;
-                        left: 6px;
-                        background: var(--purple-500);
-                        color: white;
-                        padding: 8px 16px;
-                        text-decoration: none;
-                        border-radius: 4px;
-                        font-weight: 500;
-                        transition: top 0.3s ease;
-                    }
-                    .skip-link:focus {
-                        top: 6px;
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                document.body.insertBefore(skipNav, document.body.firstChild);
             }
 
             enhanceTableNavigation() {
@@ -9197,42 +9154,10 @@
             }
 
             setupThemeToggle() {
-                // Add accessibility toolbar
-                const toolbar = document.createElement('div');
-                toolbar.className = 'accessibility-toolbar';
-                toolbar.style.cssText = `
-                    position: fixed;
-                    top: 0;
-                    right: 0;
-                    background: white;
-                    border: 1px solid var(--gray-300);
-                    border-radius: 0 0 0 8px;
-                    padding: 8px;
-                    z-index: 10000;
-                    display: flex;
-                    gap: 8px;
-                `;
-                
-                toolbar.innerHTML = `
-                    <button onclick="themeManager.toggleHighContrast()" aria-label="Toggle high contrast mode" title="High Contrast">HC</button>
-                    <button onclick="themeManager.toggleReducedMotion()" aria-label="Toggle reduced motion" title="Reduced Motion">RM</button>
-                    <button onclick="themeManager.increaseFontSize()" aria-label="Increase font size" title="Larger Text">A+</button>
-                `;
-                
-                // Style toolbar buttons
-                toolbar.querySelectorAll('button').forEach(button => {
-                    button.style.cssText = `
-                        padding: 4px 8px;
-                        border: 1px solid var(--gray-300);
-                        background: white;
-                        border-radius: 4px;
-                        cursor: pointer;
-                        font-size: 12px;
-                        font-weight: bold;
-                    `;
-                });
-                
-                document.body.appendChild(toolbar);
+                // Accessibility toolbar removed: ThemeManager methods remain available
+                // If a visible toolbar is needed in the future, recreate it by
+                // appending a DOM element that calls themeManager.toggleHighContrast(),
+                // themeManager.toggleReducedMotion(), and themeManager.increaseFontSize().
             }
 
             toggleHighContrast() {
@@ -9354,28 +9279,8 @@
                 document.body.appendChild(vizPanel);
                 this.vizPanel = vizPanel;
                 
-                // Add toggle button
-                const toggleBtn = document.createElement('button');
-                toggleBtn.className = 'viz-panel-toggle floating-action premium-gradient';
-                toggleBtn.style.cssText = `
-                    position: fixed;
-                    right: 20px;
-                    top: 60px;
-                    width: 50px;
-                    height: 50px;
-                    border-radius: 50%;
-                    border: none;
-                    color: white;
-                    font-size: 20px;
-                    cursor: pointer;
-                    z-index: 1001;
-                    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
-                `;
-                toggleBtn.innerHTML = '📊';
-                toggleBtn.onclick = () => this.togglePanel();
-                toggleBtn.setAttribute('aria-label', 'Toggle analytics panel');
-                
-                document.body.appendChild(toggleBtn);
+                // Floating toggle button removed; the visualization panel remains
+                // and can be controlled programmatically via this.togglePanel().
             }
 
             togglePanel() {
