@@ -2502,6 +2502,126 @@
             color: var(--error-700);
         }
         
+        /* Alerts column progressive disclosure */
+        .alerts-compact-view {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: center;
+        }
+        
+        .alerts-summary {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .alerts-count-badge {
+            background: var(--warning-100);
+            color: var(--warning-700);
+            border: 1px solid var(--warning-300);
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            min-width: 60px;
+            justify-content: center;
+        }
+        
+        .alerts-count-badge.no-alerts {
+            background: var(--gray-100);
+            color: var(--gray-600);
+            border-color: var(--gray-300);
+        }
+        
+        .alerts-count-badge.has-overdue {
+            background: var(--error-100);
+            color: var(--error-700);
+            border-color: var(--error-300);
+            animation: pulse-warning 2s infinite;
+        }
+        
+        .alerts-count-badge.has-upcoming {
+            background: var(--warning-100);
+            color: var(--warning-700);
+            border-color: var(--warning-300);
+        }
+        
+        .alerts-icon {
+            width: 12px;
+            height: 12px;
+        }
+        
+        .alerts-details-expanded {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .alert-item-detail {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 6px 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid var(--gray-200);
+        }
+        
+        .alert-item-detail.upcoming {
+            border-color: var(--warning-300);
+            background: var(--warning-50);
+        }
+        
+        .alert-item-detail.overdue {
+            border-color: var(--error-300);
+            background: var(--error-50);
+        }
+        
+        .alert-detail-type {
+            font-weight: 500;
+            font-size: 12px;
+            color: var(--gray-800);
+            flex: 1;
+        }
+        
+        .alert-detail-date {
+            font-weight: 600;
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .alert-item-detail.upcoming .alert-detail-date {
+            color: var(--warning-700);
+        }
+        
+        .alert-item-detail.overdue .alert-detail-date {
+            color: var(--error-700);
+        }
+        
+        .alert-detail-status {
+            margin-left: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .alert-item-detail.upcoming .alert-detail-status {
+            background: var(--warning-100);
+            color: var(--warning-700);
+        }
+        
+        .alert-item-detail.overdue .alert-detail-status {
+            background: var(--error-100);
+            color: var(--error-700);
+        }
+        
         .charges-total-summary {
             margin-top: 6px;
             padding-top: 6px;
@@ -5497,9 +5617,36 @@
                         </td>
                         
                         <td class="column-separator" headers="notifications-header" role="gridcell">
-                            <div class="notifications-compact">
-                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
-                            </div>
+                            ${client.notifications && client.notifications.length > 0 ? `
+                                <div class="expandable-container alerts-compact-view">
+                                    <button class="expandable-trigger" onclick="toggleAlertsDetails(this)" data-client-id="${client.clientId}" data-order-id="${order.id}">
+                                        <div class="alerts-summary">
+                                            <span class="alerts-count-badge ${getAlertsStatusClass(client.notifications)}">
+                                                <svg class="alerts-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.003 7.003 0 01-5.417-2.583M9 7H4l5-5 5 5H9v5a7.003 7.003 0 005.417 2.583"></path>
+                                                </svg>
+                                                ${client.notifications.length}
+                                            </span>
+                                        </div>
+                                        <svg class="expandable-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="expandable-content">
+                                        <div class="expandable-content-inner">
+                                            <div class="alerts-details-expanded">
+                                                ${client.notifications.map(notification => `
+                                                    <div class="alert-item-detail ${getNotificationStatusClass(notification)}">
+                                                        <div class="alert-detail-type">${notification.name}</div>
+                                                        <div class="alert-detail-date">${formatNotificationDate(notification.date, notification.time)}</div>
+                                                        <div class="alert-detail-status">${notification.status}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : '<div class="notifications-compact">—</div>'}
                         </td>
                         
                         ${clientIndex === 0 ? `
@@ -5538,6 +5685,82 @@
                 case 'shipped': return 'status-shipped-compact';
                 case 'delivered': return 'status-delivered-compact';
                 default: return 'status-processing-compact';
+            }
+        }
+
+        // Helper function to get alerts status class
+        function getAlertsStatusClass(notifications) {
+            if (!notifications || notifications.length === 0) {
+                return 'no-alerts';
+            }
+            
+            const now = new Date();
+            const hasOverdue = notifications.some(notification => {
+                const notificationDate = new Date(notification.date + ' ' + notification.time);
+                return notificationDate < now && notification.status !== 'sent';
+            });
+            
+            const hasUpcoming = notifications.some(notification => {
+                const notificationDate = new Date(notification.date + ' ' + notification.time);
+                return notificationDate > now && notification.status === 'upcoming';
+            });
+            
+            if (hasOverdue) return 'has-overdue';
+            if (hasUpcoming) return 'has-upcoming';
+            return 'has-alerts';
+        }
+
+        // Helper function to get individual notification status class
+        function getNotificationStatusClass(notification) {
+            const now = new Date();
+            const notificationDate = new Date(notification.date + ' ' + notification.time);
+            
+            if (notification.status === 'sent') {
+                return 'sent';
+            } else if (notificationDate < now && notification.status !== 'sent') {
+                return 'overdue';
+            } else if (notificationDate > now) {
+                return 'upcoming';
+            }
+            return 'upcoming';
+        }
+
+        // Helper function to format notification date and time
+        function formatNotificationDate(date, time) {
+            const notificationDate = new Date(date + ' ' + time);
+            const now = new Date();
+            const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+            const tomorrow = new Date(today.getTime() + 24 * 60 * 60 * 1000);
+            const notificationDay = new Date(notificationDate.getFullYear(), notificationDate.getMonth(), notificationDate.getDate());
+            
+            if (notificationDay.getTime() === today.getTime()) {
+                return `Today ${time}`;
+            } else if (notificationDay.getTime() === tomorrow.getTime()) {
+                return `Tomorrow ${time}`;
+            } else {
+                const options = { month: 'short', day: 'numeric' };
+                return `${notificationDate.toLocaleDateString('en-US', options)} ${time}`;
+            }
+        }
+
+        // Function to toggle alerts details
+        function toggleAlertsDetails(button) {
+            const container = button.closest('.expandable-container');
+            const content = container.querySelector('.expandable-content');
+            const chevron = button.querySelector('.expandable-chevron');
+            
+            const isExpanded = button.classList.contains('expanded');
+            
+            if (isExpanded) {
+                // Collapse
+                button.classList.remove('expanded');
+                content.classList.remove('expanded');
+                button.setAttribute('aria-expanded', 'false');
+            } else {
+                // Expand
+                button.classList.add('expanded');
+                content.classList.add('expanded');
+                button.setAttribute('aria-expanded', 'true');
             }
         }
 
@@ -5820,9 +6043,36 @@
                         </td>
                         
                         <td class="column-separator" headers="notifications-header" role="gridcell">
-                            <div class="notifications-compact">
-                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
-                            </div>
+                            ${client.notifications && client.notifications.length > 0 ? `
+                                <div class="expandable-container alerts-compact-view">
+                                    <button class="expandable-trigger" onclick="toggleAlertsDetails(this)" data-client-id="${client.clientId}" data-order-id="${order.id}">
+                                        <div class="alerts-summary">
+                                            <span class="alerts-count-badge ${getAlertsStatusClass(client.notifications)}">
+                                                <svg class="alerts-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.003 7.003 0 01-5.417-2.583M9 7H4l5-5 5 5H9v5a7.003 7.003 0 005.417 2.583"></path>
+                                                </svg>
+                                                ${client.notifications.length}
+                                            </span>
+                                        </div>
+                                        <svg class="expandable-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="expandable-content">
+                                        <div class="expandable-content-inner">
+                                            <div class="alerts-details-expanded">
+                                                ${client.notifications.map(notification => `
+                                                    <div class="alert-item-detail ${getNotificationStatusClass(notification)}">
+                                                        <div class="alert-detail-type">${notification.name}</div>
+                                                        <div class="alert-detail-date">${formatNotificationDate(notification.date, notification.time)}</div>
+                                                        <div class="alert-detail-status">${notification.status}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : '<div class="notifications-compact">—</div>'}
                         </td>
                         
                         ${clientIndex === 0 ? `
@@ -11431,9 +11681,36 @@
                         </td>
                         
                         <td class="column-separator" headers="notifications-header" role="gridcell">
-                            <div class="notifications-compact">
-                                ${client.notifications ? `<span class="notification-count">${client.notifications.length}</span>` : '—'}
-                            </div>
+                            ${client.notifications && client.notifications.length > 0 ? `
+                                <div class="expandable-container alerts-compact-view">
+                                    <button class="expandable-trigger" onclick="toggleAlertsDetails(this)" data-client-id="${client.clientId}" data-order-id="${order.id}">
+                                        <div class="alerts-summary">
+                                            <span class="alerts-count-badge ${getAlertsStatusClass(client.notifications)}">
+                                                <svg class="alerts-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5-5-5h5v-5a7.003 7.003 0 01-5.417-2.583M9 7H4l5-5 5 5H9v5a7.003 7.003 0 005.417 2.583"></path>
+                                                </svg>
+                                                ${client.notifications.length}
+                                            </span>
+                                        </div>
+                                        <svg class="expandable-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                        </svg>
+                                    </button>
+                                    <div class="expandable-content">
+                                        <div class="expandable-content-inner">
+                                            <div class="alerts-details-expanded">
+                                                ${client.notifications.map(notification => `
+                                                    <div class="alert-item-detail ${getNotificationStatusClass(notification)}">
+                                                        <div class="alert-detail-type">${notification.name}</div>
+                                                        <div class="alert-detail-date">${formatNotificationDate(notification.date, notification.time)}</div>
+                                                        <div class="alert-detail-status">${notification.status}</div>
+                                                    </div>
+                                                `).join('')}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ` : '<div class="notifications-compact">—</div>'}
                         </td>
                         
                         ${clientIndex === 0 ? `
