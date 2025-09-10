@@ -91,6 +91,35 @@
             background: rgba(139, 92, 246, 0.1);
             border-right: 3px solid #8B5CF6;
         }
+
+        /* Sidebar Toggle Button - Now integrated in header */
+        #sidebarToggleBtn svg {
+            transition: transform 0.2s ease;
+        }
+
+        #sidebarToggleBtn.sidebar-open svg {
+            transform: rotate(180deg);
+        }
+
+        /* Responsive sidebar management */
+        .sidebar-responsive {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+
+        /* Auto-hide sidebar based on viewport size */
+        @media (max-width: 1024px) {
+            .sidebar-responsive {
+                transform: translateX(-100%);
+            }
+            
+            .content-with-sidebar {
+                margin-left: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -98,7 +127,7 @@
     <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
     
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full border-r border-gray-200">
+    <div id="sidebar" class="sidebar-responsive fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full border-r border-gray-200">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
@@ -180,7 +209,7 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="lg:pl-64">
+    <div id="mainContent" class="content-with-sidebar lg:pl-64">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200">
             <div class="px-4 sm:px-6 lg:px-8">
@@ -200,6 +229,13 @@
 
                     <!-- Header Actions -->
                     <div class="flex items-center space-x-4">
+                        <!-- Sidebar Toggle Button -->
+                        <button id="sidebarToggleBtn" class="flex items-center px-3 py-2 bg-slate-600 text-white rounded-none hover:bg-slate-700 transition-colors" aria-label="Toggle sidebar" title="Toggle sidebar">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                            </svg>
+                        </button>
+
                         <!-- Quick Actions -->
                         <button class="hidden md:flex items-center px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors shadow-sm">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -533,12 +569,36 @@
     </div>
 
     <script>
-        // Mobile menu functionality
+        // Sidebar toggle functionality
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
         const mobileOverlay = document.getElementById('mobileOverlay');
         const sidebarToggle = document.getElementById('sidebarToggle');
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
         
+        let sidebarVisible = true;
+
+        function toggleSidebar() {
+            sidebarVisible = !sidebarVisible;
+            
+            if (sidebarVisible) {
+                // Show sidebar
+                sidebar.classList.remove('sidebar-hidden');
+                mainContent.classList.add('content-with-sidebar');
+                sidebarToggleBtn.classList.add('sidebar-open');
+                sidebarToggleBtn.setAttribute('aria-label', 'Hide sidebar');
+                sidebarToggleBtn.setAttribute('title', 'Hide sidebar');
+            } else {
+                // Hide sidebar
+                sidebar.classList.add('sidebar-hidden');
+                mainContent.classList.remove('content-with-sidebar');
+                sidebarToggleBtn.classList.remove('sidebar-open');
+                sidebarToggleBtn.setAttribute('aria-label', 'Show sidebar');
+                sidebarToggleBtn.setAttribute('title', 'Show sidebar');
+            }
+        }
+
         function openMobileMenu() {
             sidebar.classList.remove('-translate-x-full');
             sidebar.classList.add('translate-x-0');
@@ -551,9 +611,19 @@
             mobileOverlay.classList.add('hidden');
         }
         
+        // Event listeners
         mobileMenuBtn.addEventListener('click', openMobileMenu);
         sidebarToggle.addEventListener('click', closeMobileMenu);
+        sidebarToggleBtn.addEventListener('click', toggleSidebar);
         mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Keyboard support for sidebar toggle
+        sidebarToggleBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+        });
 
         // Logout functionality
         document.getElementById('logoutBtn').addEventListener('click', function() {

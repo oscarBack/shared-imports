@@ -67,6 +67,25 @@
             background: rgba(139, 92, 246, 0.1);
             border-right: 3px solid #8B5CF6;
         }
+        
+        /* Responsive sidebar styles */
+        .sidebar-responsive {
+            transform: translateX(-16rem);
+        }
+        
+        .sidebar-hidden {
+            display: none;
+        }
+        
+        .content-with-sidebar {
+            padding-left: 16rem;
+        }
+        
+        @media (max-width: 1024px) {
+            .content-with-sidebar {
+                padding-left: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
@@ -74,7 +93,7 @@
     <div id="mobileOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden"></div>
     
     <!-- Sidebar -->
-    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full border-r border-gray-200">
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 -translate-x-full border-r border-gray-200 sidebar-responsive">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-between h-16 px-6 border-b border-gray-200">
             <div class="flex items-center space-x-3">
@@ -154,7 +173,7 @@
     </div>
 
     <!-- Main Content Area -->
-    <div class="lg:pl-64">
+    <div id="mainContent" class="lg:pl-64 content-with-sidebar">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200">
             <div class="px-4 sm:px-6 lg:px-8">
@@ -174,6 +193,13 @@
 
                     <!-- Header Actions -->
                     <div class="flex items-center space-x-4">
+                        <!-- Sidebar Toggle Button -->
+                        <button id="sidebarToggleBtn" class="hidden lg:flex items-center p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-none transition-colors" aria-label="Toggle sidebar">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8M4 18h7"></path>
+                            </svg>
+                        </button>
+                        
                         <!-- Add Product Button -->
                         <button id="addProductBtn" class="flex items-center px-4 py-2 bg-purple-600 text-white rounded-none hover:bg-purple-700 transition-colors shadow-sm">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -629,6 +655,50 @@
         mobileMenuBtn.addEventListener('click', openMobileMenu);
         sidebarToggle.addEventListener('click', closeMobileMenu);
         mobileOverlay.addEventListener('click', closeMobileMenu);
+
+        // Sidebar toggle functionality for desktop
+        const sidebarToggleBtn = document.getElementById('sidebarToggleBtn');
+        const mainContent = document.getElementById('mainContent');
+        let sidebarHidden = false;
+
+        function toggleSidebar() {
+            sidebarHidden = !sidebarHidden;
+            
+            if (sidebarHidden) {
+                // Hide sidebar
+                sidebar.classList.add('sidebar-responsive');
+                mainContent.classList.remove('content-with-sidebar');
+                sidebarToggleBtn.setAttribute('aria-label', 'Show sidebar');
+                sidebarToggleBtn.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                `;
+            } else {
+                // Show sidebar
+                sidebar.classList.remove('sidebar-responsive');
+                mainContent.classList.add('content-with-sidebar');
+                sidebarToggleBtn.setAttribute('aria-label', 'Hide sidebar');
+                sidebarToggleBtn.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8M4 18h7"></path>
+                    </svg>
+                `;
+            }
+        }
+
+        // Add event listener for sidebar toggle
+        if (sidebarToggleBtn) {
+            sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        }
+
+        // Keyboard shortcut for sidebar toggle (Ctrl/Cmd + B)
+        document.addEventListener('keydown', function(e) {
+            if ((e.ctrlKey || e.metaKey) && e.key === 'b') {
+                e.preventDefault();
+                toggleSidebar();
+            }
+        });
 
         // Status badge colors
         function getStatusBadge(status) {
