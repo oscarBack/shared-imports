@@ -39,6 +39,15 @@ pnpm check-types            # TypeScript checking
 
 **Turborepo orchestration**: Uses `turbo.json` for task dependencies. Build tasks depend on upstream builds (`^build`).
 
+## Browser Testing & Automation
+
+**MCP Playwright**: Always use MCP Playwright tools for browser automation and testing:
+- Use MCP Playwright tools whenever browser interaction is needed (navigation, clicking, form filling, etc.)
+- Always validate changes by checking them with MCP Playwright browser tools
+- For UI testing: Use `mcp_playwright_browser_snapshot` to capture page state, `mcp_playwright_browser_navigate` for navigation
+- For interaction: Use `mcp_playwright_browser_click`, `mcp_playwright_browser_type`, `mcp_playwright_browser_fill_form` for user actions
+- For validation: Use `mcp_playwright_browser_take_screenshot` to verify visual changes
+
 ## Project-Specific Patterns
 
 **Package references**: Use workspace protocol `"@repo/eslint-config": "workspace:*"` in package.json dependencies.
@@ -51,6 +60,13 @@ pnpm check-types            # TypeScript checking
 **TypeScript configs**: Extend from `@repo/typescript-config/{base|nextjs|react-library}.json`
 
 **Package manager**: Uses **pnpm** (lockfile: `pnpm-lock.yaml`). Node.js >=18 required.
+
+**Data Layer Operations**: Always use idempotent functions and requests when working with the data layer unless explicitly told otherwise:
+- Database operations should be safe to retry without side effects
+- API endpoints should handle duplicate requests gracefully
+- Use upsert operations instead of insert when appropriate
+- Implement proper error handling and retry logic
+- Consider using transaction IDs or request IDs for deduplication
 
 ## Current State & Implementation Focus
 
