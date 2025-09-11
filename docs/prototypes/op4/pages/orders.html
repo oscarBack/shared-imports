@@ -2968,6 +2968,119 @@
                 animation: none;
             }
         }
+
+        /* ===== COLUMN VISIBILITY CONTROLS ===== */
+        
+        /* Hide Client column when the hide-client-column class is applied */
+        .hide-client-column .col-client,
+        .hide-client-column #client-header,
+        .hide-client-column td[headers="client-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Product column when the hide-product-column class is applied */
+        .hide-product-column .col-product,
+        .hide-product-column #product-header,
+        .hide-product-column td[headers="product-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Qty column when the hide-qty-column class is applied */
+        .hide-qty-column .col-quantity,
+        .hide-qty-column #quantity-header,
+        .hide-qty-column td[headers="quantity-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Total column when the hide-total-column class is applied */
+        .hide-total-column .col-total,
+        .hide-total-column #total-cost-header,
+        .hide-total-column td[headers="total-cost-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Charges column when the hide-charges-column class is applied */
+        .hide-charges-column .col-charges,
+        .hide-charges-column #extra-charges-header,
+        .hide-charges-column td[headers="extra-charges-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Alerts column when the hide-alerts-column class is applied */
+        .hide-alerts-column .col-notifications,
+        .hide-alerts-column #notifications-header,
+        .hide-alerts-column td[headers="notifications-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Status column when the hide-status-column class is applied */
+        .hide-status-column .col-status,
+        .hide-status-column #status-header,
+        .hide-status-column td[headers="status-header"] {
+            display: none !important;
+        }
+        
+        /* Hide Actions column when the hide-actions-column class is applied */
+        .hide-actions-column .col-actions,
+        .hide-actions-column #actions-header,
+        .hide-actions-column td[headers="actions-header"] {
+            display: none !important;
+        }
+        
+        /* Column visibility toggle button styles */
+        .column-toggle-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            background-color: white;
+            color: #374151;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        
+        .column-toggle-btn:hover {
+            background-color: #f9fafb;
+            border-color: #9ca3af;
+        }
+        
+        .column-toggle-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px #3b82f6;
+        }
+        
+        .column-toggle-btn.active {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            color: #1d4ed8;
+        }
+        
+        .column-toggle-btn svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .column-toggle-btn.hidden svg {
+            transform: rotate(180deg);
+        }
+        
+        /* Column controls container */
+        .column-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .column-controls-label {
+            font-size: 13px;
+            color: #6b7280;
+            font-weight: 500;
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -3236,6 +3349,65 @@
                             <!-- Clear Filters -->
                             <button id="clearFiltersBtn" class="px-3 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-none transition-colors">
                                 Clear
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column Visibility Controls -->
+                <div class="bg-white rounded-none shadow-sm p-4 border border-gray-100">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-medium text-gray-700">Column Visibility</h3>
+                        <div class="column-controls">
+                            <button id="toggleClientColumnBtn" class="column-toggle-btn" aria-label="Toggle Client column visibility" title="Show/Hide Client Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                </svg>
+                                <span id="clientColumnToggleText">Client</span>
+                            </button>
+                            <button id="toggleProductColumnBtn" class="column-toggle-btn" aria-label="Toggle Product column visibility" title="Show/Hide Product Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l3-3m-3 3l3 3m-3-3H4m15 0l3-3m-3 3l3 3m-3-3h6"></path>
+                                </svg>
+                                <span>Product</span>
+                            </button>
+                            <button id="toggleQtyColumnBtn" class="column-toggle-btn" aria-label="Toggle Quantity column visibility" title="Show/Hide Quantity Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                </svg>
+                                <span>Qty</span>
+                            </button>
+                            <button id="toggleTotalColumnBtn" class="column-toggle-btn" aria-label="Toggle Total column visibility" title="Show/Hide Total Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                                <span>Total</span>
+                            </button>
+                            <button id="toggleChargesColumnBtn" class="column-toggle-btn" aria-label="Toggle Charges column visibility" title="Show/Hide Charges Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                </svg>
+                                <span>Charges</span>
+                            </button>
+                            <button id="toggleAlertsColumnBtn" class="column-toggle-btn" aria-label="Toggle Alerts column visibility" title="Show/Hide Alerts Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a4 4 0 11-8 0c0-2.21 1.343-4 3-4s3 1.79 3 4z"></path>
+                                </svg>
+                                <span>Alerts</span>
+                            </button>
+                            <button id="toggleStatusColumnBtn" class="column-toggle-btn" aria-label="Toggle Status column visibility" title="Show/Hide Status Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span>Status</span>
+                            </button>
+                            <button id="toggleActionsColumnBtn" class="column-toggle-btn" aria-label="Toggle Actions column visibility" title="Show/Hide Actions Column">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                </svg>
+                                <span>Actions</span>
                             </button>
                         </div>
                     </div>
@@ -12325,6 +12497,192 @@
                     }
                 }
             }
+        });
+        
+        // ========== COLUMN VISIBILITY MANAGEMENT ==========
+        
+        // Column configuration object
+        const columnConfig = {
+            client: {
+                name: 'Client',
+                className: 'hide-client-column',
+                buttonId: 'toggleClientColumnBtn',
+                textId: 'clientColumnToggleText',
+                storageKey: 'clientColumnVisible',
+                defaultVisible: true
+            },
+            product: {
+                name: 'Product',
+                className: 'hide-product-column',
+                buttonId: 'toggleProductColumnBtn',
+                storageKey: 'productColumnVisible',
+                defaultVisible: true
+            },
+            qty: {
+                name: 'Qty',
+                className: 'hide-qty-column',
+                buttonId: 'toggleQtyColumnBtn',
+                storageKey: 'qtyColumnVisible',
+                defaultVisible: true
+            },
+            total: {
+                name: 'Total',
+                className: 'hide-total-column',
+                buttonId: 'toggleTotalColumnBtn',
+                storageKey: 'totalColumnVisible',
+                defaultVisible: true
+            },
+            charges: {
+                name: 'Charges',
+                className: 'hide-charges-column',
+                buttonId: 'toggleChargesColumnBtn',
+                storageKey: 'chargesColumnVisible',
+                defaultVisible: true
+            },
+            alerts: {
+                name: 'Alerts',
+                className: 'hide-alerts-column',
+                buttonId: 'toggleAlertsColumnBtn',
+                storageKey: 'alertsColumnVisible',
+                defaultVisible: true
+            },
+            status: {
+                name: 'Status',
+                className: 'hide-status-column',
+                buttonId: 'toggleStatusColumnBtn',
+                storageKey: 'statusColumnVisible',
+                defaultVisible: true
+            },
+            actions: {
+                name: 'Actions',
+                className: 'hide-actions-column',
+                buttonId: 'toggleActionsColumnBtn',
+                storageKey: 'actionsColumnVisible',
+                defaultVisible: true
+            }
+        };
+        
+        // Global object to track column visibility
+        let columnVisibility = {};
+        
+        // Initialize column visibility preferences from localStorage
+        function initializeColumnVisibility() {
+            Object.keys(columnConfig).forEach(columnKey => {
+                const config = columnConfig[columnKey];
+                const savedPreference = localStorage.getItem(config.storageKey);
+                
+                if (savedPreference !== null) {
+                    columnVisibility[columnKey] = JSON.parse(savedPreference);
+                } else {
+                    columnVisibility[columnKey] = config.defaultVisible;
+                }
+            });
+            
+            updateAllColumnsVisibility();
+            updateAllToggleButtons();
+        }
+        
+        // Toggle a specific column's visibility
+        function toggleColumn(columnKey) {
+            if (!columnConfig[columnKey]) return;
+            
+            columnVisibility[columnKey] = !columnVisibility[columnKey];
+            updateColumnVisibility(columnKey);
+            updateToggleButton(columnKey);
+            saveColumnPreference(columnKey);
+            
+            const config = columnConfig[columnKey];
+            const isVisible = columnVisibility[columnKey];
+            announceToScreenReader(isVisible ? `${config.name} column shown` : `${config.name} column hidden`);
+        }
+        
+        // Update a specific column's visibility
+        function updateColumnVisibility(columnKey) {
+            const config = columnConfig[columnKey];
+            const table = document.getElementById('ordersTable');
+            if (!table || !config) return;
+            
+            if (columnVisibility[columnKey]) {
+                table.classList.remove(config.className);
+            } else {
+                table.classList.add(config.className);
+            }
+        }
+        
+        // Update all columns visibility
+        function updateAllColumnsVisibility() {
+            Object.keys(columnConfig).forEach(columnKey => {
+                updateColumnVisibility(columnKey);
+            });
+        }
+        
+        // Update a specific toggle button appearance
+        function updateToggleButton(columnKey) {
+            const config = columnConfig[columnKey];
+            const button = document.getElementById(config.buttonId);
+            
+            if (!button || !config) return;
+            
+            const isVisible = columnVisibility[columnKey];
+            
+            if (isVisible) {
+                button.classList.remove('hidden');
+                button.classList.add('active');
+                button.setAttribute('aria-pressed', 'true');
+                button.title = `Hide ${config.name} Column`;
+            } else {
+                button.classList.add('hidden');
+                button.classList.remove('active');
+                button.setAttribute('aria-pressed', 'false');
+                button.title = `Show ${config.name} Column`;
+            }
+            
+            // Update text for client column (has special text element)
+            if (config.textId) {
+                const buttonText = document.getElementById(config.textId);
+                if (buttonText) {
+                    buttonText.textContent = config.name;
+                }
+            }
+        }
+        
+        // Update all toggle buttons appearance
+        function updateAllToggleButtons() {
+            Object.keys(columnConfig).forEach(columnKey => {
+                updateToggleButton(columnKey);
+            });
+        }
+        
+        // Save a specific column visibility preference to localStorage
+        function saveColumnPreference(columnKey) {
+            const config = columnConfig[columnKey];
+            if (config) {
+                localStorage.setItem(config.storageKey, JSON.stringify(columnVisibility[columnKey]));
+            }
+        }
+        
+        // Individual toggle functions for backwards compatibility
+        function toggleClientColumn() { toggleColumn('client'); }
+        function toggleProductColumn() { toggleColumn('product'); }
+        function toggleQtyColumn() { toggleColumn('qty'); }
+        function toggleTotalColumn() { toggleColumn('total'); }
+        function toggleChargesColumn() { toggleColumn('charges'); }
+        function toggleAlertsColumn() { toggleColumn('alerts'); }
+        function toggleStatusColumn() { toggleColumn('status'); }
+        function toggleActionsColumn() { toggleColumn('actions'); }
+        
+        // Set up event listeners for all column toggle buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            Object.keys(columnConfig).forEach(columnKey => {
+                const config = columnConfig[columnKey];
+                const button = document.getElementById(config.buttonId);
+                if (button) {
+                    button.addEventListener('click', () => toggleColumn(columnKey));
+                }
+            });
+            
+            // Initialize column visibility on page load
+            initializeColumnVisibility();
         });
         
     </script>
