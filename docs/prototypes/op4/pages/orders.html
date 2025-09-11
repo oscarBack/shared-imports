@@ -2752,6 +2752,169 @@
             font-variant-numeric: tabular-nums;
         }
         
+        /* Charges management styles */
+        .charges-actions-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 8px;
+        }
+        
+        .manage-charges-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            background-color: var(--purple-600);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            min-width: 120px;
+        }
+        
+        .manage-charges-btn:hover {
+            background-color: var(--purple-700);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(139, 92, 246, 0.2);
+        }
+        
+        .manage-charges-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(139, 92, 246, 0.2);
+        }
+        
+        .manage-charges-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--purple-200);
+        }
+        
+        /* Charges modal specific styles */
+        .charge-item {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            padding: 12px;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            background-color: var(--gray-50);
+            transition: all 0.2s ease;
+        }
+        
+        .charge-item:hover {
+            background-color: var(--gray-100);
+            border-color: var(--gray-300);
+        }
+        
+        .charge-item-info {
+            flex: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .charge-item-details {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .charge-item-name {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+        }
+        
+        .charge-item-description {
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: 2px;
+        }
+        
+        .charge-item-amount {
+            font-weight: 600;
+            color: var(--gray-900);
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .charge-item-status {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.025em;
+            margin-left: 12px;
+        }
+        
+        .charge-item-status.paid {
+            background-color: var(--success-100);
+            color: var(--success-700);
+        }
+        
+        .charge-item-status.unpaid {
+            background-color: var(--warning-100);
+            color: var(--warning-700);
+        }
+        
+        .charge-item-actions {
+            display: flex;
+            gap: 6px;
+            margin-left: 12px;
+        }
+        
+        .charge-action-btn {
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .charge-action-btn.edit {
+            background-color: var(--purple-100);
+            color: var(--purple-700);
+            border-color: var(--purple-200);
+        }
+        
+        .charge-action-btn.edit:hover {
+            background-color: var(--purple-200);
+            border-color: var(--purple-300);
+        }
+        
+        .charge-action-btn.delete {
+            background-color: var(--error-100);
+            color: var(--error-700);
+            border-color: var(--error-200);
+        }
+        
+        .charge-action-btn.delete:hover {
+            background-color: var(--error-200);
+            border-color: var(--error-300);
+        }
+        
+        .charge-action-btn.toggle-status {
+            background-color: var(--gray-100);
+            color: var(--gray-700);
+            border-color: var(--gray-200);
+        }
+        
+        .charge-action-btn.toggle-status:hover {
+            background-color: var(--gray-200);
+            border-color: var(--gray-300);
+        }
+        
         /* Enhanced accessibility for progressive disclosure */
         .expandable-trigger[aria-expanded="true"] {
             background-color: var(--purple-50);
@@ -3414,6 +3577,127 @@
                             </div>
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charges Management Modal -->
+    <div id="chargesModal" class="fixed inset-0 z-50 hidden modal-backdrop bg-black bg-opacity-50">
+        <div class="flex items-center justify-center min-h-screen p-4">
+            <div class="modal-enter bg-white rounded-none shadow-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+                <!-- Modal Header -->
+                <div class="flex items-center justify-between p-6 border-b border-gray-200">
+                    <h2 id="chargesModalTitle" class="text-xl font-semibold text-gray-900">Manage Charges</h2>
+                    <button id="closeChargesModalBtn" class="p-2 rounded-none hover:bg-gray-100 transition-colors">
+                        <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="p-6">
+                    <!-- Order Information -->
+                    <div class="mb-6 p-4 bg-gray-50 rounded-none">
+                        <h3 class="text-sm font-medium text-gray-700 mb-2">Order Information</h3>
+                        <div class="text-sm text-gray-600">
+                            <span id="chargesOrderId" class="font-medium"></span> - 
+                            <span id="chargesClientName"></span>
+                        </div>
+                    </div>
+
+                    <!-- Add New Charge Form -->
+                    <div class="mb-6 p-4 border border-gray-200 rounded-none">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Add New Charge</h3>
+                        <form id="newChargeForm" class="space-y-4">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label for="chargeName" class="block text-sm font-medium text-gray-700 mb-2">Charge Name *</label>
+                                    <input 
+                                        type="text" 
+                                        id="chargeName" 
+                                        name="chargeName"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                        placeholder="e.g., Shipping Fee, Processing Fee"
+                                        required
+                                        maxlength="50"
+                                    >
+                                </div>
+                                <div>
+                                    <label for="chargeAmount" class="block text-sm font-medium text-gray-700 mb-2">Amount *</label>
+                                    <div class="relative">
+                                        <span class="absolute left-3 top-2 text-gray-500">$</span>
+                                        <input 
+                                            type="number" 
+                                            id="chargeAmount" 
+                                            name="chargeAmount"
+                                            class="w-full pl-8 pr-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                            placeholder="0.00"
+                                            min="0"
+                                            step="0.01"
+                                            required
+                                        >
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="chargeStatus" class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                                    <select 
+                                        id="chargeStatus" 
+                                        name="chargeStatus"
+                                        class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                                    >
+                                        <option value="false">Unpaid</option>
+                                        <option value="true">Paid</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="chargeDescription" class="block text-sm font-medium text-gray-700 mb-2">Description (Optional)</label>
+                                <textarea 
+                                    id="chargeDescription" 
+                                    name="chargeDescription"
+                                    rows="2"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-none focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none"
+                                    placeholder="Optional description for this charge..."
+                                    maxlength="200"
+                                ></textarea>
+                            </div>
+                            <div class="flex justify-end">
+                                <button type="submit" class="px-4 py-2 bg-purple-600 text-white hover:bg-purple-700 rounded-none transition-colors">
+                                    <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                    Add Charge
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Existing Charges List -->
+                    <div>
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Existing Charges</h3>
+                        <div id="chargesList" class="space-y-3">
+                            <!-- Charges will be loaded here by JavaScript -->
+                        </div>
+                        <div id="noChargesMessage" class="text-center py-8 text-gray-500 hidden">
+                            <svg class="w-12 h-12 mx-auto mb-3 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                            <p class="text-sm">No charges have been added yet.</p>
+                            <p class="text-xs text-gray-400 mt-1">Use the form above to add your first charge.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Footer -->
+                <div class="flex justify-between items-center p-6 border-t border-gray-200 bg-gray-50">
+                    <div class="text-sm text-gray-600">
+                        Total Charges: <span id="totalChargesAmount" class="font-medium text-gray-900">$0.00</span>
+                    </div>
+                    <button id="closeChargesModalFooterBtn" class="px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-none transition-colors">
+                        Close
+                    </button>
                 </div>
             </div>
         </div>
@@ -4493,6 +4777,257 @@
                 }
             });
         }
+
+        // ========== CHARGES MANAGEMENT FUNCTIONS ==========
+        
+        // Global variables for charges management
+        let currentOrderId = null;
+        let currentClientIndex = null;
+        let currentClientId = null;
+        let currentClientName = null;
+        let editingChargeIndex = null;
+
+        function openChargesModal(orderId, clientIndex, clientName, clientId) {
+            currentOrderId = orderId;
+            currentClientIndex = parseInt(clientIndex);
+            currentClientId = clientId;
+            currentClientName = clientName;
+            
+            // Update modal title and order info
+            document.getElementById('chargesModalTitle').textContent = 'Manage Charges';
+            document.getElementById('chargesOrderId').textContent = orderId;
+            document.getElementById('chargesClientName').textContent = clientName;
+            
+            // Load existing charges
+            loadChargesForModal();
+            
+            // Reset and show the modal
+            resetChargeForm();
+            document.getElementById('chargesModal').classList.remove('hidden');
+            
+            // Focus trap
+            const modal = document.getElementById('chargesModal');
+            trapFocus(modal);
+        }
+
+        function closeChargesModal() {
+            document.getElementById('chargesModal').classList.add('hidden');
+            resetChargeForm();
+            editingChargeIndex = null;
+            
+            // Update the charges display in the main table
+            updateChargesDisplayInTable();
+        }
+
+        function loadChargesForModal() {
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            const charges = client.extraCharges || [];
+            
+            const chargesList = document.getElementById('chargesList');
+            const noChargesMessage = document.getElementById('noChargesMessage');
+            
+            if (charges.length === 0) {
+                chargesList.innerHTML = '';
+                noChargesMessage.classList.remove('hidden');
+            } else {
+                noChargesMessage.classList.add('hidden');
+                chargesList.innerHTML = charges.map((charge, index) => `
+                    <div class="charge-item" data-charge-index="${index}">
+                        <div class="charge-item-info">
+                            <div class="charge-item-details">
+                                <div class="charge-item-name">${charge.name}</div>
+                                ${charge.description ? `<div class="charge-item-description">${charge.description}</div>` : ''}
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <div class="charge-item-amount">$${charge.amount.toFixed(2)}</div>
+                                <div class="charge-item-status ${charge.isPaid ? 'paid' : 'unpaid'}">
+                                    ${charge.isPaid ? 'Paid' : 'Unpaid'}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="charge-item-actions">
+                            <button class="charge-action-btn toggle-status" onclick="toggleChargeStatus(${index})" title="Toggle payment status">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4"></path>
+                                </svg>
+                                ${charge.isPaid ? 'Mark Unpaid' : 'Mark Paid'}
+                            </button>
+                            <button class="charge-action-btn edit" onclick="editCharge(${index})" title="Edit charge">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                                Edit
+                            </button>
+                            <button class="charge-action-btn delete" onclick="deleteCharge(${index})" title="Delete charge">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            updateChargesTotal();
+        }
+
+        function updateChargesTotal() {
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            const charges = client.extraCharges || [];
+            const total = charges.reduce((sum, charge) => sum + charge.amount, 0);
+            
+            document.getElementById('totalChargesAmount').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function addCharge(event) {
+            event.preventDefault();
+            
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const newCharge = {
+                name: formData.get('chargeName').trim(),
+                amount: parseFloat(formData.get('chargeAmount')),
+                description: formData.get('chargeDescription').trim(),
+                isPaid: formData.get('chargeStatus') === 'true',
+                dateAdded: new Date().toISOString()
+            };
+            
+            // Validation
+            if (!newCharge.name || newCharge.amount <= 0) {
+                alert('Please provide a valid charge name and amount.');
+                return;
+            }
+            
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            if (!client.extraCharges) {
+                client.extraCharges = [];
+            }
+            
+            if (editingChargeIndex !== null) {
+                // Update existing charge
+                client.extraCharges[editingChargeIndex] = newCharge;
+                editingChargeIndex = null;
+            } else {
+                // Add new charge
+                client.extraCharges.push(newCharge);
+            }
+            
+            // Refresh the modal display
+            loadChargesForModal();
+            resetChargeForm();
+            
+            // Show success message
+            showToast(`Charge "${newCharge.name}" ${editingChargeIndex !== null ? 'updated' : 'added'} successfully!`);
+        }
+
+        function editCharge(index) {
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            const charge = client.extraCharges[index];
+            
+            if (!charge) return;
+            
+            // Populate the form with existing data
+            document.getElementById('chargeName').value = charge.name;
+            document.getElementById('chargeAmount').value = charge.amount;
+            document.getElementById('chargeDescription').value = charge.description || '';
+            document.getElementById('chargeStatus').value = charge.isPaid.toString();
+            
+            editingChargeIndex = index;
+            
+            // Update the form button text
+            document.querySelector('#newChargeForm button[type="submit"]').innerHTML = `
+                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                </svg>
+                Update Charge
+            `;
+            
+            // Scroll to form
+            document.getElementById('newChargeForm').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function deleteCharge(index) {
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            const charge = client.extraCharges[index];
+            
+            if (!charge) return;
+            
+            if (confirm(`Are you sure you want to delete the charge "${charge.name}" ($${charge.amount.toFixed(2)})?`)) {
+                client.extraCharges.splice(index, 1);
+                loadChargesForModal();
+                showToast(`Charge "${charge.name}" deleted successfully!`);
+            }
+        }
+
+        function toggleChargeStatus(index) {
+            const order = orders.find(o => o.id === currentOrderId);
+            if (!order || !order.clients[currentClientIndex]) return;
+            
+            const client = order.clients[currentClientIndex];
+            const charge = client.extraCharges[index];
+            
+            if (!charge) return;
+            
+            charge.isPaid = !charge.isPaid;
+            loadChargesForModal();
+            
+            const status = charge.isPaid ? 'paid' : 'unpaid';
+            showToast(`Charge "${charge.name}" marked as ${status}!`);
+        }
+
+        function resetChargeForm() {
+            document.getElementById('newChargeForm').reset();
+            editingChargeIndex = null;
+            
+            // Reset the form button text
+            document.querySelector('#newChargeForm button[type="submit"]').innerHTML = `
+                <svg class="w-4 h-4 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                Add Charge
+            `;
+        }
+
+        function updateChargesDisplayInTable() {
+            // Trigger a re-render of the orders table to show updated charges
+            renderOrders();
+        }
+
+        function showToast(message) {
+            // Simple toast implementation
+            const toast = document.createElement('div');
+            toast.className = 'fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg z-[60] transition-opacity duration-300';
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    document.body.removeChild(toast);
+                }, 300);
+            }, 3000);
+        }
+
+        // ========== END CHARGES MANAGEMENT FUNCTIONS ==========
 
         // Custom Status Management System
         let customStatuses = JSON.parse(localStorage.getItem('customStatuses')) || {
@@ -7010,6 +7545,26 @@
         
         document.getElementById('closeCollectionModalBtn').addEventListener('click', closeCollectionModal);
         document.getElementById('cancelCollectionBtn').addEventListener('click', closeCollectionModal);
+
+        // Charges Modal Event Listeners
+        document.getElementById('closeChargesModalBtn').addEventListener('click', closeChargesModal);
+        document.getElementById('closeChargesModalFooterBtn').addEventListener('click', closeChargesModal);
+        document.getElementById('newChargeForm').addEventListener('submit', addCharge);
+
+        // Close modal when clicking outside
+        document.getElementById('chargesModal').addEventListener('click', (e) => {
+            if (e.target.id === 'chargesModal') {
+                closeChargesModal();
+            }
+        });
+
+        // Keyboard navigation for charges modal
+        document.addEventListener('keydown', (e) => {
+            const chargesModal = document.getElementById('chargesModal');
+            if (!chargesModal.classList.contains('hidden') && e.key === 'Escape') {
+                closeChargesModal();
+            }
+        });
 
         // Enhanced keyboard navigation for collections
         document.addEventListener('keydown', (e) => {
@@ -11651,6 +12206,16 @@
                                                     No additional charges for this client
                                                 </div>
                                             `}
+                                            <div class="charges-actions-container mt-3 pt-3 border-t border-gray-200">
+                                                <button class="manage-charges-btn" 
+                                                        onclick="openChargesModal('${order.id}', '${clientIndex}', '${client.clientName}', '${client.clientId}')"
+                                                        type="button">
+                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                                    </svg>
+                                                    Manage Charges
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
