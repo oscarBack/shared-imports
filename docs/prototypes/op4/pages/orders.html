@@ -3027,46 +3027,139 @@
             display: none !important;
         }
         
-        /* Column visibility toggle button styles */
-        .column-toggle-btn {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border: 1px solid #d1d5db;
-            background-color: white;
-            color: #374151;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s ease-in-out;
+        /* Column visibility dropdown styles */
+        .column-visibility-dropdown {
+            position: relative;
+            display: inline-block;
         }
         
-        .column-toggle-btn:hover {
-            background-color: #f9fafb;
+        .column-dropdown-trigger {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 140px;
+            justify-content: space-between;
+        }
+        
+        .column-dropdown-trigger:hover {
+            color: #111827;
+            background: #f9fafb;
             border-color: #9ca3af;
         }
         
-        .column-toggle-btn:focus {
+        .column-dropdown-trigger:focus {
             outline: none;
-            box-shadow: 0 0 0 2px #3b82f6;
+            box-shadow: 0 0 0 2px #8b5cf6;
         }
         
-        .column-toggle-btn.active {
-            background-color: #dbeafe;
-            border-color: #3b82f6;
-            color: #1d4ed8;
+        .column-dropdown-trigger.open {
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.2);
         }
         
-        .column-toggle-btn svg {
-            width: 14px;
-            height: 14px;
-            transition: transform 0.2s ease-in-out;
+        .column-dropdown-chevron {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+            color: #6b7280;
         }
         
-        .column-toggle-btn.hidden svg {
+        .column-dropdown-trigger.open .column-dropdown-chevron {
             transform: rotate(180deg);
+        }
+        
+        .column-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 4px;
+        }
+        
+        .column-dropdown-menu.open {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .column-dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: background-color 0.15s ease;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .column-dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .column-dropdown-item:hover {
+            background: #f9fafb;
+        }
+        
+        .column-dropdown-checkbox {
+            width: 16px;
+            height: 16px;
+            border: 2px solid #d1d5db;
+            border-radius: 3px;
+            position: relative;
+            background: white;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+        }
+        
+        .column-dropdown-checkbox.checked {
+            background: #8b5cf6;
+            border-color: #8b5cf6;
+        }
+        
+        .column-dropdown-checkbox.checked::after {
+            content: '';
+            position: absolute;
+            left: 4px;
+            top: 1px;
+            width: 4px;
+            height: 8px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+        
+        .column-dropdown-label {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .column-dropdown-icon {
+            width: 16px;
+            height: 16px;
+            color: #6b7280;
+            flex-shrink: 0;
         }
         
         /* Column controls container */
@@ -3359,56 +3452,84 @@
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-medium text-gray-700">Column Visibility</h3>
                         <div class="column-controls">
-                            <button id="toggleClientColumnBtn" class="column-toggle-btn" aria-label="Toggle Client column visibility" title="Show/Hide Client Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
-                                </svg>
-                                <span id="clientColumnToggleText">Client</span>
-                            </button>
-                            <button id="toggleProductColumnBtn" class="column-toggle-btn" aria-label="Toggle Product column visibility" title="Show/Hide Product Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l3-3m-3 3l3 3m-3-3H4m15 0l3-3m-3 3l3 3m-3-3h6"></path>
-                                </svg>
-                                <span>Product</span>
-                            </button>
-                            <button id="toggleQtyColumnBtn" class="column-toggle-btn" aria-label="Toggle Quantity column visibility" title="Show/Hide Quantity Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
-                                </svg>
-                                <span>Qty</span>
-                            </button>
-                            <button id="toggleTotalColumnBtn" class="column-toggle-btn" aria-label="Toggle Total column visibility" title="Show/Hide Total Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                </svg>
-                                <span>Total</span>
-                            </button>
-                            <button id="toggleChargesColumnBtn" class="column-toggle-btn" aria-label="Toggle Charges column visibility" title="Show/Hide Charges Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                                </svg>
-                                <span>Charges</span>
-                            </button>
-                            <button id="toggleAlertsColumnBtn" class="column-toggle-btn" aria-label="Toggle Alerts column visibility" title="Show/Hide Alerts Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5z"></path>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a4 4 0 11-8 0c0-2.21 1.343-4 3-4s3 1.79 3 4z"></path>
-                                </svg>
-                                <span>Alerts</span>
-                            </button>
-                            <button id="toggleStatusColumnBtn" class="column-toggle-btn" aria-label="Toggle Status column visibility" title="Show/Hide Status Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                </svg>
-                                <span>Status</span>
-                            </button>
-                            <button id="toggleActionsColumnBtn" class="column-toggle-btn" aria-label="Toggle Actions column visibility" title="Show/Hide Actions Column">
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                </svg>
-                                <span>Actions</span>
-                            </button>
+                            <div class="column-visibility-dropdown">
+                                <button id="columnDropdownTrigger" class="column-dropdown-trigger" 
+                                        aria-label="Select columns to display" 
+                                        aria-expanded="false"
+                                        aria-haspopup="true">
+                                    <span>Manage Columns</span>
+                                    <svg class="column-dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                
+                                <div id="columnDropdownMenu" class="column-dropdown-menu">
+                                    <div class="column-dropdown-item" data-column="client">
+                                        <div class="column-dropdown-checkbox" id="clientCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Client</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="product">
+                                        <div class="column-dropdown-checkbox" id="productCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l3-3m-3 3l3 3m-3-3H4m15 0l3-3m-3 3l3 3m-3-3h6"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Product</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="qty">
+                                        <div class="column-dropdown-checkbox" id="qtyCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Quantity</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="total">
+                                        <div class="column-dropdown-checkbox" id="totalCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Total</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="charges">
+                                        <div class="column-dropdown-checkbox" id="chargesCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Charges</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="alerts">
+                                        <div class="column-dropdown-checkbox" id="alertsCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a4 4 0 11-8 0c0-2.21 1.343-4 3-4s3 1.79 3 4z"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Alerts</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="status">
+                                        <div class="column-dropdown-checkbox" id="statusCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Status</span>
+                                    </div>
+                                    
+                                    <div class="column-dropdown-item" data-column="actions">
+                                        <div class="column-dropdown-checkbox" id="actionsCheckbox"></div>
+                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                        </svg>
+                                        <span class="column-dropdown-label">Actions</span>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -8103,6 +8224,10 @@
 
         function toggleSelectAll() {
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            if (!selectAllCheckbox) {
+                // Select all checkbox doesn't exist, skip function
+                return;
+            }
             const isChecked = selectAllCheckbox.checked;
             
             if (isChecked) {
@@ -8145,6 +8270,11 @@
 
         function updateSelectAllState() {
             const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+            if (!selectAllCheckbox) {
+                // Select all checkbox doesn't exist, skip update
+                return;
+            }
+            
             const visibleOrderIds = filteredOrders.map(order => order.id);
             const selectedVisibleOrders = visibleOrderIds.filter(id => selectedOrders.has(id));
             
@@ -12062,7 +12192,10 @@
             if ((e.ctrlKey || e.metaKey) && e.key === 'a' && 
                 document.querySelector('#ordersTable:focus-within')) {
                 e.preventDefault();
-                document.getElementById('selectAllCheckbox').click();
+                const selectAllCheckbox = document.getElementById('selectAllCheckbox');
+                if (selectAllCheckbox) {
+                    selectAllCheckbox.click();
+                }
             }
             
             // Escape - Clear search or close modals
@@ -12506,57 +12639,56 @@
             client: {
                 name: 'Client',
                 className: 'hide-client-column',
-                buttonId: 'toggleClientColumnBtn',
-                textId: 'clientColumnToggleText',
+                checkboxId: 'clientCheckbox',
                 storageKey: 'clientColumnVisible',
                 defaultVisible: true
             },
             product: {
                 name: 'Product',
                 className: 'hide-product-column',
-                buttonId: 'toggleProductColumnBtn',
+                checkboxId: 'productCheckbox',
                 storageKey: 'productColumnVisible',
                 defaultVisible: true
             },
             qty: {
                 name: 'Qty',
                 className: 'hide-qty-column',
-                buttonId: 'toggleQtyColumnBtn',
+                checkboxId: 'qtyCheckbox',
                 storageKey: 'qtyColumnVisible',
                 defaultVisible: true
             },
             total: {
                 name: 'Total',
                 className: 'hide-total-column',
-                buttonId: 'toggleTotalColumnBtn',
+                checkboxId: 'totalCheckbox',
                 storageKey: 'totalColumnVisible',
                 defaultVisible: true
             },
             charges: {
                 name: 'Charges',
                 className: 'hide-charges-column',
-                buttonId: 'toggleChargesColumnBtn',
+                checkboxId: 'chargesCheckbox',
                 storageKey: 'chargesColumnVisible',
                 defaultVisible: true
             },
             alerts: {
                 name: 'Alerts',
                 className: 'hide-alerts-column',
-                buttonId: 'toggleAlertsColumnBtn',
+                checkboxId: 'alertsCheckbox',
                 storageKey: 'alertsColumnVisible',
                 defaultVisible: true
             },
             status: {
                 name: 'Status',
                 className: 'hide-status-column',
-                buttonId: 'toggleStatusColumnBtn',
+                checkboxId: 'statusCheckbox',
                 storageKey: 'statusColumnVisible',
                 defaultVisible: true
             },
             actions: {
                 name: 'Actions',
                 className: 'hide-actions-column',
-                buttonId: 'toggleActionsColumnBtn',
+                checkboxId: 'actionsCheckbox',
                 storageKey: 'actionsColumnVisible',
                 defaultVisible: true
             }
@@ -12579,7 +12711,7 @@
             });
             
             updateAllColumnsVisibility();
-            updateAllToggleButtons();
+            updateAllCheckboxes();
         }
         
         // Toggle a specific column's visibility
@@ -12588,7 +12720,7 @@
             
             columnVisibility[columnKey] = !columnVisibility[columnKey];
             updateColumnVisibility(columnKey);
-            updateToggleButton(columnKey);
+            updateCheckbox(columnKey);
             saveColumnPreference(columnKey);
             
             const config = columnConfig[columnKey];
@@ -12616,40 +12748,33 @@
             });
         }
         
-        // Update a specific toggle button appearance
-        function updateToggleButton(columnKey) {
-            const config = columnConfig[columnKey];
-            const button = document.getElementById(config.buttonId);
-            
-            if (!button || !config) return;
-            
-            const isVisible = columnVisibility[columnKey];
-            
-            if (isVisible) {
-                button.classList.remove('hidden');
-                button.classList.add('active');
-                button.setAttribute('aria-pressed', 'true');
-                button.title = `Hide ${config.name} Column`;
-            } else {
-                button.classList.add('hidden');
-                button.classList.remove('active');
-                button.setAttribute('aria-pressed', 'false');
-                button.title = `Show ${config.name} Column`;
-            }
-            
-            // Update text for client column (has special text element)
-            if (config.textId) {
-                const buttonText = document.getElementById(config.textId);
-                if (buttonText) {
-                    buttonText.textContent = config.name;
-                }
-            }
-        }
-        
         // Update all toggle buttons appearance
         function updateAllToggleButtons() {
             Object.keys(columnConfig).forEach(columnKey => {
                 updateToggleButton(columnKey);
+            });
+        }
+        
+        // Update checkbox appearance in dropdown
+        function updateCheckbox(columnKey) {
+            const config = columnConfig[columnKey];
+            const checkbox = document.getElementById(config.checkboxId);
+            
+            if (!checkbox || !config) return;
+            
+            const isVisible = columnVisibility[columnKey];
+            
+            if (isVisible) {
+                checkbox.classList.add('checked');
+            } else {
+                checkbox.classList.remove('checked');
+            }
+        }
+        
+        // Update all checkboxes in dropdown
+        function updateAllCheckboxes() {
+            Object.keys(columnConfig).forEach(columnKey => {
+                updateCheckbox(columnKey);
             });
         }
         
@@ -12661,23 +12786,80 @@
             }
         }
         
-        // Individual toggle functions for backwards compatibility
-        function toggleClientColumn() { toggleColumn('client'); }
-        function toggleProductColumn() { toggleColumn('product'); }
-        function toggleQtyColumn() { toggleColumn('qty'); }
-        function toggleTotalColumn() { toggleColumn('total'); }
-        function toggleChargesColumn() { toggleColumn('charges'); }
-        function toggleAlertsColumn() { toggleColumn('alerts'); }
-        function toggleStatusColumn() { toggleColumn('status'); }
-        function toggleActionsColumn() { toggleColumn('actions'); }
-        
-        // Set up event listeners for all column toggle buttons
+        // Set up event listeners for dropdown functionality
         document.addEventListener('DOMContentLoaded', function() {
-            Object.keys(columnConfig).forEach(columnKey => {
-                const config = columnConfig[columnKey];
-                const button = document.getElementById(config.buttonId);
-                if (button) {
-                    button.addEventListener('click', () => toggleColumn(columnKey));
+            const dropdown = document.querySelector('.column-visibility-dropdown');
+            const trigger = document.getElementById('columnDropdownTrigger');
+            const menu = document.getElementById('columnDropdownMenu');
+            
+            if (!dropdown || !trigger || !menu) return;
+            
+            let isOpen = false;
+            
+            // Toggle dropdown on trigger click
+            trigger.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                toggleDropdown();
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!dropdown.contains(e.target) && isOpen) {
+                    closeDropdown();
+                }
+            });
+            
+            // Handle dropdown item clicks
+            menu.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const item = e.target.closest('.column-dropdown-item');
+                if (item) {
+                    const columnKey = item.getAttribute('data-column');
+                    if (columnKey) {
+                        toggleColumn(columnKey);
+                    }
+                }
+            });
+            
+            // Dropdown toggle functions
+            function toggleDropdown() {
+                if (isOpen) {
+                    closeDropdown();
+                } else {
+                    openDropdown();
+                }
+            }
+            
+            function openDropdown() {
+                isOpen = true;
+                trigger.classList.add('open');
+                trigger.setAttribute('aria-expanded', 'true');
+                menu.classList.add('open');
+            }
+            
+            function closeDropdown() {
+                isOpen = false;
+                trigger.classList.remove('open');
+                trigger.setAttribute('aria-expanded', 'false');
+                menu.classList.remove('open');
+            }
+            
+            // Keyboard navigation
+            trigger.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    toggleDropdown();
+                } else if (e.key === 'Escape' && isOpen) {
+                    closeDropdown();
+                    trigger.focus();
+                }
+            });
+            
+            menu.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    closeDropdown();
+                    trigger.focus();
                 }
             });
             
