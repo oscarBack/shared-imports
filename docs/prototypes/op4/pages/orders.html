@@ -2968,6 +2968,235 @@
 
         /* ===== COLUMN VISIBILITY CONTROLS ===== */
         
+        /* Filter Dropdown Styles */
+        .filter-dropdown {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            white-space: nowrap;
+        }
+        
+        /* Searchable Dropdown Styles */
+        .searchable-dropdown {
+            position: relative;
+            min-width: 200px;
+        }
+        
+        .searchable-input {
+            width: 100%;
+            padding: 8px 32px 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 14px;
+            color: #374151;
+            transition: all 0.2s ease;
+        }
+        
+        .searchable-input:hover {
+            border-color: #9ca3af;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .searchable-input:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .dropdown-toggle {
+            position: absolute;
+            right: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            padding: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: color 0.2s ease;
+        }
+        
+        .dropdown-toggle:hover {
+            color: #374151;
+        }
+        
+        .dropdown-toggle:focus {
+            outline: none;
+            color: #8b5cf6;
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+        
+        .dropdown-menu.open {
+            display: block;
+        }
+        
+        .dropdown-item {
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .dropdown-item:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .dropdown-item:first-child {
+            border-radius: 6px 6px 0 0;
+        }
+        
+        .dropdown-item:last-child {
+            border-radius: 0 0 6px 6px;
+        }
+        
+        .dropdown-item.selected {
+            background-color: #8b5cf6;
+            color: white;
+        }
+        
+        .dropdown-item.highlighted {
+            background-color: #f3f4f6;
+        }
+        
+        .dropdown-item mark {
+            background-color: #fef3c7;
+            color: #92400e;
+            padding: 0;
+        }
+        
+        .dropdown-item.selected mark {
+            background-color: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+        
+        .dropdown-no-results {
+            padding: 8px 12px;
+            font-size: 14px;
+            color: #6b7280;
+            font-style: italic;
+            text-align: center;
+        }
+        
+        /* Legacy select styles for fallback */
+        .filter-select {
+            min-width: 140px;
+            padding: 8px 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            background-color: white;
+            font-size: 14px;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-select:hover {
+            border-color: #9ca3af;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .clear-filters-btn {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .clear-filters-btn:hover {
+            background-color: #e5e7eb;
+            border-color: #9ca3af;
+            color: #374151;
+        }
+        
+        .clear-filters-btn:focus {
+            outline: none;
+            border-color: #8b5cf6;
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+        
+        .clear-filters-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f9fafb;
+        }
+        
+        .clear-filters-btn:disabled:hover {
+            background-color: #f9fafb;
+            border-color: #d1d5db;
+            color: #6b7280;
+        }
+        
+        /* Filter active states */
+        .filter-select.active,
+        .searchable-input.active {
+            border-color: #8b5cf6;
+            background-color: #f3f4f6;
+        }
+        
+        /* Responsive filter controls */
+        @media (max-width: 768px) {
+            .mb-4.flex.justify-between {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .filter-dropdown {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 4px;
+            }
+            
+            .searchable-dropdown,
+            .filter-select {
+                width: 100%;
+                min-width: unset;
+            }
+            
+            .clear-filters-btn {
+                justify-content: center;
+            }
+        }
+        
         /* Hide Client column when the hide-client-column class is applied */
         .hide-client-column .col-client,
         .hide-client-column #client-header,
@@ -3373,7 +3602,65 @@
         <main class="p-6">
             <div class="max-w-7xl mx-auto space-y-6">
                 <!-- Column Visibility Controls -->
-                <div class="mb-4 flex justify-end">
+                <div class="mb-4 flex justify-between items-center gap-4">
+                    <!-- Filter Controls -->
+                    <div class="flex items-center gap-4">
+                        <!-- Order ID Filter -->
+                        <div class="filter-dropdown">
+                            <label for="orderIdFilter" class="filter-label">Order ID:</label>
+                            <div class="searchable-dropdown" id="orderIdDropdown">
+                                <input 
+                                    type="text" 
+                                    id="orderIdFilter" 
+                                    class="searchable-input" 
+                                    placeholder="Search or select Order ID..."
+                                    aria-label="Filter by Order ID"
+                                    autocomplete="off"
+                                >
+                                <button class="dropdown-toggle" aria-label="Toggle Order ID dropdown">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" id="orderIdDropdownMenu">
+                                    <div class="dropdown-item" data-value="">All Orders</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Client Filter -->
+                        <div class="filter-dropdown">
+                            <label for="clientFilter" class="filter-label">Client:</label>
+                            <div class="searchable-dropdown" id="clientDropdown">
+                                <input 
+                                    type="text" 
+                                    id="clientFilter" 
+                                    class="searchable-input" 
+                                    placeholder="Search or select Client..."
+                                    aria-label="Filter by Client"
+                                    autocomplete="off"
+                                >
+                                <button class="dropdown-toggle" aria-label="Toggle Client dropdown">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                </button>
+                                <div class="dropdown-menu" id="clientDropdownMenu">
+                                    <div class="dropdown-item" data-value="">All Clients</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Clear Filters Button -->
+                        <button id="clearFiltersBtn" class="clear-filters-btn" title="Clear all filters">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Clear Filters
+                        </button>
+                    </div>
+                    
+                    <!-- Column Visibility Controls -->
                     <div class="column-visibility-dropdown">
                         <button id="columnDropdownTrigger" class="column-dropdown-trigger" 
                                 aria-label="Select columns to display" 
@@ -4994,6 +5281,11 @@
                     countElement.textContent = collections[collectionId].orderIds.length;
                 }
             });
+            
+            // Refresh dropdown filters when orders data changes
+            if (typeof refreshDropdownFilters === 'function') {
+                refreshDropdownFilters();
+            }
         }
 
         // ========== CHARGES MANAGEMENT FUNCTIONS ==========
@@ -7523,6 +7815,13 @@
 
                 // Priority filter
                 const matchesPriority = !priorityFilter || order.priority === priorityFilter;
+                
+                // Dropdown filters - Order ID filter
+                const matchesOrderId = !activeFilters.orderId || order.id === activeFilters.orderId;
+                
+                // Dropdown filters - Client filter
+                const matchesClient = !activeFilters.client || 
+                    order.clients.some(client => client.clientName === activeFilters.client);
 
                 // Date filter
                 let matchesDate = true;
@@ -7550,7 +7849,7 @@
                     }
                 }
 
-                return matchesSearch && matchesStatus && matchesPriority && matchesDate;
+                return matchesSearch && matchesStatus && matchesPriority && matchesDate && matchesOrderId && matchesClient;
             });
 
             // Apply sorting - now uses calculated totals
@@ -12799,7 +13098,388 @@
             initializeColumnVisibility();
         });
         
+        // ========== SEARCHABLE DROPDOWN FILTER MANAGEMENT ==========
+        
+        // Global filter state
+        let activeFilters = {
+            orderId: '',
+            client: ''
+        };
+        
+        // Dropdown state management
+        let dropdownStates = {
+            orderIdDropdown: {
+                isOpen: false,
+                options: [],
+                filteredOptions: [],
+                selectedIndex: -1
+            },
+            clientDropdown: {
+                isOpen: false,
+                options: [],
+                filteredOptions: [],
+                selectedIndex: -1
+            }
+        };
+        
+        // Initialize dropdown filters
+        function initializeDropdownFilters() {
+            populateOrderIdFilter();
+            populateClientFilter();
+            setupSearchableDropdownEventListeners();
+        }
+        
+        // Populate Order ID filter dropdown
+        function populateOrderIdFilter() {
+            const uniqueOrderIds = [...new Set(orders.map(order => order.id))].sort();
+            const options = [
+                { value: '', label: 'All Orders' },
+                ...uniqueOrderIds.map(id => ({ value: id, label: id }))
+            ];
+            
+            dropdownStates.orderIdDropdown.options = options;
+            dropdownStates.orderIdDropdown.filteredOptions = [...options];
+            renderDropdownOptions('orderIdDropdownMenu', options);
+        }
+        
+        // Populate Client filter dropdown
+        function populateClientFilter() {
+            const uniqueClients = new Set();
+            orders.forEach(order => {
+                order.clients.forEach(client => {
+                    uniqueClients.add(client.clientName);
+                });
+            });
+            
+            const sortedClients = [...uniqueClients].sort();
+            const options = [
+                { value: '', label: 'All Clients' },
+                ...sortedClients.map(name => ({ value: name, label: name }))
+            ];
+            
+            dropdownStates.clientDropdown.options = options;
+            dropdownStates.clientDropdown.filteredOptions = [...options];
+            renderDropdownOptions('clientDropdownMenu', options);
+        }
+        
+        // Render dropdown options
+        function renderDropdownOptions(menuId, options) {
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            
+            if (options.length === 0) {
+                menu.innerHTML = '<div class="dropdown-no-results">No results found</div>';
+                return;
+            }
+            
+            menu.innerHTML = options.map(option => 
+                `<div class="dropdown-item" data-value="${option.value}">${option.label}</div>`
+            ).join('');
+        }
+        
+        // Filter dropdown options based on search
+        function filterDropdownOptions(dropdownId, query) {
+            const state = dropdownStates[dropdownId];
+            if (!state) return;
+            
+            query = query.toLowerCase().trim();
+            
+            if (!query) {
+                state.filteredOptions = [...state.options];
+            } else {
+                state.filteredOptions = state.options.filter(option =>
+                    option.label.toLowerCase().includes(query) ||
+                    option.value.toLowerCase().includes(query)
+                );
+            }
+            
+            state.selectedIndex = -1;
+            
+            // Highlight matching text
+            const menuId = dropdownId.replace('Dropdown', 'DropdownMenu');
+            const highlightedOptions = state.filteredOptions.map(option => ({
+                ...option,
+                label: highlightSearchText(option.label, query)
+            }));
+            
+            renderDropdownOptions(menuId, highlightedOptions);
+        }
+        
+        // Highlight search text in results
+        function highlightSearchText(text, query) {
+            if (!query) return text;
+            
+            const regex = new RegExp(`(${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+            return text.replace(regex, '<mark>$1</mark>');
+        }
+        
+        // Open dropdown
+        function openDropdown(dropdownId) {
+            const state = dropdownStates[dropdownId];
+            if (!state) return;
+            
+            state.isOpen = true;
+            state.selectedIndex = -1;
+            
+            const menu = document.getElementById(dropdownId.replace('Dropdown', 'DropdownMenu'));
+            if (menu) {
+                menu.classList.add('open');
+            }
+        }
+        
+        // Close dropdown
+        function closeDropdown(dropdownId) {
+            const state = dropdownStates[dropdownId];
+            if (!state) return;
+            
+            state.isOpen = false;
+            state.selectedIndex = -1;
+            
+            const menu = document.getElementById(dropdownId.replace('Dropdown', 'DropdownMenu'));
+            if (menu) {
+                menu.classList.remove('open');
+            }
+        }
+        
+        // Close all dropdowns
+        function closeAllDropdowns() {
+            Object.keys(dropdownStates).forEach(dropdownId => {
+                closeDropdown(dropdownId);
+            });
+        }
+        
+        // Handle dropdown item selection
+        function selectDropdownItem(dropdownId, value, label) {
+            const inputId = dropdownId.replace('Dropdown', 'Filter');
+            const input = document.getElementById(inputId);
+            
+            if (input) {
+                input.value = value ? label : '';
+                input.classList.toggle('active', value !== '');
+            }
+            
+            // Update active filters
+            if (dropdownId === 'orderIdDropdown') {
+                activeFilters.orderId = value;
+            } else if (dropdownId === 'clientDropdown') {
+                activeFilters.client = value;
+            }
+            
+            closeDropdown(dropdownId);
+            applyDropdownFilters();
+            updateClearButtonState();
+        }
+        
+        // Handle keyboard navigation in dropdown
+        function handleDropdownKeyNavigation(dropdownId, event) {
+            const state = dropdownStates[dropdownId];
+            if (!state || !state.isOpen) return;
+            
+            const { key } = event;
+            const optionsCount = state.filteredOptions.length;
+            
+            if (optionsCount === 0) return;
+            
+            switch (key) {
+                case 'ArrowDown':
+                    event.preventDefault();
+                    state.selectedIndex = Math.min(state.selectedIndex + 1, optionsCount - 1);
+                    updateDropdownHighlight(dropdownId);
+                    break;
+                    
+                case 'ArrowUp':
+                    event.preventDefault();
+                    state.selectedIndex = Math.max(state.selectedIndex - 1, -1);
+                    updateDropdownHighlight(dropdownId);
+                    break;
+                    
+                case 'Enter':
+                    event.preventDefault();
+                    if (state.selectedIndex >= 0) {
+                        const selectedOption = state.filteredOptions[state.selectedIndex];
+                        selectDropdownItem(dropdownId, selectedOption.value, selectedOption.label.replace(/<mark>|<\/mark>/g, ''));
+                    }
+                    break;
+                    
+                case 'Escape':
+                    event.preventDefault();
+                    closeDropdown(dropdownId);
+                    break;
+            }
+        }
+        
+        // Update dropdown item highlighting
+        function updateDropdownHighlight(dropdownId) {
+            const menuId = dropdownId.replace('Dropdown', 'DropdownMenu');
+            const menu = document.getElementById(menuId);
+            if (!menu) return;
+            
+            const items = menu.querySelectorAll('.dropdown-item');
+            const state = dropdownStates[dropdownId];
+            
+            items.forEach((item, index) => {
+                item.classList.toggle('highlighted', index === state.selectedIndex);
+            });
+        }
+        
+        // Setup event listeners for searchable dropdowns
+        function setupSearchableDropdownEventListeners() {
+            setupDropdownListeners('orderIdDropdown', 'orderIdFilter');
+            setupDropdownListeners('clientDropdown', 'clientFilter');
+            
+            // Close dropdowns when clicking outside
+            document.addEventListener('click', (event) => {
+                const isDropdownClick = event.target.closest('.searchable-dropdown');
+                if (!isDropdownClick) {
+                    closeAllDropdowns();
+                }
+            });
+            
+            // Clear filters button
+            const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+            if (clearFiltersBtn) {
+                clearFiltersBtn.addEventListener('click', clearDropdownFilters);
+            }
+        }
+        
+        // Setup listeners for individual dropdown
+        function setupDropdownListeners(dropdownId, inputId) {
+            const input = document.getElementById(inputId);
+            const toggle = document.querySelector(`#${dropdownId} .dropdown-toggle`);
+            const menu = document.getElementById(dropdownId.replace('Dropdown', 'DropdownMenu'));
+            
+            if (!input || !toggle || !menu) return;
+            
+            // Input events
+            input.addEventListener('input', (event) => {
+                const query = event.target.value;
+                filterDropdownOptions(dropdownId, query);
+                
+                if (!dropdownStates[dropdownId].isOpen) {
+                    openDropdown(dropdownId);
+                }
+                
+                // If input is cleared, reset filter
+                if (!query.trim()) {
+                    if (dropdownId === 'orderIdDropdown') {
+                        activeFilters.orderId = '';
+                    } else if (dropdownId === 'clientDropdown') {
+                        activeFilters.client = '';
+                    }
+                    input.classList.remove('active');
+                    applyDropdownFilters();
+                    updateClearButtonState();
+                }
+            });
+            
+            input.addEventListener('focus', () => {
+                openDropdown(dropdownId);
+            });
+            
+            input.addEventListener('keydown', (event) => {
+                handleDropdownKeyNavigation(dropdownId, event);
+            });
+            
+            // Toggle button events
+            toggle.addEventListener('click', (event) => {
+                event.stopPropagation();
+                if (dropdownStates[dropdownId].isOpen) {
+                    closeDropdown(dropdownId);
+                } else {
+                    closeAllDropdowns();
+                    openDropdown(dropdownId);
+                }
+            });
+            
+            // Menu item clicks
+            menu.addEventListener('click', (event) => {
+                const item = event.target.closest('.dropdown-item');
+                if (!item) return;
+                
+                const value = item.dataset.value;
+                const label = item.textContent;
+                selectDropdownItem(dropdownId, value, label);
+            });
+        }
+        
+        // Apply dropdown filters to orders
+        function applyDropdownFilters() {
+            // Use the main applyFilters function which now includes dropdown filter logic
+            applyFilters();
+            
+            // Announce filter results to screen readers
+            const resultCount = filteredOrders.length;
+            const filterDescription = getActiveFilterDescription();
+            announceToScreenReader(`${resultCount} orders found${filterDescription ? ` filtered by ${filterDescription}` : ''}`);
+        }
+        
+        // Clear all dropdown filters
+        function clearDropdownFilters() {
+            // Reset filter state
+            activeFilters.orderId = '';
+            activeFilters.client = '';
+            
+            // Reset input values and states
+            const orderIdInput = document.getElementById('orderIdFilter');
+            const clientInput = document.getElementById('clientFilter');
+            
+            if (orderIdInput) {
+                orderIdInput.value = '';
+                orderIdInput.classList.remove('active');
+            }
+            
+            if (clientInput) {
+                clientInput.value = '';
+                clientInput.classList.remove('active');
+            }
+            
+            // Close all dropdowns
+            closeAllDropdowns();
+            
+            // Apply filters (which will show all orders)
+            applyDropdownFilters();
+            updateClearButtonState();
+            
+            announceToScreenReader('All filters cleared, showing all orders');
+        }
+        
+        // Update clear button state
+        function updateClearButtonState() {
+            const clearFiltersBtn = document.getElementById('clearFiltersBtn');
+            if (!clearFiltersBtn) return;
+            
+            const hasActiveFilters = activeFilters.orderId || activeFilters.client;
+            clearFiltersBtn.disabled = !hasActiveFilters;
+        }
+        
+        // Get description of active filters for accessibility
+        function getActiveFilterDescription() {
+            const descriptions = [];
+            
+            if (activeFilters.orderId) {
+                descriptions.push(`Order ID: ${activeFilters.orderId}`);
+            }
+            
+            if (activeFilters.client) {
+                descriptions.push(`Client: ${activeFilters.client}`);
+            }
+            
+            return descriptions.join(', ');
+        }
+        
+        // Re-populate filters when orders data changes
+        function refreshDropdownFilters() {
+            populateOrderIdFilter();
+            populateClientFilter();
+            updateClearButtonState();
+        }
+        
+        // ========== END SEARCHABLE DROPDOWN FILTER MANAGEMENT ==========
+        
         function clearAllFilters() {
+            // Clear dropdown filters
+            clearDropdownFilters();
+            
             // Clear search - Note: search input was removed with enhanced filters
             /*
             const searchInput = document.getElementById('searchInput');
@@ -12892,6 +13572,9 @@
                     trigger.focus();
                 }
             });
+            
+            // Initialize searchable dropdown filters
+            initializeDropdownFilters();
         });
         
     </script>
