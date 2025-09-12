@@ -3932,8 +3932,8 @@
                                     <th scope="col" class="col-product text-left" id="product-header">Product</th>
                                     <th scope="col" class="col-quantity text-center" id="quantity-header">Qty</th>
                                     <th scope="col" class="col-total text-right" id="total-cost-header">Total</th>
-                                    <th scope="col" class="col-status text-center" id="status-header">Status</th>
                                     <th scope="col" class="col-charges text-center" id="extra-charges-header">Extra charges</th>
+                                    <th scope="col" class="col-status text-center" id="status-header">Status</th>
                                     <th scope="col" class="col-notifications text-center" id="notifications-header">Alerts</th>
                                     <th scope="col" class="col-actions text-center" id="actions-header">Actions</th>
                                 </tr>
@@ -6839,9 +6839,6 @@
                                 <div class="client-name-primary">${client.clientName}</div>
                                 <div class="client-meta">
                                     <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
-                                    <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
-                                        ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
-                                    </span>
                                 </div>
                             </div>
                         </td>
@@ -6859,6 +6856,9 @@
                                         <div class="product-meta-compact">
                                             <span class="product-quantity">Qty: ${item.quantity}</span>
                                             <span class="product-price-unit">$${item.unitPrice}</span>
+                                            <span class="payment-status-indicator ${isClientPaymentComplete ? 'payment-status-complete' : 'payment-status-pending'}">
+                                                ${isClientPaymentComplete ? 'PAID' : 'PENDING'}
+                                            </span>
                                             ${client.items.length > 1 ? `<span>+${client.items.length - 1} more</span>` : ''}
                                         </div>
                                     </div>
@@ -6875,12 +6875,6 @@
                             // <div class="price-secondary">Client total</div>
                         </td>
                         
-                        ${clientIndex === 0 ? `
-                            <td rowspan="${order.clients.length}" class="column-separator" headers="status-header" role="gridcell">
-                                <span class="status-badge-compact ${getStatusClass(order.status)}">${order.status}</span>
-                            </td>
-                        ` : ''}
-
                         <td class="column-separator" headers="extra-charges-header" role="gridcell">
                             ${client.extraCharges && client.extraCharges.length > 0 ? `
                                 <div class="extra-charges-compact">
@@ -6891,6 +6885,12 @@
                                 </div>
                             ` : '<div class="extra-charges-compact">—</div>'}
                         </td>
+
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="column-separator" headers="status-header" role="gridcell">
+                                <span class="status-badge-compact ${getStatusClass(order.status)}">${order.status}</span>
+                            </td>
+                        ` : ''}
                         
                         <td class="column-separator" headers="notifications-header" role="gridcell">
                             ${client.notifications && client.notifications.length > 0 ? `
@@ -7370,9 +7370,6 @@
                             <div class="client-name-primary">${client.clientName}</div>
                             <div class="client-meta">
                                 <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
-                                <span class="payment-status-indicator ${client.paymentStatus === 'completed' ? 'payment-status-complete' : 'payment-status-pending'}">
-                                    ${client.paymentStatus === 'completed' ? 'PAID' : 'PENDING'}
-                                </span>
                             </div>
                         </div>
                     </td>
@@ -7389,6 +7386,9 @@
                                     <div class="product-detail-name">${item.productName}</div>
                                     <div class="product-detail-meta">
                                         <span class="product-detail-unit-price">$${item.unitPrice.toFixed(2)}/unit</span>
+                                        <span class="payment-status-indicator ${client.paymentStatus === 'completed' ? 'payment-status-complete' : 'payment-status-pending'}">
+                                            ${client.paymentStatus === 'completed' ? 'PAID' : 'PENDING'}
+                                        </span>
                                         <span class="text-xs text-gray-500">${item.sellerName}</span>
                                     </div>
                                 </div>
@@ -7617,10 +7617,6 @@
                         <td class="text-right text-sm font-semibold text-gray-900 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="quantity-header" role="gridcell">${clientTotalItems}</td>
                         <td class="text-right text-sm font-bold text-purple-700 ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="total-cost-header" role="gridcell" aria-label="Client total: $${clientTotalCost.toFixed(2)}">$${clientTotalCost.toFixed(2)}</td>
 
-                        ${clientIndex === 0 ? `
-                            <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status, order)}</td>
-                        ` : ''}
-
                         <!-- Extra charges per client -->
                         <td class="text-center ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="extra-charges-header" role="gridcell">
                             <div class="px-2 py-1">
@@ -7651,6 +7647,10 @@
                             </div>
                         </td>
 
+                        ${clientIndex === 0 ? `
+                            <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status, order)}</td>
+                        ` : ''}
+
                         <td class="text-center ${isClientPaymentComplete ? 'payment-complete-row' : ''}" headers="notifications-header" role="gridcell">
                             <div class="notification-list">
                                 ${renderClientNotifications(client)}
@@ -7662,7 +7662,6 @@
                             </button>
                         </td>
                         ${clientIndex === 0 ? `
-                            <td rowspan="${order.clients.length}" class="text-center border-l-2 border-purple-200" headers="status-header" role="gridcell">${getStatusBadge(order.status, order)}</td>
                             <td rowspan="${order.clients.length}" class="text-center" headers="actions-header" role="gridcell">
                                 <div class="flex flex-col items-center space-y-3" role="group" aria-label="Order actions">
                                     <!-- Collection Assignment -->
@@ -12944,9 +12943,6 @@
                             <div class="client-name-primary">${client.clientName}</div>
                             <div class="client-meta">
                                 <span class="client-whatsapp">${getWhatsAppUsername(client.clientName) || 'No WhatsApp'}</span>
-                                <span class="payment-status-indicator ${client.paymentStatus === 'completed' ? 'payment-status-complete' : 'payment-status-pending'}">
-                                    ${client.paymentStatus === 'completed' ? 'PAID' : 'PENDING'}
-                                </span>
                             </div>
                         </div>
                     </td>
@@ -12963,6 +12959,9 @@
                                     <div class="product-detail-name">${item.productName}</div>
                                     <div class="product-detail-meta">
                                         <span class="product-detail-unit-price">$${item.unitPrice.toFixed(2)}/unit</span>
+                                        <span class="payment-status-indicator ${client.paymentStatus === 'completed' ? 'payment-status-complete' : 'payment-status-pending'}">
+                                            ${client.paymentStatus === 'completed' ? 'PAID' : 'PENDING'}
+                                        </span>
                                     </div>
                                 </div>
                                 <div class="product-detail-total">$${item.totalCost.toFixed(2)}</div>
@@ -12978,10 +12977,6 @@
                         <div class="price-primary">$${item.totalCost.toFixed(2)}</div>
                     </td>
 
-                    <td class="column-separator text-center px-4 py-3" headers="status-header" role="gridcell">
-                        <span class="status-badge-compact ${getStatusClass(item.status)}">${item.status || 'pending'}</span>
-                    </td>
-
                     <td class="column-separator text-center px-4 py-3" headers="extra-charges-header" role="gridcell">
                         ${client.extraCharges && client.extraCharges.length > 0 ? `
                             <div class="extra-charges-compact">
@@ -12991,6 +12986,10 @@
                                 </div>
                             </div>
                         ` : '<div class="extra-charges-compact">—</div>'}
+                    </td>
+
+                    <td class="column-separator text-center px-4 py-3" headers="status-header" role="gridcell">
+                        <span class="status-badge-compact ${getStatusClass(item.status)}">${item.status || 'pending'}</span>
                     </td>
                     
                     <td class="column-separator text-center px-4 py-3" headers="notifications-header" role="gridcell">
