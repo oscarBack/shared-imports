@@ -3028,6 +3028,7 @@
         .column-visibility-dropdown {
             position: relative;
             display: inline-block;
+            z-index: 100;
         }
         
         .column-dropdown-trigger {
@@ -3079,7 +3080,7 @@
             top: 100%;
             left: 0;
             right: 0;
-            z-index: 50;
+            z-index: 1000;
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 8px;
@@ -3666,7 +3667,6 @@
                                 </svg>
                                 Search & Filter Orders
                             </h2>
-                            <p class="filters-subtitle">Find and organize your orders with advanced filtering options</p>
                         </div>
                     </div>
 
@@ -3745,87 +3745,91 @@
                                 Clear Filters
                             </button>
 
-                            <!-- Enhanced Column Visibility Controls -->
-                            <div class="enhanced-column-dropdown">
-                                <button id="columnDropdownTrigger" class="enhanced-column-trigger" 
-                                        aria-label="Select columns to display" 
-                                        aria-expanded="false"
-                                        aria-haspopup="true">
-                                    <svg class="enhanced-column-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
-                                    </svg>
-                                    <span>Manage Columns</span>
-                                    <svg class="enhanced-column-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
-                                
-                                <div id="columnDropdownMenu" class="column-dropdown-menu">
-                                    <div class="column-dropdown-item" data-column="client">
-                                        <div class="column-dropdown-checkbox" id="clientCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Client</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="product">
-                                        <div class="column-dropdown-checkbox" id="productCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l3-3m-3 3l3 3m-3-3H4m15 0l3-3m-3 3l3 3m-3-3h6"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Product</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="qty">
-                                        <div class="column-dropdown-checkbox" id="qtyCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Quantity</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="total">
-                                        <div class="column-dropdown-checkbox" id="totalCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Total</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="charges">
-                                        <div class="column-dropdown-checkbox" id="chargesCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Charges</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="alerts">
-                                        <div class="column-dropdown-checkbox" id="alertsCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a4 4 0 11-8 0c0-2.21 1.343-4 3-4s3 1.79 3 4z"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Alerts</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="status">
-                                        <div class="column-dropdown-checkbox" id="statusCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Status</span>
-                                    </div>
-                                    
-                                    <div class="column-dropdown-item" data-column="actions">
-                                        <div class="column-dropdown-checkbox" id="actionsCheckbox"></div>
-                                        <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
-                                        </svg>
-                                        <span class="column-dropdown-label">Actions</span>
-                                    </div>
-                                </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column Visibility Controls -->
+                <div class="mb-4 flex justify-end">
+                    <div class="enhanced-column-dropdown">
+                        <button id="columnDropdownTrigger" class="enhanced-column-trigger" 
+                                aria-label="Select columns to display" 
+                                aria-expanded="false"
+                                aria-haspopup="true">
+                            <svg class="enhanced-column-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
+                            </svg>
+                            <span>Manage Columns</span>
+                            <svg class="enhanced-column-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        
+                        <div id="columnDropdownMenu" class="column-dropdown-menu">
+                            <div class="column-dropdown-item" data-column="client">
+                                <div class="column-dropdown-checkbox checked" id="clientCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Client</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="product">
+                                <div class="column-dropdown-checkbox checked" id="productCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M9 9l3-3m-3 3l3 3m-3-3H4m15 0l3-3m-3 3l3 3m-3-3h6"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Product</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="qty">
+                                <div class="column-dropdown-checkbox checked" id="qtyCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Quantity</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="total">
+                                <div class="column-dropdown-checkbox checked" id="totalCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Total</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="charges">
+                                <div class="column-dropdown-checkbox checked" id="chargesCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Charges</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="alerts">
+                                <div class="column-dropdown-checkbox checked" id="alertsCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-5 5v-5zM9 17H4l5 5v-5z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a4 4 0 11-8 0c0-2.21 1.343-4 3-4s3 1.79 3 4z"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Alerts</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="status">
+                                <div class="column-dropdown-checkbox checked" id="statusCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Status</span>
+                            </div>
+                            
+                            <div class="column-dropdown-item" data-column="actions">
+                                <div class="column-dropdown-checkbox checked" id="actionsCheckbox"></div>
+                                <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                                </svg>
+                                <span class="column-dropdown-label">Actions</span>
                             </div>
                         </div>
                     </div>
