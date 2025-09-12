@@ -3172,290 +3172,6 @@
             color: #6b7280;
             font-weight: 500;
         }
-
-        /* ===== ENHANCED FILTER SECTION STYLES ===== */
-        
-        /* Enhanced filters container with modern design */
-        .enhanced-filters-container {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(229, 231, 235, 0.8);
-            border-radius: 0px;
-            box-shadow: 
-                0 1px 3px rgba(0, 0, 0, 0.1),
-                0 1px 2px rgba(0, 0, 0, 0.06),
-                0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            padding: 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .enhanced-filters-container:hover {
-            box-shadow: 
-                0 4px 6px rgba(0, 0, 0, 0.07),
-                0 1px 3px rgba(0, 0, 0, 0.04),
-                0 0 0 1px rgba(139, 92, 246, 0.1) inset;
-            transform: translateY(-1px);
-        }
-        
-        /* Filters header with better typography */
-        .filters-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 20px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid rgba(229, 231, 235, 0.6);
-        }
-        
-        .filters-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--gray-800);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .filters-title-icon {
-            width: 20px;
-            height: 20px;
-            color: var(--purple-500);
-        }
-        
-        .filters-subtitle {
-            font-size: 14px;
-            color: var(--gray-600);
-            margin-top: 4px;
-        }
-        
-        /* Enhanced search container */
-        .enhanced-search-container {
-            position: relative;
-            flex: 1;
-            max-width: 400px;
-        }
-        
-        .enhanced-search-input {
-            width: 100%;
-            padding: 12px 16px 12px 44px;
-            border: 2px solid rgba(229, 231, 235, 0.8);
-            border-radius: 0px;
-            background: rgba(255, 255, 255, 0.8);
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--gray-700);
-            backdrop-filter: blur(5px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) inset;
-        }
-        
-        .enhanced-search-input::placeholder {
-            color: var(--gray-500);
-            font-weight: 400;
-        }
-        
-        .enhanced-search-input:focus {
-            outline: none;
-            border-color: var(--purple-500);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 
-                0 0 0 3px rgba(139, 92, 246, 0.1),
-                0 1px 2px rgba(0, 0, 0, 0.05) inset;
-            transform: translateY(-1px);
-        }
-        
-        .enhanced-search-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 18px;
-            height: 18px;
-            color: var(--gray-400);
-            transition: color 0.2s ease;
-        }
-        
-        .enhanced-search-input:focus ~ .enhanced-search-icon {
-            color: var(--purple-500);
-        }
-        
-        /* Enhanced filter controls group */
-        .enhanced-filters-group {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        /* Enhanced dropdown styles */
-        .enhanced-filter-select {
-            padding: 10px 14px;
-            border: 2px solid rgba(229, 231, 235, 0.8);
-            border-radius: 0px;
-            background: rgba(255, 255, 255, 0.9);
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--gray-700);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            min-width: 140px;
-            backdrop-filter: blur(5px);
-            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        }
-        
-        .enhanced-filter-select:hover {
-            border-color: var(--purple-400);
-            background: rgba(255, 255, 255, 0.95);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
-        }
-        
-        .enhanced-filter-select:focus {
-            outline: none;
-            border-color: var(--purple-500);
-            box-shadow: 
-                0 0 0 3px rgba(139, 92, 246, 0.1),
-                0 2px 4px rgba(0, 0, 0, 0.08);
-        }
-        
-        /* Enhanced clear button */
-        .enhanced-clear-button {
-            padding: 10px 16px;
-            border: 2px solid rgba(229, 231, 235, 0.8);
-            border-radius: 0px;
-            background: rgba(255, 255, 255, 0.9);
-            color: var(--gray-600);
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(5px);
-        }
-        
-        .enhanced-clear-button:hover {
-            border-color: var(--gray-400);
-            background: rgba(249, 250, 251, 0.95);
-            color: var(--gray-700);
-            transform: translateY(-1px);
-        }
-        
-        .enhanced-clear-button:active {
-            transform: translateY(0);
-        }
-        
-        /* Enhanced column visibility dropdown */
-        .enhanced-column-dropdown {
-            position: relative;
-        }
-        
-        .enhanced-column-trigger {
-            padding: 10px 14px;
-            border: 2px solid rgba(139, 92, 246, 0.2);
-            border-radius: 0px;
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(139, 92, 246, 0.1) 100%);
-            color: var(--purple-700);
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            backdrop-filter: blur(5px);
-            min-width: 160px;
-        }
-        
-        .enhanced-column-trigger:hover {
-            border-color: var(--purple-400);
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(139, 92, 246, 0.15) 100%);
-            transform: translateY(-1px);
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.15);
-        }
-        
-        .enhanced-column-trigger:focus {
-            outline: none;
-            box-shadow: 
-                0 0 0 3px rgba(139, 92, 246, 0.2),
-                0 2px 8px rgba(139, 92, 246, 0.15);
-        }
-        
-        .enhanced-column-icon {
-            width: 16px;
-            height: 16px;
-            color: var(--purple-600);
-        }
-        
-        .enhanced-column-chevron {
-            width: 14px;
-            height: 14px;
-            color: var(--purple-600);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .enhanced-column-trigger.open .enhanced-column-chevron {
-            transform: rotate(180deg);
-        }
-        
-        /* Filter separator */
-        .filters-separator {
-            width: 1px;
-            height: 32px;
-            background: linear-gradient(to bottom, transparent, rgba(229, 231, 235, 0.8), transparent);
-            margin: 0 8px;
-        }
-        
-        /* Enhanced responsive behavior */
-        @media (max-width: 1024px) {
-            .enhanced-filters-container {
-                padding: 20px;
-                border-radius: 0px;
-            }
-            
-            .filters-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-            
-            .enhanced-search-container {
-                max-width: none;
-                width: 100%;
-                margin-bottom: 16px;
-            }
-            
-            .enhanced-filters-group {
-                width: 100%;
-                justify-content: flex-start;
-            }
-            
-            .enhanced-filter-select {
-                min-width: 120px;
-                flex: 1;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .enhanced-filters-container {
-                padding: 16px;
-                border-radius: 0px;
-            }
-            
-            .enhanced-filters-group {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 10px;
-            }
-            
-            .enhanced-filter-select,
-            .enhanced-clear-button,
-            .enhanced-column-trigger {
-                width: 100%;
-                justify-content: center;
-            }
-        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -3656,112 +3372,18 @@
         <!-- Orders Content -->
         <main class="p-6">
             <div class="max-w-7xl mx-auto space-y-6">
-                <!-- Enhanced Filters and Search Section -->
-                <div class="enhanced-filters-container">
-                    <!-- Filters Header -->
-                    <div class="filters-header">
-                        <div>
-                            <h2 class="filters-title">
-                                <svg class="filters-title-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
-                                </svg>
-                                Search & Filter Orders
-                            </h2>
-                        </div>
-                    </div>
-
-                    <!-- Main Controls Row -->
-                    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between space-y-4 lg:space-y-0 gap-6">
-                        <!-- Enhanced Search -->
-                        <div class="enhanced-search-container">
-                            <input 
-                                type="text" 
-                                id="searchInput"
-                                placeholder="Search by order ID, client name, product, tracking number..." 
-                                class="enhanced-search-input"
-                                autocomplete="off"
-                                onkeydown="handleSearchKeydown(event)"
-                                onblur="hideSearchSuggestions()"
-                            >
-                            <svg class="enhanced-search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                            </svg>
-                            <div id="searchSuggestions" class="search-suggestions">
-                                <!-- Search suggestions will be populated here -->
-                            </div>
-                        </div>
-
-                        <!-- Enhanced Filters Group -->
-                        <div class="enhanced-filters-group">
-                            <!-- Status Filter -->
-                            <select id="statusFilter" class="enhanced-filter-select">
-                                <option value="">All Status</option>
-                                <option value="processing">Processing</option>
-                                <option value="shipped">Shipped</option>
-                                <option value="delivered">Delivered</option>
-                                <option value="pending">Pending</option>
-                            </select>
-
-                            <!-- Date Range Filter -->
-                            <select id="dateFilter" class="enhanced-filter-select">
-                                <option value="">All Time</option>
-                                <option value="today">Today</option>
-                                <option value="week">This Week</option>
-                                <option value="month">This Month</option>
-                                <option value="quarter">This Quarter</option>
-                            </select>
-
-                            <!-- Priority Filter -->
-                            <select id="priorityFilter" class="enhanced-filter-select">
-                                <option value="">All Priorities</option>
-                                <option value="urgent">Urgent</option>
-                                <option value="express">Express</option>
-                                <option value="standard">Standard</option>
-                            </select>
-
-                            <div class="filters-separator"></div>
-
-                            <!-- Collection Filter -->
-                            <select id="collectionFilter" class="enhanced-filter-select">
-                                <option value="">All Collections</option>
-                                <!-- Collection options will be populated dynamically -->
-                            </select>
-
-                            <!-- Sort -->
-                            <select id="sortFilter" class="enhanced-filter-select">
-                                <option value="date-desc">Newest First</option>
-                                <option value="date-asc">Oldest First</option>
-                                <option value="value-desc">Highest Value</option>
-                                <option value="status-asc">Status A-Z</option>
-                            </select>
-
-                            <div class="filters-separator"></div>
-
-                            <!-- Enhanced Clear Filters -->
-                            <button id="clearFiltersBtn" class="enhanced-clear-button">
-                                <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                                </svg>
-                                Clear Filters
-                            </button>
-
-
-                        </div>
-                    </div>
-                </div>
-
                 <!-- Column Visibility Controls -->
                 <div class="mb-4 flex justify-end">
-                    <div class="enhanced-column-dropdown">
-                        <button id="columnDropdownTrigger" class="enhanced-column-trigger" 
+                    <div class="column-visibility-dropdown">
+                        <button id="columnDropdownTrigger" class="column-dropdown-trigger" 
                                 aria-label="Select columns to display" 
                                 aria-expanded="false"
                                 aria-haspopup="true">
-                            <svg class="enhanced-column-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="column-dropdown-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17V7m0 10a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2h2a2 2 0 012 2m0 10a2 2 0 002 2h2a2 2 0 002-2M9 7a2 2 0 012-2h2a2 2 0 012 2m0 10V7m0 10a2 2 0 002 2h2a2 2 0 002-2V7a2 2 0 00-2-2h-2a2 2 0 00-2 2"></path>
                             </svg>
                             <span>Manage Columns</span>
-                            <svg class="enhanced-column-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="column-dropdown-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
@@ -5196,6 +4818,8 @@
 
         function populateCollectionFilter() {
             const collectionFilter = document.getElementById('collectionFilter');
+            if (!collectionFilter) return; // Element was removed with enhanced filters
+            
             const currentValue = collectionFilter.value;
             
             collectionFilter.innerHTML = '<option value="">All Collections</option>';
@@ -7641,6 +7265,8 @@
 
         function populateStatusFilter() {
             const statusFilter = document.getElementById('statusFilter');
+            if (!statusFilter) return; // Element was removed with enhanced filters
+            
             const currentValue = statusFilter.value;
             statusFilter.innerHTML = '<option value="">All Status</option>' +
                 Object.entries(customStatuses).map(([key, config]) => 
@@ -7836,12 +7462,24 @@
         // Filter functionality
         // Filter functionality
         function applyFilters() {
-            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            const statusFilter = document.getElementById('statusFilter').value;
-            const dateFilter = document.getElementById('dateFilter').value;
-            const priorityFilter = document.getElementById('priorityFilter').value;
-            const collectionFilter = document.getElementById('collectionFilter').value;
-            const sortFilter = document.getElementById('sortFilter').value;
+            // Get filter values safely (elements may not exist after enhanced filters removal)
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+            
+            const statusFilterEl = document.getElementById('statusFilter');
+            const statusFilter = statusFilterEl ? statusFilterEl.value : '';
+            
+            const dateFilterEl = document.getElementById('dateFilter');
+            const dateFilter = dateFilterEl ? dateFilterEl.value : '';
+            
+            const priorityFilterEl = document.getElementById('priorityFilter');
+            const priorityFilter = priorityFilterEl ? priorityFilterEl.value : '';
+            
+            const collectionFilterEl = document.getElementById('collectionFilter');
+            const collectionFilter = collectionFilterEl ? collectionFilterEl.value : '';
+            
+            const sortFilterEl = document.getElementById('sortFilter');
+            const sortFilter = sortFilterEl ? sortFilterEl.value : 'date-desc';
 
             // Start with base orders - either all orders or orders from selected collection
             let baseOrders = orders;
@@ -7974,12 +7612,15 @@
         }
 
         function clearAllFilters() {
+            // Note: Filter elements were removed with enhanced filters section
+            /*
             document.getElementById('searchInput').value = '';
             document.getElementById('statusFilter').value = '';
             document.getElementById('dateFilter').value = '';
             document.getElementById('priorityFilter').value = '';
             document.getElementById('collectionFilter').value = '';
             document.getElementById('sortFilter').value = 'date-desc';
+            */
             applyFilters();
         }
 
@@ -8072,6 +7713,8 @@
         });
 
         // Filter event listeners
+        // Note: Enhanced filters section was removed
+        /*
         document.getElementById('searchInput').addEventListener('input', function(e) {
             const query = e.target.value;
             debouncedSearch(query);
@@ -8081,20 +7724,7 @@
         document.getElementById('priorityFilter').addEventListener('change', debouncedFilter);
         document.getElementById('collectionFilter').addEventListener('change', debouncedFilter);
         document.getElementById('sortFilter').addEventListener('change', applyFilters);
-        document.getElementById('clearFiltersBtn').addEventListener('click', () => {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('statusFilter').value = '';
-            document.getElementById('dateFilter').value = '';
-            document.getElementById('priorityFilter').value = '';
-            document.getElementById('collectionFilter').value = '';
-            document.getElementById('sortFilter').value = 'date-desc';
-            // Reset collection selection
-            currentSelectedCollection = null;
-            document.querySelectorAll('.collection-item').forEach(item => {
-                item.classList.remove('active');
-            });
-            applyFilters();
-        });
+        */
 
         // Collection event listeners
         document.getElementById('collectionsToggle').addEventListener('click', toggleCollectionsSection);
@@ -13168,55 +12798,23 @@
             // Initialize column visibility on page load
             initializeColumnVisibility();
         });
-
-        // Enhanced clear filters functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const clearBtn = document.getElementById('clearFiltersBtn');
-            if (clearBtn) {
-                clearBtn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    clearAllFilters();
-                });
-            }
-        });
         
         function clearAllFilters() {
-            // Clear dropdown filters
-            const filterSelects = document.querySelectorAll('.enhanced-filter-select');
-            filterSelects.forEach(select => {
-                select.value = '';
-            });
-            
-            // Clear search
+            // Clear search - Note: search input was removed with enhanced filters
+            /*
             const searchInput = document.getElementById('searchInput');
             if (searchInput) {
                 searchInput.value = '';
             }
+            */
             
             // Apply filters
-            applyAllFilters();
-            
-            // Add visual feedback
-            const clearBtn = document.getElementById('clearFiltersBtn');
-            clearBtn.classList.add('button-press');
-            setTimeout(() => clearBtn.classList.remove('button-press'), 200);
-        }
-        
-        function applyAllFilters() {
-            // This would integrate with your existing filter logic
-            console.log('Applying filters');
-            
-            // Add visual feedback
-            const filterContainer = document.querySelector('.enhanced-filters-container');
-            if (filterContainer) {
-                filterContainer.classList.add('pulse-once');
-                setTimeout(() => filterContainer.classList.remove('pulse-once'), 600);
-            }
+            applyFilters();
         }
         
         // Enhanced column dropdown functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const dropdown = document.querySelector('.enhanced-column-dropdown');
+            const dropdown = document.querySelector('.column-visibility-dropdown');
             const trigger = document.getElementById('columnDropdownTrigger');
             const menu = document.getElementById('columnDropdownMenu');
             
