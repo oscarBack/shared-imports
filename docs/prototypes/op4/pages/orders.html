@@ -3933,7 +3933,7 @@
                                     <th scope="col" class="col-quantity text-center" id="quantity-header">Qty</th>
                                     <th scope="col" class="col-total text-right" id="total-cost-header">Total</th>
                                     <th scope="col" class="col-status text-center" id="status-header">Status</th>
-                                    <th scope="col" class="col-charges text-center" id="extra-charges-header">Charges</th>
+                                    <th scope="col" class="col-charges text-center" id="extra-charges-header">Extra charges</th>
                                     <th scope="col" class="col-notifications text-center" id="notifications-header">Alerts</th>
                                     <th scope="col" class="col-actions text-center" id="actions-header">Actions</th>
                                 </tr>
@@ -13247,86 +13247,8 @@
             }
         }
         
-        // Set up event listeners for dropdown functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const dropdown = document.querySelector('.column-visibility-dropdown');
-            const trigger = document.getElementById('columnDropdownTrigger');
-            const menu = document.getElementById('columnDropdownMenu');
-            
-            if (!dropdown || !trigger || !menu) return;
-            
-            let isOpen = false;
-            
-            // Toggle dropdown on trigger click
-            trigger.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                toggleDropdown();
-            });
-            
-            // Close dropdown when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!dropdown.contains(e.target) && isOpen) {
-                    closeDropdown();
-                }
-            });
-            
-            // Handle dropdown item clicks
-            menu.addEventListener('click', function(e) {
-                e.stopPropagation();
-                const item = e.target.closest('.column-dropdown-item');
-                if (item) {
-                    const columnKey = item.getAttribute('data-column');
-                    if (columnKey) {
-                        toggleColumn(columnKey);
-                    }
-                }
-            });
-            
-            // Dropdown toggle functions
-            function toggleDropdown() {
-                if (isOpen) {
-                    closeDropdown();
-                } else {
-                    openDropdown();
-                }
-            }
-            
-            function openDropdown() {
-                isOpen = true;
-                trigger.classList.add('open');
-                trigger.setAttribute('aria-expanded', 'true');
-                menu.classList.add('open');
-            }
-            
-            function closeDropdown() {
-                isOpen = false;
-                trigger.classList.remove('open');
-                trigger.setAttribute('aria-expanded', 'false');
-                menu.classList.remove('open');
-            }
-            
-            // Keyboard navigation
-            trigger.addEventListener('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    toggleDropdown();
-                } else if (e.key === 'Escape' && isOpen) {
-                    closeDropdown();
-                    trigger.focus();
-                }
-            });
-            
-            menu.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') {
-                    closeDropdown();
-                    trigger.focus();
-                }
-            });
-            
-            // Initialize column visibility on page load
-            initializeColumnVisibility();
-        });
+    /* Duplicate simple dropdown setup removed. Initialization moved to the enhanced dropdown
+       block further down to avoid conflicting duplicate listeners. */
         
         // ========== SEARCHABLE DROPDOWN FILTER MANAGEMENT ==========
         
@@ -13805,6 +13727,10 @@
             
             // Initialize searchable dropdown filters
             initializeDropdownFilters();
+
+            // Initialize column visibility and checkbox states
+            initializeColumnVisibility();
+            updateAllCheckboxes();
         });
         
     </script>
